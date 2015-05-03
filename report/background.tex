@@ -10,26 +10,13 @@ that is, methods for measuring the distance between sequences.
 \subsubsection{Edit distance}
 One type of \emph{edit distance} is the \emph{Levenshtein} distance, which is a
 string metric for determining the similarity between two sequences. It is
-defined to be the minimum number of edits to turn the first sequence into the
-other. \\
+defined to be the minimum number of edits to transform the first sequence into
+the other.~\cite[p.~52]{dong}
+
 The edit operations consists of \emph{insertions}, \emph{deletions} and
 \emph{substitutions}. These operations are, respectively, inserting a letter,
-removing a letter and changing one letter into another. \\
-The Levenshtein distance from sequence $a$ to $b$ with indicator function 
-$1_{(a_i\neq b_j)}$, which is only $0$ when $a_i=b_j$, can mathematically be 
-defined as
-\begin{equation}
-  \operatorname{lev}_{a,b}(i,j)= 
-  \begin{cases}
-      \max(i,j) & \text{ if} \min(i,j)=0, \\
-        \min \begin{cases}
-            \operatorname{lev}_{a,b}(i-1,j) + 1 \\
-            \operatorname{lev}_{a,b}(i,j-1) + 1 \\
-            \operatorname{lev}_{a,b}(i-1,j-1) + 1_{(a_i \neq b_j)}
-       \end{cases} & \text{ otherwise.}
-  \end{cases}
-\end{equation}
-where $(i,j)=(|a|,|b|)$.\\
+removing a letter and changing one letter into another.
+
 For example, the two sequences
 \begin{center}
 \texttt{ACGT} \\
@@ -43,60 +30,9 @@ Consider the sequences
 \texttt{CCAA}
 \end{center}
 with a distance of 4. The two sequences actually have the maximal distance
-possible even though they have a close resemblance to each other.
-
-
-\subsubsection{Feature based distance}
-A $k$-mer, or $k$-gram or simply a \emph{word}, is a sequence of length
-$k > 0$ over some alphabet $\mathcal{A}$ of a sequence. $k$-mers are a type
-of sequence \emph{feature}. An interesting feature of a sequence is the
-$k$-mers that occur in that sequence.
-
-$d2$ is a feature based distance metric, using $k$-mers as the feature. The
-distance is calculated by counting the $k$-mers occurring in two sequences,
-representing these occurrences as two vectors and finally taking the Euclidean
-distance between these two vectors. \cite[pp.~53-54]{dong}
-
-Let $c_x(w)$ be the number of times that a $k$-mer $w$ occurs in the sequence
-$x$. Then the $d2$ distance between two sequences, $x$ and $y$, can be defined
-as follows \cite[pp.~1-2]{hazelhurst}:
-\begin{equation}
-  d2_k(x,y) \eqdef \sqrt{\sum_{|w|=k} (c_x(w) - c_y(w))^2}
-\end{equation}
-
-As an example, the two $2$-mer frequency vectors of the sequences
-\begin{align*}
-  S_1 &= AGACTG \\
-  S_2 &= ACAGAT
-\end{align*}
-over the alphabet $\mathcal{A} = \{A,C,T,G\}$, can be illustrated as follows:
-
-\begin{table}[!h]
-\centering
-\scalebox{0.7}{
-\begin{tabular}{c | c c c c c c c c c c c c c c c c}
-        & AA & AC & AG & AT & CA & CC & CG & CT & GA & GC & GG & GT & TA & TC & TG & TT \\
-  \hline
-  $S_1$ &    &  1 &  1 &    &    &    &    &  1 &  1 &    &    &    &    &    &  1 &    \\
-  \hline
-  $S_1$ &    &  1 &  1 &  1 &  1 &    &    &    &  1 &    &    &    &    &    &    &    \\
-\end{tabular}}
-\end{table}
-
-The Euclidean distance would then be calculated as
-\begin{align*}
-  d2_2(S_1, S_2)
-    &= \sqrt{(1-1)^2 + (1-1)^2 + (-1)^2 + (-1)^2 + (1)^2 + (1-1)^2 + (1)^2} \\
-    &= 2
-\end{align*}
-
-To better support distance between two sequences of different length, but
-similar subsequences, the concept of a \emph{window} can be used to split the
-distance calculation into comparison of substrings of length of the window
-and then use the window with the least distance as the resulting distance. In
-this way two sequences, where one is a prefix or postfix of the other, will
-have zero distance.
-
+possible even though one is just a rotation of the other and in a biological
+context, one might want this to results in a low distance, e.g. for gene
+sequences that are split up and rejoined in different order.
 
 
 \subsubsection{Sequence alignment}
@@ -135,6 +71,64 @@ by default, but can be modified to use Needleman-Wunsch or Smith-Waterson.
 However, this will make \texttt{UCLUST} much slower.
 
 
+The Levenshtein distance metric is very sensitive to reordering of substrings
+of the sequences % TODO
+
+
+\subsubsection{Feature based distance}
+
+A $k$-mer, or $k$-gram or simply a \emph{word}, is a sequence of length
+$k > 0$ over some alphabet $\mathcal{A}$ of a sequence. $k$-mers are a type
+of sequence \emph{feature}. An interesting feature of a sequence is the
+$k$-mers that occur in that sequence.
+
+$d2$ is a feature based distance metric, using $k$-mers as the feature. The
+distance is calculated by counting the $k$-mers occurring in two sequences,
+representing these occurrences as two vectors and finally taking the Euclidean
+distance between these two vectors.~\cite[pp.~53-54]{dong}
+
+Let $c_x(w)$ be the number of times that a $k$-mer $w$ occurs in the sequence
+$x$. Then the $d2$ distance between two sequences, $x$ and $y$, can be defined
+as follows~\cite[pp.~1-2]{hazelhurst}:
+\begin{equation}
+  d2_k(x,y) \eqdef \sqrt{\sum_{|w|=k} (c_x(w) - c_y(w))^2}
+\end{equation}
+
+As an example, the two $2$-mer frequency vectors of the sequences
+\begin{align*}
+  S_1 &= AGACTG \\
+  S_2 &= ACAGAT
+\end{align*}
+over the alphabet $\mathcal{A} = \{A,C,T,G\}$, can be illustrated as follows:
+
+\begin{table}[!h]
+\centering
+\scalebox{0.7}{
+\begin{tabular}{c | c c c c c c c c c c c c c c c c}
+        & AA & AC & AG & AT & CA & CC & CG & CT & GA & GC & GG & GT & TA & TC & TG & TT \\
+  \hline
+  $S_1$ &    &  1 &  1 &    &    &    &    &  1 &  1 &    &    &    &    &    &  1 &    \\
+  \hline
+  $S_2$ &    &  1 &  1 &  1 &  1 &    &    &    &  1 &    &    &    &    &    &    &    \\
+\end{tabular}}
+\end{table}
+
+The Euclidean distance would then be calculated as
+\begin{align*}
+  d2_2(S_1, S_2)
+    &= \sqrt{(1-1)^2 + (1-1)^2 + (-1)^2 + (-1)^2 + (1)^2 + (1-1)^2 + (1)^2} \\
+    &= 2
+\end{align*}
+
+To better support distance between two sequences of different length, but
+similar subsequences, the concept of a \emph{window} can be used to split the
+distance calculation into comparison of substrings of length of the window
+and then use the window with the least distance as the resulting distance. In
+this way two sequences, where one is a prefix or postfix of the other, will
+have zero distance.
+
+
+
 \subsection{Cluster analysis algorithms}
 
 
@@ -152,13 +146,13 @@ This addresses the question of what is required for a cluster to be within a
 given threshold. Besides measuring similarity between sequences with a distance
 metric, a definition for when a sequence is part of a cluster is needed.
 
-With the \textit{single-linkage} approach, only one sequence from both 
+With the \textit{single-linkage} approach, only one sequence from both
 clusters are required to be within the threshold.
 
-In the \textit{complete-linkage} approach, all sequences from one cluster 
+In the \textit{complete-linkage} approach, all sequences from one cluster
 must be within the threshold of all sequences from the other.
 
-In the \textit{average-linkage}, the average distance of all pairs of 
+In the \textit{average-linkage}, the average distance of all pairs of
 sequences is required to be within the threshold.
 
 The singly-linkage approach is often used in sequence clustering though it has
@@ -168,7 +162,7 @@ its disadvantages as argued in \cite[pp. 62-63]{dong}.
 Short description of the clustering method if relevant.
 
 
-\subsubsection{Greedy algorithm like in \texttt{UCLUST}} 
+\subsubsection{Greedy algorithm like in \texttt{UCLUST}}
 The \texttt{UCLUST} algorithm is greedy and is developed so that all member
 sequences have similarity $\geq$ $T$ to their centroid.  It works by processing
 one sequence at a time and comparing these to the existing centroids. If a

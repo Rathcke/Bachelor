@@ -1,10 +1,13 @@
 \documentclass[11pt, a4paper]{article}
 
 
+\usepackage[lang=en,grid=dark]{kufront}
+
+%\usepackage[english]{babel}
 \usepackage{tikz}
 \usetikzlibrary{shapes}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath}
+\usepackage{amsmath, amssymb}
 \usepackage{mathtools}
 \usepackage{amsfonts}
 \usepackage{pdfpages}
@@ -29,56 +32,61 @@
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
-\cfoot{Page \thepage\ of \pageref{LastPage}}
+\cfoot{Page \thepage\ of~\pageref{LastPage}}
 
 %Settings for lslisting
-\definecolor{listinggray}{gray}{0.9}
+%\definecolor{listinggray}{gray}{0.9}
 \usepackage{listings}
-\lstset{
-	language=,
-	literate=
-		{æ}{{\ae}}1
-		{ø}{{\o}}1
-		{å}{{\aa}}1
-		{Æ}{{\AE}}1
-		{Ø}{{\O}}1
-		{Å}{{\AA}}1,
-	backgroundcolor=\color{listinggray},
-	tabsize=3,
-	rulecolor=,
-	basicstyle=\scriptsize,
-	upquote=true,
-	aboveskip={0.2\baselineskip},
-	columns=fixed,
-	showstringspaces=false,
-	extendedchars=true,
-	breaklines=true,
-	prebreak =\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
-	frame=single,
-	showtabs=false,
-	showspaces=false,
-	showstringspaces=false,
-	identifierstyle=\ttfamily,
-	keywordstyle=\color[rgb]{0,0,1},
-	commentstyle=\color[rgb]{0.133,0.545,0.133},
-	stringstyle=\color[rgb]{0.627,0.126,0.941},
- 	literate={\$}{{\textcolor{blue}{\$}}}1,
-}
+%\lstset{
+%	language=,
+%	backgroundcolor=\color{listinggray},
+%	tabsize=3,
+%	rulecolor=,
+%	basicstyle=\scriptsize,
+%	upquote=true,
+%	aboveskip={0.2\baselineskip},
+%	columns=fixed,
+%	showstringspaces=false,
+%	extendedchars=true,
+%	breaklines=true,
+%	prebreak =\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+%	frame=single,
+%	showtabs=false,
+%	showspaces=false,
+%	showstringspaces=false,
+%	identifierstyle=\ttfamily,
+%	keywordstyle=\color[rgb]{0,0,1},
+%	commentstyle=\color[rgb]{0.133,0.545,0.133},
+%	stringstyle=\color[rgb]{0.627,0.126,0.941},
+% 	literate={\$}{{\textcolor{blue}{\$}}}1,
+%}
 
 % handy commands etc.
 \newcommand{\eqdef}{\overset{\mathrm{def}}{=\joinrel=}}
 
+<<<<<<< HEAD
 \title{Bachelor's thesis \\
        \vspace{2mm}
        {\LARGE Efficient DNA/RNA-sequence clustering}}
 \author{Anders Kiel Hovgaard \and Nikolaj Dybdahl Rathcke}
 \date{April 20, 2015}
+=======
+\title{Efficient DNA/RNA sequence clustering}
+\subtitle{Using $k$-mers as an approximation\\for sequence similarity}
+%%\title{Bachelor project: Midway report \\
+%%       \vspace{2mm}
+%%       {\LARGE Efficient DNA/RNA-sequence clustering}}
+\author{Anders Kiel Hovgaard \& Nikolaj Dybdahl Rathcke}
+\date{\today}
+\project{Bachelor's Thesis}
+\supervisor{Supervisor: Rasmus Fonseca}
+>>>>>>> 7fc1fb0e1fc32a117dfcca449f160dfd607e021d
 
 
 \begin{document}
-\maketitle
-\thispagestyle{empty}
-\newpage
+\begin{titlepage}
+  \maketitle
+\end{titlepage}
 
 \input{abstract.tex}
 \thispagestyle{plain}
@@ -97,7 +105,6 @@
 \input{background.tex}
 \input{research_process.tex}
 
-
 \section{Current status and plan for the rest of the project}
 
 At this point in the project, we have described and implemented a reasonably
@@ -111,16 +118,14 @@ calculations.
 Additionally, there can be made more checks for the possibility of stopping a
 comparison early, if it is already known that it will fail.
 
-While the distance metric implementation can be improved we also need to keep 
-it sensitive. Changing the distance metrics to improve speed could mean a 
-drawback for its sensibility. We also plan to investigate alternative methods 
-to locate centroid candidates as the current implementation does not provide 
+While the distance metric implementation can be improved we also need to keep
+it sensitive. Changing the distance metrics to improve speed could mean a
+drawback for its sensibility. We also plan to investigate alternative methods
+to locate centroid candidates as the current implementation does not provide
 good results.
 
 
 \newpage
-\nocite{dong, hazelhurst, usearch, uclust}
-
 \bibliography{report}
 \bibliographystyle{alpha} % alpha,plain,abbrv
 
