@@ -88,7 +88,7 @@ the idea of a window and $k$-mers exiting and entering the window:
       k-mer exiting        k-mer entering
 \end{verbatim}
 
-Since the Manhattan distance can be hard to use in practice, since it is very
+Since the Manhattan distance can be hard to use in practice, because it is very
 dependent on the length of the shortest sequence (the length of the window),
 the concept of the \emph{Jaccard index}, or the \emph{Jaccard similarity
 coefficient}, is used to ``normalize'' the distance to a value in the interval
@@ -289,7 +289,8 @@ attributed to our choice of distance metric.
     \textsc{Simple\_Clust}, $k=8$,
     $max\_rejects=8$, $id=0.97$     & $\sim$ 2,750   & 475,465  \\
   \end{tabular}
-  \caption{Performance of different clustering methods. Sequence data:
+  \caption{Performance of different clustering methods and different $k$-mer 
+  sizes. Sequence data:
            \texttt{RDP\_Pro\_Full\_sort.fna}. Count: 500,000. Throughput
            specifies the number of sequences clustered per second (including
            results output to file), but excludes reading the input file.}

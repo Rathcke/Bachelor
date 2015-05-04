@@ -2,3 +2,34 @@
 
 \subsection{Bottom-up dynamic programming Levenshtein algorithm}
 \label{app:levenshtein_algorithm}
+
+\begin{algorithm}
+  \caption{Bottom-up dynamic programming Levenshtein algorithm}
+  \label{alg:d2_naive}
+  \begin{algorithmic}[1]
+    \Require{$m$ and $n$ are DNA or RNA sequences}
+    \Statex
+    \Function{levenshtein}{$m, n$}
+      \State Initialize arrays \texttt{p} and \texttt{q}
+      \For{$i \gets 0$ to $length(m)$}
+        \State p[i] = i
+      \EndFor
+      \For{$i \gets 0$ to $length(n)-1$}
+        \State q[$0$] = $i+1$
+        \For{$j \gets 0$ to $length(m)-1$}
+            \If{m[$j$] = n[$i$]}
+              \State cost = 0
+            \Else
+              \State cost = 1
+            \EndIf
+            \State q[$j+1$] = min(q[$j$] + $1$, p[$j+1$] + 1,          
+            p[$j$] + cost)
+        \EndFor
+        \For{$j \gets 0$ to $length(m)$}
+            \State p[$j$] = q[$j$]
+        \EndFor
+      \EndFor
+    \State \Return q[$length(m)$]
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
