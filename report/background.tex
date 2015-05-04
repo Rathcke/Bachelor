@@ -19,15 +19,15 @@ removing a letter and changing one letter into another.
 
 For example, the two sequences
 \begin{center}
-\texttt{ACGT} \\
-\texttt{ACGGC}
+  \texttt{ACGT} \\
+  \texttt{ACGGC}
 \end{center}
-would have a distance of 2 (substituting T for G and inserting a C). \\
-However, there are some cases where the relevance of the distance is arguable.
-Consider the sequences
+would have a distance of 2 (substituting T for G and inserting a C). However,
+there are some cases where the relevance of the distance is arguable. Consider
+the sequences
 \begin{center}
-\texttt{AACC} \\
-\texttt{CCAA}
+  \texttt{AACC} \\
+  \texttt{CCAA}
 \end{center}
 with a distance of 4. The two sequences actually have the maximal distance
 possible even though one is just a rotation of the other and in a biological
@@ -35,22 +35,29 @@ context, one might want this to results in a low distance, e.g. for gene
 sequences that are split up and rejoined in different order.
 
 A bottom-up dynamic programming version of the Levenshtein algorithm was
-implemented and tested on real DNA/RNA data to evaluate the performance, and it
+implemented and tested on real DNA/RNA data to evaluate its performance, and it
 was clear that this algorithm was not suitable for large data sets, because it
 would be infeasible to complete even a linear clustering of the data using this
-distance metric.
+distance metric.  Furthermore, the Levenshtein distance penalizes rotations,
+i.e. it results in an increased distance. The Levenshtein distance can still be
+used for evaluation and benchmarking against other metrics. The algorithm is
+attached in appendix \ref{app:levenshtein_algorithm}.
 
-The implemented dynamic programming solution has a running time of $O(nm)$,
-where $n$ and $m$ are the length of the sequences, and this running time seems
-to be inherent in this approach to the problem.
+As stated in \cite[pp.~1-2]{andoni}, ``The worst-case running time known for
+this problem has not improved in three decades (..)'', specifically it states
+that the running time of Levenshtein is $O(d)$, where $d$ is the length of the
+two sequences, and $O(d^2/\log_2(d))$ for a constant size alphabet. Is further
+supports the conclusion that the running time of the Levenshtein algorithm is
+too poor for the large data sets of the problem domain.
 
-% TODO: algorithm in appendix
+This lack of improvements of the performance of edit distance is one motivation
+for the introduction of the concept of sequence alignment.
 
-Furthermore, the Levenshtein distance penalizes rotations, i.e. increases
-distance, and therefore other distance metrics was studied. The Levenshtein
-distance can still be used for evaluation and benchmarking against other
-metrics.
-
+%The implemented dynamic programming solution has a running time of $O(nm)$,
+%where $n$ and $m$ are the lengths of the sequences, and this running time seems
+%to be inherent in this approach to measuring distance between sequences, as it
+%needs to consider all possible edits to one sequence for each position in the
+%other sequence.
 
 \subsubsection{Sequence alignment}
 \emph{Sequence alignment} is used in bioinformatics to identify regions of
