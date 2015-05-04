@@ -93,30 +93,17 @@
 \input{introduction.tex}
 \input{terminology.tex}
 \input{background.tex}
-\input{research_process.tex}
-
-\section{Current status and plan for the rest of the project}
-
-At this point in the project, we have described and implemented a reasonably
-fast distance metric, which might be able to compete with other existing
-solutions, e.g. \texttt{UCLUST}, depending on the clustering algorithm used
-with the distance metric. There is still room for improvement, however, for
-instance we plan to implement storage of $k$-mer frequency vectors together
-with the centroids such that these can be reused in subsequent similarity
-calculations.
-
-Additionally, there can be made more checks for the possibility of stopping a
-comparison early, if it is already known that it will fail.
-
-While the distance metric implementation can be improved we also need to keep
-it sensitive. Changing the distance metrics to improve speed could mean a
-drawback for its sensibility. We also plan to investigate alternative methods
-to locate centroid candidates as the current implementation does not provide
-good results.
-
+\input{theory.tex}
+\input{results.tex}
+\input{conclusions.tex}
 
 \newpage
+\addcontentsline{toc}{section}{References}
 \bibliography{report}
 \bibliographystyle{alpha} % alpha,plain,abbrv
+
+\newpage
+\appendix
+\input{algorithms.tex}
 
 \end{document}
