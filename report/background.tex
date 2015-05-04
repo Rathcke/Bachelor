@@ -34,6 +34,23 @@ possible even though one is just a rotation of the other and in a biological
 context, one might want this to results in a low distance, e.g. for gene
 sequences that are split up and rejoined in different order.
 
+A bottom-up dynamic programming version of the Levenshtein algorithm was
+implemented and tested on real DNA/RNA data to evaluate the performance, and it
+was clear that this algorithm was not suitable for large data sets, because it
+would be infeasible to complete even a linear clustering of the data using this
+distance metric.
+
+The implemented dynamic programming solution has a running time of $O(nm)$,
+where $n$ and $m$ are the length of the sequences, and this running time seems
+to be inherent in this approach to the problem.
+
+% TODO: algorithm in appendix
+
+Furthermore, the Levenshtein distance penalizes rotations, i.e. increases
+distance, and therefore other distance metrics was studied. The Levenshtein
+distance can still be used for evaluation and benchmarking against other
+metrics.
+
 
 \subsubsection{Sequence alignment}
 \emph{Sequence alignment} is used in bioinformatics to identify regions of
@@ -51,7 +68,7 @@ the column are same, then we have a match. Otherwise, it is a mismatch.
     \mbox{\texttt{ATGCAACGA}} \\
     \mbox{\texttt{-TGCG-CGA}}
   \end{align*}
-  \caption{Sequence alignment of 'ATGCAACGA' and 'TGCGCGA'}
+  \caption{Sequence alignment of `ATGCAACGA' and `TGCGCGA'}
   \label{fig:seqAlignment}
 \end{figure}
 
