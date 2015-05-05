@@ -71,10 +71,8 @@ the column are same, then we have a match. Otherwise, it is a mismatch.
 
 \begin{figure}[H]
   \centering
-  \begin{align*}
-    \mbox{\texttt{ATGCAACGA}} \\
-    \mbox{\texttt{-TGCG-CGA}}
-  \end{align*}
+    \texttt{ATGCAACGA} \\
+    \texttt{-TGCG-CGA}
   \caption{Sequence alignment of `ATGCAACGA' and `TGCGCGA'}
   \label{fig:seqAlignment}
 \end{figure}
@@ -161,23 +159,22 @@ There are typically two types of hierarchical algorithms, both of which are
 merge based, the agglomerative that works in a bottom-up manner and the
 divisive that has a top-down approach, but we focus on explaining the
 agglomerative. The agglomerative works in a bottom-up manner where all
-sequences start as leaves and they are then merged together in clusters if they
-are within a given threshold.
+sequences start as leaves. These sequences are considered clusters. They are then merged together with the closest clusters until there is only one cluster left. Alternatively, if the clustering is based on a similarity threshold, it merges clusters until no more clusters can be merged.
 
 % TODO: MAKE ILLUSTRATION
 
-This addresses the question of what is required for a cluster to be within a
-given threshold. Besides measuring similarity between sequences with a distance
-metric, a definition for when a sequence is part of a cluster is needed.
+This addresses the question of what is required for a cluster to be close to another.
+Besides measuring similarity between sequences with some distance
+metric, a definition for when clusters should be merged is needed.
 
-With the \textit{single-linkage} approach, only one sequence from both
-clusters are required to be within the threshold.
+With the \textit{single-linkage} approach, only a sequence from both
+clusters need an identity above the similarity threshold.
 
 In the \textit{complete-linkage} approach, all sequences from one cluster
-must be within the threshold of all sequences from the other.
+must be above the threshold of all sequences from the other.
 
-In the \textit{average-linkage}, the average distance of all pairs of
-sequences is required to be within the threshold.
+In the \textit{average-linkage}, the average distance of all sequence pairs  
+is required to be above the threshold.
 
 The singly-linkage approach is often used in sequence clustering though it has
 its disadvantages as argued in \cite[pp. 62-63]{dong}.
