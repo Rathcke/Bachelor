@@ -66,7 +66,8 @@ frequency vectors is calculated.
 
 The Manhattan distance is simply the Euclidean distance where squaring is
 replaced with absolute value and the square root is omitted, i.e. for
-$u, v \in \mathbb{Z}^n$, 
+$u, v \in \mathbb{Z}^n$,
+
 \begin{equation}
   d_{Manhattan} \eqdef \sum_{i=1}^{n} |u_i - v_i| \;.
 \end{equation}
@@ -80,6 +81,7 @@ negative or positive, it can be decided whether the distance increases or
 decreased by 2 or whether it stays the same. Subsequently, the frequency vector
 is updated to reflect the change in the new window. The following illustrates
 the idea of a window and $k$-mers exiting and entering the window:
+
 \begin{verbatim}
       |---- window ----------|
       ACTGATCGTAGCTAGCTAGTGTTG
@@ -88,7 +90,7 @@ the idea of a window and $k$-mers exiting and entering the window:
       k-mer exiting        k-mer entering
 \end{verbatim}
 
-Since the Manhattan distance can be hard to use in practice, because it is very
+The Manhattan distance can be hard to use in practice, because it is very
 dependent on the length of the shortest sequence (the length of the window),
 the concept of the \emph{Jaccard index}, or the \emph{Jaccard similarity
 coefficient}, is used to ``normalize'' the distance to a value in the interval
@@ -106,10 +108,11 @@ intersection as the Manhattan distance in the window.
 
 
 \subsection{Evaluating distance metric}
-To evaluate our implementation of the $k$-mer distance using windows and
-Jaccard index, we decided to use the Levenshtein distance as reference.\\ Since
-Levenshtein distance does not produce values between $0$ and $1$, we have
-normalized it so it uses Jaccard index.
+
+To evaluate our implementation of the $k$-mer distance using windows and the
+Jaccard index, the Levenshtein distance was used as reference. Since the
+Levenshtein distance does not produce values between $0$ and $1$, the Jaccard
+index was used here as well.
 
 In figure \ref{fig:Levenshtein_vs_Kmer} is three scatter plots with the
 Levenshtein distance on the $y$-axis and our version of the $k$-mer distance on
@@ -132,20 +135,20 @@ When $k=8$, it is very similar to $k=6$. It seems there is a linear relation
 for $I>0.8$ again and when $I<0.8$ the variance is greater.
 
 \begin{figure}
-        \begin{subfigure}[b]{0.5\textwidth}
-        \includegraphics[scale=0.34]{graphics/k4.png}
-        \end{subfigure}
-        \begin{subfigure}[b]{0.5\textwidth}
-        \includegraphics[scale=0.34]{graphics/k6.png}
-        \end{subfigure}
+  \begin{subfigure}[b]{0.5\textwidth}
+    \includegraphics[scale=0.34]{graphics/k4.png}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.5\textwidth}
+    \includegraphics[scale=0.34]{graphics/k6.png}
+  \end{subfigure}
 
   \centering
-        \begin{subfigure}[b]{0.5\textwidth}
-        \includegraphics[scale=0.34]{graphics/k8.png}
-        \end{subfigure}
-\caption{Comparison of Levenshtein distance and our implementation of the
-$k$-mer distance using windows and Jaccard index.}
-\label{fig:Levenshtein_vs_Kmer}
+  \begin{subfigure}[b]{0.5\textwidth}
+    \includegraphics[scale=0.34]{graphics/k8.png}
+  \end{subfigure}
+  \caption{Comparison of Levenshtein distance and our implementation of the
+  $k$-mer distance using windows and Jaccard index.}
+  \label{fig:Levenshtein_vs_Kmer}
 \end{figure}
 
 
@@ -215,7 +218,7 @@ This is repeated for all sequences in the input file.
 Running \texttt{USEARCH} on the file \texttt{SILVA\_119\_SSURef\_tax\_silva.fasta} after it is sorted with parameters \texttt{-clust\_smallmem} and \texttt{-id 0.95} produces the following output
 
 \begin{lstlisting}
-28:39 1.1Gb  100.0\% 117205 clusters, max size 83904, avg 13.5                                                        
+28:39 1.1Gb  100.0\% 117205 clusters, max size 83904, avg 13.5
       Seqs  1583830 (1.6M)
   Clusters  117205 (117.2k)
   Max size  83904 (83.9k)
@@ -239,13 +242,13 @@ Finished clustering:
 Time: 187.355 sec.
 Throughput: 8453.63seqs/sec.
 \end{lstlisting}
-Even though the \texttt{id}'s does not represent the same threshold due to it 
-being two different distance metrics we do get a lot more clusters. Running 
-it with similar \texttt{id}'s produces almost the same amount of clusters, so 
-the problem lies in the way we choose our centroids we compare a query 
+Even though the \texttt{id}'s does not represent the same threshold due to it
+being two different distance metrics we do get a lot more clusters. Running
+it with similar \texttt{id}'s produces almost the same amount of clusters, so
+the problem lies in the way we choose our centroids we compare a query
 sequence with.
 
-Our implementation, however, is faster by a factor of $10$. This can be 
+Our implementation, however, is faster by a factor of $10$. This can be
 attributed to our choice of distance metric.
 \\
 %Possibly things to look into: confusion matrix, Rand index, normalized
@@ -289,7 +292,7 @@ attributed to our choice of distance metric.
     \textsc{Simple\_Clust}, $k=8$,
     $max\_rejects=8$, $id=0.97$     & $\sim$ 2,750   & 475,465  \\
   \end{tabular}
-  \caption{Performance of different clustering methods and different $k$-mer 
+  \caption{Performance of different clustering methods and different $k$-mer
   sizes. Sequence data:
            \texttt{RDP\_Pro\_Full\_sort.fna}. Count: 500,000. Throughput
            specifies the number of sequences clustered per second (including

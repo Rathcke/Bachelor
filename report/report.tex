@@ -1,6 +1,5 @@
 \documentclass[11pt, a4paper]{article}
 
-
 \usepackage[lang=en,grid=dark]{kufront}
 
 %\usepackage[english]{babel}
@@ -19,13 +18,13 @@
 \usepackage{url}
 \usepackage{float}
 \usepackage[bottom]{footmisc}
+\usepackage{color}
 
 % algorithms
 \usepackage{algorithm}              % algorithm float environment
 \usepackage[noend]{algpseudocode}   % from algorithmicx; no "end" on functions
 \newcommand*\Let[2]{\State #1 $\gets$ #2}
 \algrenewcommand\algorithmicrequire{\textbf{Precondition:}}
-%\algrenewcommand\alglinenumber[1]{\\footnotesize{\color{gray}#1}}
 
 % headers and footers
 \usepackage{fancyhdr, lastpage}
@@ -34,48 +33,40 @@
 \renewcommand{\headrulewidth}{0pt}
 \cfoot{Page \thepage\ of~\pageref{LastPage}}
 
-%Settings for lslisting
-%\definecolor{listinggray}{gray}{0.9}
+% settings for lslisting
+\definecolor{listinggray}{gray}{0.9}
 \usepackage{listings}
-%\lstset{
-%	language=,
-%	backgroundcolor=\color{listinggray},
-%	tabsize=3,
-%	rulecolor=,
-%	basicstyle=\scriptsize,
-%	upquote=true,
-%	aboveskip={0.2\baselineskip},
-%	columns=fixed,
-%	showstringspaces=false,
-%	extendedchars=true,
-%	breaklines=true,
-%	prebreak =\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
-%	frame=single,
-%	showtabs=false,
-%	showspaces=false,
-%	showstringspaces=false,
-%	identifierstyle=\ttfamily,
-%	keywordstyle=\color[rgb]{0,0,1},
-%	commentstyle=\color[rgb]{0.133,0.545,0.133},
-%	stringstyle=\color[rgb]{0.627,0.126,0.941},
-% 	literate={\$}{{\textcolor{blue}{\$}}}1,
-%}
+\lstset{
+  backgroundcolor=\color{listinggray},
+  tabsize=2,
+  rulecolor=,
+  basicstyle=\scriptsize,
+  frame=single,
+  showtabs=false,
+  showspaces=false,
+  showstringspaces=false,
+  columns=fixed,
+  showstringspaces=false,
+  extendedchars=true,
+  identifierstyle=\ttfamily,
+  keywordstyle=\color[rgb]{0,0,1},
+  commentstyle=\color[rgb]{0.133,0.545,0.133},
+  stringstyle=\color[rgb]{0.627,0.126,0.941},
+  literate={\$}{{\textcolor{blue}{\$}}}1,
+  breaklines=false,
+  prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+  breakatwhitespace=false,
+}
 
 % handy commands etc.
 \newcommand{\eqdef}{\overset{\mathrm{def}}{=\joinrel=}}
 
-
 \title{Efficient DNA/RNA sequence clustering}
 \subtitle{Using $k$-mers as an approximation\\for sequence similarity}
-%%\title{Bachelor project: Midway report \\
-%%       \vspace{2mm}
-%%       {\LARGE Efficient DNA/RNA-sequence clustering}}
 \author{Anders Kiel Hovgaard \& Nikolaj Dybdahl Rathcke}
-\date{\today}
+\date{June 8, 2015}
 \project{Bachelor's Thesis}
 \supervisor{Supervisor: Rasmus Fonseca}
-
-
 
 \begin{document}
 \begin{titlepage}
