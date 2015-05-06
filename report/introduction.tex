@@ -9,7 +9,7 @@ Clustering huge amounts of DNA/RNA sequences (up to 500 million strings of
 500—1500 characters each) is computationally hard, and the cost of sequencing,
 i.e. determining DNA and RNA data, has dropped so low, and consequently the
 amount of data has grown so large, that the available algorithms and hardware
-can no longer keep up.
+can no longer keep up.~\cite{rothberg}
 
 There are not many available algorithms and tools for efficient clustering of
 sequencing data. The one tool which is currently doing the job,
@@ -29,7 +29,7 @@ clustering method does not guarantee a minimal number of clusters, as the
 search for a centroid is not exhaustive, nor does it guarantee to find the most
 similar centroid for each sequence.
 
-This project researches the possibilities for creating an open source tool that
+This project researches the possibilities for creating an open-source tool that
 can match the performance of \texttt{UCLUST}. We present a solution and
 implementation that uses the concept of $k$-mer counting, i.e. essentially
 comparing the distribution of all possible substrings of a fixed length $k$ in
@@ -46,5 +46,5 @@ The program, named \texttt{klust}, has been implemented in \texttt{C++} and is
 hosted on GitHub and available at \url{https://github.com/Rathcke/klust}.
 
 The reader of this document is expected to have a basic knowledge of computer
-science, corresponding to around two or three years of undergraduate study,
+science, corresponding to around two or three years of undergraduate studies,
 however no knowledge of biology or bioinformatics is expected.
