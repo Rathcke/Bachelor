@@ -275,6 +275,7 @@ of the list. If a match is found, the sequences is added to the cluster
 represented by the matching centroid, and otherwise the sequences becomes a new
 centroid and is appended to the end of the list of centroids.
 
+% TODO: complexity of algorithm
 % This running time of this algorithm depends on the number of clusters in the
 % output and therefore it might be around $O(c^2)$, where $c$ denoted the
 % number of sequences, in the worst case where the number of clusters is equal
@@ -371,7 +372,43 @@ and therefore the lookup in line 7 will likely often be unsuccessful.
 Additionally, the most frequently occurring $k$-mer did not appear to be a
 sufficiently good characteristic for choosing a centroid that is likely to
 match, as is seen from the evaluation in section \ref{sec:results}. I.e. the
-correspondance between the most frequently occurring $k$-mer of two sequences
+correspondence between the most frequently occurring $k$-mer of two sequences
 and the similarity of the sequences, is evidently not very strong.  % TODO
 
 
+\subsection{\textsc{Prioritized\_Intersect\_Clust}}
+
+This section describes another clustering algorithm that has developed and
+implemented, named \textsc{Prioritized\_Intersect\_Clust}, which looks at the
+set of $k$-mers occurring in the query and target sequences and bases the
+decision of whether to try comparing or not, on the cardinality of the
+intersection between these sets. This way, the search for a likely match is not
+just determined by the single most frequently occurring $k$-mer, as with
+\textsc{Simple\_Clust}, but rather all the occurring $k$-mers, regardless of
+their count. Additionally, the centroids are stored in a doubly linked list and
+whenever a centroid matches a sequence, that centroid is moved to the front of
+the list. This makes the algorithm less sensitive to the ordering of the input
+sequences. The choice of the centroids will still be made greedily though, in
+lack of well-performing alternatives, but the algorithm should nonetheless be
+less prone to bad performance caused by an unlucky ordering of the input
+sequences.
+
+The idea of moving a matching centroid to the front of the list is, among other
+things, inspired by the observation that the results from \texttt{UCLUST} and
+\texttt{VSEARCH} often contain a large number of very small clusters and even
+singleton clusters, i.e. clusters consisting of just a single sequence. For
+example, clustering the data set \texttt{SILVA\_119\_SSURef\_tax\_silva.fasta}
+with \texttt{USEARCH} and a similarity threshold of $0.95$, gives 117,205
+clusters out of which 67,410 clusters are singleton clusters, that is more than
+half of the clusters. These results are shown in listing \ref{fig:uclust_silva}
+in section \ref{sec:results}.
+
+\begin{algorithm}
+  \caption{\textsc{Prioritized\_Intersect\_Clust}}
+  \label{alg:prioritized_intersect_clust}
+  \begin{algorithmic}[1]
+    \Statex
+    \State TODO: add pseudocode % TODO
+  \end{algorithmic}
+  \label{alg:simple_clust}
+\end{algorithm}
