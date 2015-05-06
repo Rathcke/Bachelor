@@ -73,13 +73,20 @@ characters in the column are same, then we have a match. Otherwise, it is a
 mismatch.
 
 \begin{figure}[H]
-  \centering
-    \texttt{012345678}\\
-    \texttt{ATGCAACGA} \\
-    \texttt{ |||  |||} \\
-    \texttt{-TGCG-CGA}
-  \caption{Sequence alignment of `ATGCAACGA' and `TGCGCGA'}
-  \label{fig:seqAlignment}
+\centering
+\begin{tikzpicture}
+  \matrix (m) [matrix of nodes, every node/.style={font=\ttfamily},
+    row 1/.style={align=left},
+    row 2/.style={align=left},
+    row 3/.style={align=left}]
+  {
+    \Verb+ATGCAACGA+ \\
+    \Verb+ |||  |||+ \\
+    \Verb+-TGCG-CGA+ \\
+  };
+\end{tikzpicture}
+\caption{Sequence alignment of `ATGCAACGA' and `TGCGCGA'}
+\label{fig:seqAlignment}
 \end{figure}
 
 Figure \ref{fig:seqAlignment} displays an alignment of two sequences. In column
@@ -250,3 +257,121 @@ sensitive enough.
 
 % Background: theoretical overview of the field of clustering
 %   TODO: Clustering "history"
+
+
+
+
+
+\subsection{Naive, greedy clustering algorithm}
+
+A very simple, naive, greedy clustering algorithm has been implemented and will
+be described briefly in this section. For the sake of convenience, it will be
+referred to as \textsc{Naive\_Clust}.
+
+Given a list of sequences and an initially empty list of centroids, the
+algorithm works by iterating through the sequences and for every sequence, it
+iterates through the list of centroids until a match is found or until the end
+of the list. If a match is found, the sequences is added to the cluster
+represented by the matching centroid, and otherwise the sequences becomes a new
+centroid and is appended to the end of the list of centroids.
+
+% This running time of this algorithm depends on the number of clusters in the
+% output and therefore it might be around $O(c^2)$, where $c$ denoted the
+% number of sequences, in the worst case where the number of clusters is equal
+% to the number of sequences.  %O(k*(k-1)/2)
+
+% TODO: refer to algorithm and implementation
+
+This approach is not very useful in practice since it is very computationally
+expensive in the worst case. The running time of the algorithm is very
+dependent on the ordering of the sequences since the centroids will be in the
+same order as in the list of sequences (i.e. the list of centroids is a
+subsequence of the list of sequences) and if the first number of sequences
+happens to be good centroids, which will match a lot of sequences, the
+algorithm will perform good since the search for a centroid will end very
+early. However, if the first number of sequences happens to be very dissimilar
+from the rest of the data, then these will be compared against on every
+iteration even though they might potentially never match anything.
+
+Thus, there is a motivation to try and create more structure in the collection
+of centroids, improve the search for a centroid to compare with the query
+sequence or improving the ordering of the centroids.
+
+% The problem with this approach is that it is potentially very computationally
+% expensive to possible traverse the entire list of centroids for each
+% iteration
+
+% TODO: maybe mention the reason for introducing max_rejects
+
+
+\subsection{\textsc{Simple\_Clust} algorithm}
+
+Another clustering algorithm, named \textsc{Simple\_Clust}, was developed and
+implemented, and will be described in this section. \textsc{Simple\_Clust}
+tries to address some of the problems with the \textsc{Naive\_Clust} algorithm
+by imposing more structure on the collection of centroids and by giving up
+after some fixed number of comparisons of a given query sequence.
+
+% We have developed a clustering algorithm, named \textsc{Simple\_Clust}
+% (Algorithm \ref{alg:simple_clust}), which will be described in this section.
+
+\textsc{Simple\_Clust} works by iterating sequentially through the sequences to
+be clustered; the $max\_reject$ most frequent $k$-mers for the query sequence
+are calculated and for each of these most frequent $k$-mers, a centroid which
+has that $k$-mer as the most frequently occurring one (if one such centroid
+exists) is compared with the query sequence to check if similarity their is
+above the given threshold. The query sequence is assigned to the cluster for
+the first centroid that matches the query sequence; if no such centroid is
+found, out of the maximum possible $max\_reject$ number of tries, the query
+sequence becomes a centroid for a new cluster and is added to the collection of
+centroids along with the information about the most frequenty occurring $k$-mer
+in the sequence.  % This is repeated for all sequences in the input file.
+
+% the most frequent $k$-mer is decided and the sequence, along with this
+% information, is added to the collection of centroids.
+
+Algorithm \ref{alg:simple_clust} shows pseudocode for the
+\textsc{Simple\_Clust} algorithm.
+
+\begin{algorithm}
+  \caption{\textsc{Simple\_Clust}}
+  \label{alg:d2_naive}
+  \begin{algorithmic}[1]
+    \Require{$S$ is an array of [DR]NA sequences, $k \in \mathbb{Z}^+$ and
+             $max\_rejects \in \mathbb{Z}^+$, $id \in [0,1]$}
+    \Statex
+    \Function{Simple\_Clust}{$S, k, max\_rejects$}
+      \State $cluster\_count \gets 0$
+      \State $centroids \gets []$ \Comment{map from $k$-mer to sequence}
+      \ForAll{$s \in S$}
+        \State $mfk \gets$ $max\_rejects$ most frequent $k$-mers in $s$
+        \ForAll{$m \in mfk$}
+          \If{$centroids[m]$ does not exists}
+            \State continue
+          \ElsIf{$distance(s, centroids[m]) \geq id$}
+            \State add $s$ to cluster with centroid $centroids[m]$
+            \State break
+          \EndIf
+        \EndFor
+        \If{matching centroid was not found}
+          \State centroids.insert(mfk[0], s)
+        \EndIf
+      \EndFor
+      \State \Return $cluster\_count$
+    \EndFunction
+  \end{algorithmic}
+  \label{alg:simple_clust}
+\end{algorithm}
+
+
+This algorithm did not perform as well as hoped, in particular for larger $k$
+the number of different possible $k$-mers increases exponentially and for e.g.
+$k = 6$ and a four letter alphabet, there are $4^6 = 4096$ different $k$-mers
+and therefore the lookup in line 7 will likely often be unsuccessful.
+Additionally, the most frequently occurring $k$-mer did not appear to be a
+sufficiently good characteristic for choosing a centroid that is likely to
+match, as is seen from the evaluation in section \ref{sec:results}. I.e. the
+correspondance between the most frequently occurring $k$-mer of two sequences
+and the similarity of the sequences, is evidently not very strong.  % TODO
+
+
