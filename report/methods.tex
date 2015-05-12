@@ -7,10 +7,10 @@ that is, methods for measuring the distance between sequences.
 
 \subsubsection{Edit distance}
 
-One type of \emph{edit distance} is the \emph{Levenshtein} distance, which is a
-string metric for determining the similarity between two sequences. It is
-defined to be the minimum number of edits to transform the first sequence into
-the other.~\cite[p.~52]{dong}
+One type of \emph{edit distance} is the \emph{Levenshtein}
+distance~\cite{levenshtein}, which is a string metric for determining the
+similarity between two sequences. It is defined to be the minimum number of
+edits to transform the first sequence into the other.~\cite[p.~52]{dong}
 
 The edit operations consists of \emph{insertions}, \emph{deletions} and
 \emph{substitutions}. These operations are, respectively, inserting a letter,
@@ -218,20 +218,19 @@ This addresses the question of what is required for a cluster to be close to ano
 Besides measuring similarity between sequences with some distance
 metric, a definition for when clusters should be merged is needed.
 
-With the \textit{single-linkage} approach, only a sequence from both
-clusters need an identity above the similarity threshold.
-
-In the \textit{complete-linkage} approach, all sequences from one cluster
-must be above the threshold of all sequences from the other.
-
-In the \textit{average-linkage}, the average distance of all sequence pairs
-is required to be above the threshold.
+With the \textit{single-linkage} approach, only a sequence from both clusters
+need an identity above the similarity threshold.  In the
+\textit{complete-linkage} approach, all sequences from one cluster must be
+above the threshold of all sequences from the other.  In the
+\textit{average-linkage}, the average distance of all sequence pairs is
+required to be above the threshold.
 
 The singly-linkage approach is often used in sequence clustering though it has
 its disadvantages as argued in \cite[pp. 62-63]{dong}.
 
 \subsubsection{Graph based clustering}
-Short description of the clustering method if relevant.
+
+TODO: Add short description of graph based clustering methods. % TODO
 
 
 \subsubsection{Greedy algorithm like in \texttt{UCLUST}}
