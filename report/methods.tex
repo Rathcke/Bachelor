@@ -33,21 +33,36 @@ possible even though one is just a rotation of the other and in a biological
 context, one might want this to results in a low distance, e.g. for gene
 sequences that are split up and rejoined in different order.
 
+%A naive version of the Levenshtein distance metric was implemented, but as
+%expected, this is absolutely useless in any practical setting, since it does
+%not reuse already calculated results. Therefore, this was quickly transformed
+%into a dynamic programming solution, which solves subproblems just once, stores
+%and reuses the intermediate results. This dynamic programming bottom up
+%solution was however still very slow, yielding a performance of around 70
+%comparisons per second.
+
 A bottom-up dynamic programming version of the Levenshtein algorithm was
 implemented and tested on real DNA/RNA data to evaluate its performance, and it
 was clear that this algorithm was not suitable for large data sets, because it
 would be infeasible to complete even a linear time clustering of the data using
-this distance metric. Furthermore, the Levenshtein distance penalizes
-rotations, i.e. it results in an increased distance. The Levenshtein distance
-can still be used for evaluation and benchmarking against other metrics. The
-algorithm is attached in appendix \ref{app:levenshtein_algorithm}.
+this distance metric. The implementation could most likely be optimized
+further, but because of the characteristics of an edit distance algorithm like
+Levenshtein and because of the performance requirements for this project, it
+was decided to not pursue further optimization and instead focus on other types
+of algorithms. Furthermore, the Levenshtein distance penalizes rotations, i.e.
+it results in an increased distance.
+
+The Levenshtein distance can still be used for evaluation and benchmarking
+against other metrics. The algorithm is attached in appendix
+\ref{app:levenshtein_algorithm} and results from tests are shown in section
+\ref{sec:results}.
 
 As stated in \cite[pp.~1-2]{andoni}, ``The worst-case running time known for
 this problem has not improved in three decades (..)'', specifically it states
-that the running time of Levenshtein is $O(d)$, where $d$ is the length of the
-two sequences, and $O(d^2/\log_2(d))$ for a constant size alphabet. It further
-supports the conclusion that the running time of the Levenshtein algorithm is
-too poor for the large data sets of the problem domain.
+that the running time of Levenshtein is $O(d^2)$, where $d$ is the length of
+the two sequences, and $O(d^2/\log_2(d))$ for a constant size alphabet. It
+further supports the conclusion that the running time of the Levenshtein
+algorithm is too poor for the large data sets of the problem domain.
 
 This lack of improvements of the performance of edit distance is one motivation
 for the introduction of the concept of sequence alignment.
@@ -73,20 +88,12 @@ characters in the column are same, then we have a match. Otherwise, it is a
 mismatch.
 
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}
-  \matrix (m) [matrix of nodes, every node/.style={font=\ttfamily},
-    row 1/.style={align=left},
-    row 2/.style={align=left},
-    row 3/.style={align=left}]
-  {
-    \Verb+ATGCAACGA+ \\
-    \Verb+ |||  |||+ \\
-    \Verb+-TGCG-CGA+ \\
-  };
-\end{tikzpicture}
-\caption{Sequence alignment of `ATGCAACGA' and `TGCGCGA'}
-\label{fig:seqAlignment}
+  \centering
+  \verb+ATGCAACGA+ \\
+  \verb+ |||  |||+ \\
+  \verb+-TGCG-CGA+
+  \caption{Sequence alignment of `ATGCAACGA' and `TGCGCGA'}
+  \label{fig:seqAlignment}
 \end{figure}
 
 Figure \ref{fig:seqAlignment} displays an alignment of two sequences. In column

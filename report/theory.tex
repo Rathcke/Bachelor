@@ -1,16 +1,4 @@
 \section{Theory}
-\subsection{Starting out: Levenshtein with dynamic programming}
-For a start, a naive version of the Levenshtein distance metric was
-implemented, but as expected, this is absolutely useless in any practical
-setting, since it does not reuse already calculated results. Therefore, this
-was quickly transformed into a dynamic programming solution, which solves
-subproblems just once, stores and reuses the intermediate results. This dynamic
-programming bottom up solution was however still very slow, yielding a
-performance of around 70 comparisons per second. This could most likely be
-optimized further, but because of the characteristics of an edit distance
-algorithm like Levenshtein and because of the performance requirements for this
-project, we choose to not pursue further optimization and instead focus on
-other types of algorithms.
 
 \subsection{Simple $d2$ distance}
 After learning that the basic Levenshtein algorithm is far too slow for the
