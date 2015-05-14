@@ -19,7 +19,6 @@
 \usepackage[bottom]{footmisc}
 \usepackage{color}
 
-
 % algorithms
 \usepackage{algorithm}              % algorithm float environment
 \usepackage[noend]{algpseudocode}   % from algorithmicx; no "end" on functions
@@ -60,7 +59,12 @@
 \lstdefinestyle{output-style}{
   basicstyle=\ttfamily\footnotesize,
   frame=tb,
-  %xleftmargin=10em
+}
+
+\lstdefinestyle{output-style}{
+  basicstyle=\ttfamily\footnotesize,
+  frame=tb,
+  linewidth=5.4cm,
 }
 
 % handy commands etc.
@@ -90,6 +94,8 @@
 \thispagestyle{fancy}
 \pagenumbering{arabic}
 
+dkljhfdflkdjflkdjfdkjf
+
 \input{introduction.tex}
 \input{terminology.tex}
 \input{background.tex}
@@ -105,6 +111,7 @@
 
 \newpage
 \appendix
-\input{algorithms.tex}
+\input{app_algorithms.tex}
+%\input{app_results.tex}
 
 \end{document}
