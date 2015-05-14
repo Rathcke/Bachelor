@@ -33,21 +33,36 @@ possible even though one is just a rotation of the other and in a biological
 context, one might want this to results in a low distance, e.g. for gene
 sequences that are split up and rejoined in different order.
 
+%A naive version of the Levenshtein distance metric was implemented, but as
+%expected, this is absolutely useless in any practical setting, since it does
+%not reuse already calculated results. Therefore, this was quickly transformed
+%into a dynamic programming solution, which solves subproblems just once, stores
+%and reuses the intermediate results. This dynamic programming bottom up
+%solution was however still very slow, yielding a performance of around 70
+%comparisons per second.
+
 A bottom-up dynamic programming version of the Levenshtein algorithm was
 implemented and tested on real DNA/RNA data to evaluate its performance, and it
 was clear that this algorithm was not suitable for large data sets, because it
 would be infeasible to complete even a linear time clustering of the data using
-this distance metric. Furthermore, the Levenshtein distance penalizes
-rotations, i.e. it results in an increased distance. The Levenshtein distance
-can still be used for evaluation and benchmarking against other metrics. The
-algorithm is attached in appendix \ref{app:levenshtein_algorithm}.
+this distance metric. The implementation could most likely be optimized
+further, but because of the characteristics of an edit distance algorithm like
+Levenshtein and because of the performance requirements for this project, it
+was decided to not pursue further optimization and instead focus on other types
+of algorithms. Furthermore, the Levenshtein distance penalizes rotations, i.e.
+it results in an increased distance.
+
+The Levenshtein distance can still be used for evaluation and benchmarking
+against other metrics. The algorithm is attached in appendix
+\ref{app:levenshtein_algorithm} and results from tests are shown in section
+\ref{sec:results}.
 
 As stated in \cite[pp.~1-2]{andoni}, ``The worst-case running time known for
 this problem has not improved in three decades (..)'', specifically it states
-that the running time of Levenshtein is $O(d)$, where $d$ is the length of the
-two sequences, and $O(d^2/\log_2(d))$ for a constant size alphabet. It further
-supports the conclusion that the running time of the Levenshtein algorithm is
-too poor for the large data sets of the problem domain.
+that the running time of Levenshtein is $O(d^2)$, where $d$ is the length of
+the two sequences, and $O(d^2/\log_2(d))$ for a constant size alphabet. It
+further supports the conclusion that the running time of the Levenshtein
+algorithm is too poor for the large data sets of the problem domain.
 
 This lack of improvements of the performance of edit distance is one motivation
 for the introduction of the concept of sequence alignment.
@@ -73,20 +88,12 @@ characters in the column are same, then we have a match. Otherwise, it is a
 mismatch.
 
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}
-  \matrix (m) [matrix of nodes, every node/.style={font=\ttfamily},
-    row 1/.style={align=left},
-    row 2/.style={align=left},
-    row 3/.style={align=left}]
-  {
-    \Verb+ATGCAACGA+ \\
-    \Verb+ |||  |||+ \\
-    \Verb+-TGCG-CGA+ \\
-  };
-\end{tikzpicture}
-\caption{Sequence alignment of `ATGCAACGA' and `TGCGCGA'}
-\label{fig:seqAlignment}
+  \centering
+  \verb+ATGCAACGA+ \\
+  \verb+ |||  |||+ \\
+  \verb+-TGCG-CGA+
+  \caption{Sequence alignment of `ATGCAACGA' and `TGCGCGA'}
+  \label{fig:seqAlignment}
 \end{figure}
 
 Figure \ref{fig:seqAlignment} displays an alignment of two sequences. In column
@@ -176,6 +183,40 @@ The Euclidean distance would then be calculated as
     &= 2
 \end{align*}
 
+The first version of the $d2$ distance metric algorithm descibed above, is
+shown in figure \ref{alg:d2_basic} and it has been implemented as well. This
+algorithm maintains a single frequency vector, as a map structure to allow for
+large $k$ which results in a large number of possible different $k$-mers. The
+map is indexed using the lexicographical position of the $k$-mer. When
+iterating through the first sequence, $k$-mer counts are incremented and when
+iterating through the second sequence, they are decremented. Finally all the
+frequencies are squared and the square root of the sum is returned,
+corresponding to the Euclidean distance between frequency vectors for the two
+sequences.
+
+\begin{algorithm}
+  \caption{Basic \textsc{d2} distance metric}
+  \label{alg:d2_basic}
+  \begin{algorithmic}[1]
+    \Require{$s$ and $t$ are DNA or RNA sequences and $k \in \mathbb{Z}^+$}
+    \Statex
+    \Function{d2}{$s, t, k$}
+      \State initialize \texttt{freq\_map}
+      \For{$i \gets 0$ to $length(s) - k$}
+        \State freq\_map[index\_of\_kmer(s.substring(i, k)]\texttt{++}
+      \EndFor
+      \For{$i \gets 0$ to $length(t) - k$}
+        \State freq\_map[index\_of\_kmer(t.substring(i, k)]\texttt{--}
+      \EndFor
+      \State $total \gets 0$
+      \ForAll{$e \in$ freq\_map}
+        \State $total \gets e.value^2$  \Comment{calculate the Euclidean distance}
+      \EndFor
+      \State \Return $\sqrt{total}$
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
 To better support the measurement of distance between two sequences of
 different length, but similar substrings, the concept of a \emph{window} can be
 introduced. In this context, a window is a conceptual construction which gives
@@ -197,6 +238,68 @@ in this case has the length 10.
 \caption{Illustration of the concept of a window.}
 \label{fig:d2_window_concept}
 \end{figure}
+
+The second, and current, version of the $d2$ distance function uses this
+concept of a window, which is of length equal to the shortest of the two
+sequences being compared. The distance in the first window calculated using the
+basic \textsc{d2} algorithm described above, i.e. the distance between the
+shortest of the two sequences and the first substring of the same length of the
+longer sequence.
+
+The window then iterates over the longer sequence and calculates the new
+distance between the substring of the longer sequence and the shorter sequence.
+This calculation is done using a kind of forward differences method for
+reducing the calculations to a few fixed operations for calculating the
+distance in the next window from the distance in the current window. This
+concept is described in \cite{hazelhurst}.
+
+The algorithm presented here uses a window size equal to the length of the
+shortest of the two sequences. Let $|s|$ be the length of the shortest of the
+two sequences. To begin with the, the $k$-mers in the first $|s|$ characters of
+each sequence are counted and the \emph{Manhattan} distance between these two
+frequency vectors is calculated.
+
+The Manhattan distance is simply the Euclidean distance where squaring is
+replaced with absolute value and the square root is omitted, i.e. for
+$u, v \in \mathbb{Z}^n$,
+
+\begin{equation}
+  d_{Manhattan} \eqdef \sum_{i=1}^{n} |u_i - v_i| \;.
+\end{equation}
+
+This distance is the distance between the subsequences in the first position of
+the window. To calculate the distance in the following window, i.e. advancing
+the window through the longer of the two sequences by one character, it is
+decided which $k$-mers exit and enter the window, respectively, and then by
+looking at whether the existing $k$-mer count in the frequency vector is
+negative or positive, it can be decided whether the distance increases or
+decreased by 2 or whether it stays the same. Subsequently, the frequency vector
+is updated to reflect the change in the new window. The following illustrates
+the idea of a window and $k$-mers exiting and entering the window:
+
+\begin{verbatim}
+      |---- window ----------|
+      ACTGATCGTAGCTAGCTAGTGTTG
+      ACGTAGATCGTGGATGGCTGATCGTAGCTAAGCTTAGCTGATCG.....
+      ^^^^                 ^^^^
+      k-mer exiting        k-mer entering
+\end{verbatim}
+
+The Manhattan distance can be hard to use in practice, because it is very
+dependent on the length of the shortest sequence (the length of the window),
+the concept of the \emph{Jaccard index}~\cite{jaccard1901,jaccard1912}, or the
+\emph{Jaccard similarity coefficient}, is used to ``normalize'' the distance to
+a value in the interval $[0,1]$.
+
+The Jaccard index of two sets $A$ and $B$ is defined as follows:
+\begin{equation}
+  J(A, B) \eqdef \frac{|A \cup B| - |A \cap B|}{|A \cup B|}
+\end{equation}
+ % TODO:  maybe actually Jaccard distance
+
+In the context of $k$-mer frequencies, the union can be interpreted as the
+total number of $k$-mers in the window in the two sequences, and the
+intersection as the Manhattan distance in the window.
 
 
 \subsection{Cluster analysis algorithms}
@@ -411,3 +514,36 @@ in section \ref{sec:results}.
   \end{algorithmic}
   \label{alg:simple_clust}
 \end{algorithm}
+
+
+\subsection{Testing the distance metric on altered sequences}
+
+Two different sets of highly similar sequences was constructed from a real
+world sequence and this was used in the evaluation of the distance metric.
+
+One real sequence was chosen, 10 copies of this sequences were made and for
+each of these copies, a few alterations were made. In the first set, a list of
+random indices in the sequence were generated and in each of these indices in
+the sequence, a substitution for a different, randomly chosen nucleotide was
+made. This was done for twice, for different degrees of alteration, and the
+number of alterations was equal to respectively 0.1\% and 0.2\% of the length
+of the sequence.
+
+In the second set, the same number of alterations to individual nucleotides
+were made, but in this case they were grouped into alterations of substrings of
+length 5 (one such group being of length less than 5 if the number of
+alterations were not a multiple of 5).
+
+For illustration, figure \ref{fig:alterations} shows an original sequence in
+the first line, the single edits alterated sequence in the second line and the
+chunk alterated sequence in the third line.
+
+\newcommand{\tc}[1]{\textcolor{red}{#1}}
+\begin{figure}[H]
+  \centering
+  \texttt{AAAAAAAAAAAAAAAAAAAAAA} \\
+  \texttt{AAAAA\tc{T}AA\tc{C}AAAA\tc{G}AAAA\tc{T}AAA} \\
+  \texttt{AAA\tc{TC}AAAAAAAAAA\tc{GG}AAAAA}
+  \caption{Two types of alterations to sequences.}
+  \label{fig:alterations}
+\end{figure}
