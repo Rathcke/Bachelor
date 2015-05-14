@@ -97,6 +97,29 @@ attributed to our choice of distance metric.
 %Possibly things to look into: confusion matrix, Rand index, normalized
 %mutual information (article: Comparing Clusterings - An Overview).
 
+\subsection{Evaluating clustering algorithm on real data}
+
+This section describes one way of evaluating the
+\textsc{Prioritized\_Intersect\_Clust} algorithm on real \texttt{RNA} data
+(\texttt{SILVA}) using multidimensional scaling (MDS) and t-distributed
+Stochastic Neighbor Embedding (t-SNE). This was done using \texttt{Python} with
+\texttt{matplotlib} and \texttt{scikit-learn}.
+
+One example of this
+multidimesional scaling on the distance matrix for the first 500 sequences of
+\texttt{SILVA} is shown in figure \ref{fig:mds_tsne}. The centroids found using
+the clustering algorithm \textsc{Prioritized\_Intersect\_Clust}, with similarity
+threshold 0.85, $max\_rejects$ 8 and $k$ 6, are pinpointed in the plot and
+labeled with the numbers of the sequences in the order they were read.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{graphics/MDS_t-SNE_SILVA_500.png}
+  \caption{Multidimensional scaling with annotations on centroids.}
+  \label{fig:mds_tsne}
+\end{figure}
+
+
 
 \subsection{Results}
 \begin{figure}[H]
