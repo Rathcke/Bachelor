@@ -315,14 +315,19 @@ closest clusters until there is only one cluster left. Alternatively, if the
 clustering is based on a similarity threshold, it merges clusters until no more
 clusters can be merged.
 
-\begin{figure}[H]\centering
-\def\svgwidth{\columnwidth}
-\import{graphics/}{Hierarchical_Clustering.pdf_tex}
-\caption{Illustration of agglomerative hierarchical clustering.}
+Hierarchical clustering is illustrated in figure
+\ref{fig:hierarchical_clustering}.
+
+\begin{figure}[h!]
+  \centering
+  \def\svgwidth{\columnwidth}
+  \import{graphics/}{Hierarchical_Clustering.pdf_tex}
+  \caption{Illustration of agglomerative hierarchical clustering.}
+  \label{fig:hierarchical_clustering}
 \end{figure}
 
-This addresses the question of what is required for a cluster to be close to another.
-Besides measuring similarity between sequences with some distance
+This addresses the question of what is required for a cluster to be close to
+another. Besides measuring similarity between sequences with some distance
 metric, a definition for when clusters should be merged is needed.
 
 With the \textit{single-linkage} approach, only a sequence from both clusters
@@ -357,18 +362,22 @@ other centroids, but this is not guaranteed to hold. The reason is that the
 algorithm only compares a sequence to a prespecified number of centroids given
 by the \texttt{-maxrejects} parameter.
 
-\begin{figure}[H]\centering
-\def\svgwidth{\columnwidth}
-\import{graphics/}{Greedy_Clustering.pdf_tex}
-\caption{Illustration of greedy clustering.}
-\end{figure}
-
 It uses the $k$-mer counts to locate centroid candidates for a match, though
 how it does it is not very well described.
 
 The similarity calculations are performed with global sequence alignments as
 \cite{usearch} claims that using the word counts to calculate identity is not
 sensitive enough.
+
+Greedy clustering is illustrated in figure \ref{fig:greedy_clustering}.
+
+\begin{figure}[h!]
+  \centering
+  \def\svgwidth{\columnwidth}
+  \import{graphics/}{Greedy_Clustering.pdf_tex}
+  \caption{Illustration of greedy clustering.}
+  \label{fig:greedy_clustering}
+\end{figure}
 
 %TODO? \subsubsection{Greedy algorithm with recalculation of centroids}
 
