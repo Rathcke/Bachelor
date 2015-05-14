@@ -442,7 +442,7 @@ Algorithm \ref{alg:simple_clust} shows pseudocode for the
 
 \begin{algorithm}
   \caption{\textsc{Simple\_Clust}}
-  \label{alg:d2_naive}
+  \label{alg:simple_clust}
   \begin{algorithmic}[1]
     \Require{$S$ is an array of [DR]NA sequences, $k \in \mathbb{Z}^+$ and
              $max\_rejects \in \mathbb{Z}^+$, $id \in [0,1]$}
@@ -467,7 +467,6 @@ Algorithm \ref{alg:simple_clust} shows pseudocode for the
       \State \Return $cluster\_count$
     \EndFunction
   \end{algorithmic}
-  \label{alg:simple_clust}
 \end{algorithm}
 
 
@@ -499,6 +498,9 @@ lack of well-performing alternatives, but the algorithm should nonetheless be
 less prone to bad performance caused by an unlucky ordering of the input
 sequences.
 
+Algorithm \ref{alg:intersect_clust} shows pseudocode for the
+\textsc{Prioritized\_Intersect\_Clust} algorithm.
+
 The idea of moving a matching centroid to the front of the list is, among other
 things, inspired by the observation that the results from \texttt{UCLUST} and
 \texttt{VSEARCH} often contain a large number of very small clusters and even
@@ -511,12 +513,52 @@ in section \ref{sec:results}.
 
 \begin{algorithm}
   \caption{\textsc{Prioritized\_Intersect\_Clust}}
-  \label{alg:prioritized_intersect_clust}
+  \label{alg:intersect_clust}
   \begin{algorithmic}[1]
+    \Require{$S$ is an array of [DR]NA sequences, $k \in \mathbb{Z}^+$,
+            $max\_rejects \in \mathbb{Z}^+$ and $id \in [0,1]$}
     \Statex
-    \State TODO: add pseudocode % TODO
+    \Function{Prioritized\_Intersect\_Clust}{$S, k, max\_rejects$}
+      \State $centroids \gets [~]$ \Comment{initialize empty list of centroids}
+      \ForAll{$s \in S$}
+        \State $match \gets false$
+        \State $rejects \gets 0$
+        \State $close\_match \gets \mathtt{NULL}$
+
+        \ForAll{$c \in centroids$}
+          \If{$rejects$ \texttt{==} $max\_rejects$}
+            \State $break$
+          \EndIf
+
+          \State\Comment{$K(s)$: set of $k$-mers in $s$}
+          \If{$|K(s) \cap K(c)| \geq |K(c)| \cdot id$}
+            \If{\Call{d2}{s, c, k} $ \geq id$}
+              \State Add $s$ to cluster represented by $c$.
+              \State Move $c$ to the front of $centroids$.
+              \State $match \gets true$
+              \State $break$
+            \EndIf
+            \State
+            \If{\Call{has\_link}{c} \texttt{AND} \Call{d2}{s, c.link, k} $ \geq id$}
+              \State Add $s$ to cluster represented by $c.link$.
+              \State Move $c.link$ to the front of $centroids$.
+              \State $match \gets true$
+              \State $break$
+            \EndIf
+            \State $rejects \gets rejects + 1$
+            \State $close\_match \gets c$
+          \EndIf
+        \EndFor
+        \State
+        \If{$\mathtt{NOT}\ match$}  \Comment{add new centroid to list}
+          \If{$close\_match$ \texttt{!= NULL}}
+            \State $s.link \gets close\_match$
+          \EndIf
+          \State Prepend $s$ to $centroids$.
+        \EndIf
+      \EndFor
+    \EndFunction
   \end{algorithmic}
-  \label{alg:simple_clust}
 \end{algorithm}
 
 
