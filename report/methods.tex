@@ -336,8 +336,13 @@ The singly-linkage approach is often used in sequence clustering though it has
 its disadvantages as argued in \cite[pp. 62-63]{dong}.
 
 \subsubsection{Graph based clustering}
+The general framework of graph-based clustering consists of two steps. First step is to generate a weighted graph from the sequences. The second step, the clustering step, is to split the graph into subgraphs, which correspond to the clusters.\cite[pp. 64-65]{dong} \\
+Consider a graph $G$ with a set of vertices $V$ and a set of edges $E$. In graph based clustering, we consider $V$ as the set of sequences and $E$ is the set of similarity scores. \\
+The first step is to calculate all $E_{ij}$, the similarity score between $V_i$ and $V_j$, based on some distance metric. If the clustering is based on a similarity threshold, edges that are below the similarity threshold can be ignored. \\
+There exists many variants to the second step.\\
+TODO: use reference \cite{hartuv2000clustering} ?
 
-TODO: Add short description of graph based clustering methods. % TODO
+
 
 
 \subsubsection{Greedy algorithm like in \texttt{UCLUST}}
@@ -351,6 +356,12 @@ It is designed to also support that each centroid has a similarity $<T$ to all
 other centroids, but this is not guaranteed to hold. The reason is that the
 algorithm only compares a sequence to a prespecified number of centroids given
 by the \texttt{-maxrejects} parameter.
+
+\begin{figure}[H]\centering
+\def\svgwidth{\columnwidth}
+\import{graphics/}{Greedy_Clustering.pdf_tex}
+\caption{Illustration of greedy clustering.}
+\end{figure}
 
 It uses the $k$-mer counts to locate centroid candidates for a match, though
 how it does it is not very well described.
