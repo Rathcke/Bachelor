@@ -7,10 +7,10 @@ that is, methods for measuring the distance between sequences.
 
 \subsubsection{Edit distance}
 
-One type of \emph{edit distance} is the \emph{Levenshtein}
-distance~\cite{levenshtein}, which is a string metric for determining the
+One type of \emph{edit distance} is the \emph{Levenshtein
+distance}~\cite{levenshtein}, which is a string metric for determining the
 similarity between two sequences. It is defined to be the minimum number of
-edits to transform the first sequence into the other.~\cite[p.~52]{dong}
+edits to transform the first sequence into the other~\cite[p.~52]{dong}.
 
 The edit operations consists of \emph{insertions}, \emph{deletions} and
 \emph{substitutions}. These operations are, respectively, inserting a letter,
@@ -29,9 +29,9 @@ the sequences
   \texttt{CCAA}
 \end{center}
 with a distance of 4. The two sequences actually have the maximal distance
-possible even though one is just a rotation of the other and in a biological
-context, one might want this to results in a low distance, e.g. for gene
-sequences that are split up and rejoined in different order.
+possible even though one is just a reversal of the other. Since reversals of
+substrings are commonly observed in sequence data~\cite{arslan}, this result
+might not be appropriate.
 
 %A naive version of the Levenshtein distance metric was implemented, but as
 %expected, this is absolutely useless in any practical setting, since it does
@@ -580,36 +580,3 @@ in section \ref{sec:results}.
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
-
-
-\subsection{Testing the distance metric on altered sequences}
-
-Two different sets of highly similar sequences was constructed from a real
-world sequence and this was used in the evaluation of the distance metric.
-
-One real sequence was chosen, 10 copies of this sequences were made and for
-each of these copies, a few alterations were made. In the first set, a list of
-random indices in the sequence were generated and in each of these indices in
-the sequence, a substitution for a different, randomly chosen nucleotide was
-made. This was done for twice, for different degrees of alteration, and the
-number of alterations was equal to respectively 0.1\% and 0.2\% of the length
-of the sequence.
-
-In the second set, the same number of alterations to individual nucleotides
-were made, but in this case they were grouped into alterations of substrings of
-length 5 (one such group being of length less than 5 if the number of
-alterations were not a multiple of 5).
-
-For illustration, figure \ref{fig:alterations} shows an original sequence in
-the first line, the single edits alterated sequence in the second line and the
-chunk alterated sequence in the third line.
-
-\newcommand{\tc}[1]{\textcolor{red}{#1}}
-\begin{figure}[H]
-  \centering
-  \texttt{AAAAAAAAAAAAAAAAAAAAAA} \\
-  \texttt{AAAAA\tc{T}AA\tc{C}AAAA\tc{G}AAAA\tc{T}AAA} \\
-  \texttt{AAA\tc{TC}AAAAAAAAAA\tc{GG}AAAAA}
-  \caption{Two types of alterations to sequences.}
-  \label{fig:alterations}
-\end{figure}
