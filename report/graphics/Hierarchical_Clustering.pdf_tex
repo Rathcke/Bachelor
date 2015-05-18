@@ -36,7 +36,7 @@
   }%
   \providecommand\rotatebox[2]{#2}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{490.74506836bp}%
+    \setlength{\unitlength}{475.79477539bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,16 +48,16 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.91624094)%
+  \begin{picture}(1,0.59701571)%
     \put(0,0){\includegraphics[width=\unitlength]{Hierarchical_Clustering.pdf}}%
-    \put(-0.00050943,0.02644872){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{A}}}%
-    \put(0.21699061,0.02644872){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{B}}}%
-    \put(0.43271158,0.02644872){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{F}}}%
-    \put(0.63361196,0.02648056){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{G}}}%
-    \put(0.87064103,0.02644872){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{I}}}%
-    \put(0.06055176,0.29838446){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{AB}}}%
-    \put(0.48860087,0.2984163){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{FG}}}%
-    \put(0.62040505,0.57035214){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{FGI}}}%
-    \put(0.23836496,0.84228788){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{ABFGI}}}%
+    \put(-0.00031526,0.01433113){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{A}}}%
+    \put(0.22126054,0.01433113){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{B}}}%
+    \put(0.44039309,0.01433113){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{F}}}%
+    \put(0.65725967,0.01435084){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{G}}}%
+    \put(0.8795251,0.01433113){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{I}}}%
+    \put(0.08729235,0.23924151){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{AB}}}%
+    \put(0.52879149,0.23926121){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{FG}}}%
+    \put(0.68426957,0.40377963){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{FGI}}}%
+    \put(0.32589293,0.56706583){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{ABFGI}}}%
   \end{picture}%
 \endgroup%
