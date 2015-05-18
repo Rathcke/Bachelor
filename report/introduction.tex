@@ -5,9 +5,6 @@ partition contains objects that are similar to each other and objects in
 separate partitions are dissimilar, according to some well-defined notion of
 similarity. These partitions are called \emph{clusters}.
 
-% TODO: maybe add:
-%   One purpose being the reduction of redundant data.
-
 Clustering huge amounts of DNA/RNA sequences (up to 500 million strings of
 500--1500 characters each) is computationally hard, and the cost of sequencing,
 i.e. determining DNA and RNA data, has dropped so low, and consequently the
@@ -16,10 +13,9 @@ can no longer keep up.~\cite{rothberg}
 
 There are not many available algorithms and tools for efficient clustering of
 sequencing data. The one tool which is currently doing the job,
-\texttt{UCLUST}\footnote{\url{http://drive5.com/usearch/}}, is closed-source
-% TODO: maybe reference to article or website instead of footnote
-and although the 32-bit version is available for free, the usable memory is
-limited to 4 GB and the 64-bit version is costly.
+\texttt{USEARCH}~\cite{edgar, usearch}, is closed-source and although the
+32-bit version is available for free, the usable memory is limited to 4 GB and
+the 64-bit version is costly.
 
 As the amount of sequencing data grows, clusterings becomes increasingly more
 relevant as it can be used to reduce a large set of sequences to a much smaller
@@ -31,14 +27,15 @@ clustering method described in this document strives to assign each sequence to
 a cluster based on the similarity between the sequence and the centroid. The
 clustering method does not guarantee a minimal number of clusters, as the
 search for a centroid is not exhaustive, nor does it guarantee to find the most
-similar centroid for each sequence.
+similar centroid for each sequence. The clustering algorithm tries to minimize
+the number of clusters.
 
 This project researches the possibilities for creating an open-source tool that
 can match the performance of \texttt{UCLUST}. We present a solution and
 implementation that uses the concept of $k$-mer counting, i.e. essentially
 comparing the distribution of all possible substrings of a fixed length $k$ in
 each sequence, as an approximation for measuring sequence similarity.
-Furthermore, it utilizes the $k$-mers occuring in the centroids for improving
+Furthermore, it utilizes the $k$-mers occurring in the centroids for improving
 the search for a centroid that is likely to be a good representative for a
 given centroid.
 
@@ -49,11 +46,8 @@ performance in terms of speed, while still being a sufficiently good
 approximation.
 
 % TODO, maybe add joke: klust, or \texttt{$k$-lust} depending on your temper
-Our program, named \texttt{klust}, has been implemented in \texttt{C++} and is
-hosted on GitHub and available at \url{https://github.com/Rathcke/klust}.
-% TODO: add 'is' before available?
+Our program, named \texttt{klust}, has been implemented in \texttt{C++}, is
+hosted on GitHub and is available at \url{https://github.com/Rathcke/klust}.
 
 The reader of this document is expected to have a basic knowledge of computer
-science, corresponding to around two or three years of undergraduate studies,
-however no knowledge of biology or bioinformatics is expected.
-% TODO: maybe skip "however no knowledge of biology..."
+science, corresponding to around two or three years of undergraduate studies.
