@@ -7,10 +7,10 @@ that is, methods for measuring the distance between sequences.
 
 \subsubsection{Edit distance}
 
-One type of \emph{edit distance} is the \emph{Levenshtein}
-distance~\cite{levenshtein}, which is a string metric for determining the
+One type of \emph{edit distance} is the \emph{Levenshtein
+distance}~\cite{levenshtein}, which is a string metric for determining the
 similarity between two sequences. It is defined to be the minimum number of
-edits to transform the first sequence into the other.~\cite[p.~52]{dong}
+edits to transform the first sequence into the other~\cite[p.~52]{dong}.
 
 The edit operations consists of \emph{insertions}, \emph{deletions} and
 \emph{substitutions}. These operations are, respectively, inserting a letter,
@@ -30,7 +30,7 @@ the sequences
 \end{center}
 with a distance of 4. The two sequences actually have the maximal distance
 possible even though one is just a rotation of the other and in a biological
-context, one might want this to results in a low distance, e.g. for gene
+context, one might want this to result in a low distance, e.g. for gene
 sequences that are split up and rejoined in different order.
 
 %A naive version of the Levenshtein distance metric was implemented, but as
