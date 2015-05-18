@@ -304,53 +304,67 @@ intersection as the Manhattan distance in the window.
 
 \subsection{Cluster analysis algorithms}
 
-\subsubsection{Hierarchical clustering}
+TODO: Short introduction
 
+\subsubsection{Hierarchical clustering}
+TODO: Fix subsection or explain divisive. Or both?\\
 There are typically two types of hierarchical clustering algorithms, the
 agglomerative type that works in a bottom-up manner and the divisive type that
-has a top-down approach, but we focus on explaining the agglomerative. The
-agglomerative works in a bottom-up manner where all sequences start as leaves.
-These sequences are considered clusters. They are then merged together with the
-closest clusters until there is only one cluster left. Alternatively, if the
-clustering is based on a similarity threshold, it merges clusters until no more
-clusters can be merged.
-
-Hierarchical clustering is illustrated in figure
-\ref{fig:hierarchical_clustering}.
+has a top-down approach. This section describes the agglomerative version. In the 
+agglomerative version all sequences start as leaves in a tree, where the leaves are considered 
+clusters. Each cluster is then merged together with the closest cluster, thus 
+building a tree, level for level, until there is only one cluster left. Alternatively, where the
+clustering is based on a similarity threshold, as in this project, the clusters are merged until no more clusters can be merged. The algorithm is visualized in figure \ref{fig:hierarchical_clustering}.
 
 \begin{figure}[h!]
   \centering
   \def\svgwidth{\columnwidth}
   \import{graphics/}{Hierarchical_Clustering.pdf_tex}
-  \caption{Illustration of agglomerative hierarchical clustering.}
+  \caption{Illustration of agglomerative hierarchical clustering. Clusters, with objects represented as letters, are merged with nearby clusters based on lexicographic order until there is only one cluster.}
   \label{fig:hierarchical_clustering}
 \end{figure}
 
-This addresses the question of what is required for a cluster to be close to
+This addresses the question of what is required for a cluster to be "close" to
 another. Besides measuring similarity between sequences with some distance
 metric, a definition for when clusters should be merged is needed.
 
-With the \textit{single-linkage} approach, only a sequence from both clusters
-need an identity above the similarity threshold.  In the
-\textit{complete-linkage} approach, all sequences from one cluster must be
-above the threshold of all sequences from the other.  In the
+In the \textit{complete-linkage} approach, all sequences from one cluster 
+must be above the threshold of all sequences from the other. In the
 \textit{average-linkage}, the average distance of all sequence pairs is
-required to be above the threshold.
+required to be above the threshold. With the \textit{single-linkage} 
+approach, only a sequence from both clusters need an identity above the similarity threshold. 
 
-The singly-linkage approach is often used in sequence clustering though it has
-its disadvantages as argued in \cite[pp. 62-63]{dong}.
+The complete-linkage approach is computationally very heavy as each merge 
+will take $\mathcal{O}(mn)$ time, where $m$ and $n$ are the sizes of the 
+clusters. The average-linkage method is equally computationally hard. This is 
+not viable for a quick clustering algorithm.
+
+However, the single-linkage approach is often used in sequence 
+clustering~\cite[pp. 62-63]{dong}. It has the advantage of stopping early if 
+a link meets the similarity criterion. Though this greedy behaviour can boost 
+performance, it could make a very rough clustering as two sequences from two 
+clusters might be very similar while other sequences could have a very low 
+similarity to each other.
 
 \subsubsection{Graph based clustering}
-The general framework of graph-based clustering consists of two steps. First step is to generate a weighted graph from the sequences. The second step, the clustering step, is to split the graph into subgraphs, which correspond to the clusters.\cite[pp. 64-65]{dong} \\
-Consider a graph $G$ with a set of vertices $V$ and a set of edges $E$. In graph based clustering, we consider $V$ as the set of sequences and $E$ is the set of similarity scores. \\
-The first step is to calculate all $E_{ij}$, the similarity score between $V_i$ and $V_j$, based on some distance metric. If the clustering is based on a similarity threshold, edges that are below the similarity threshold can be ignored. \\
+The general framework of graph-based clustering consists of two steps. First 
+step is to generate a weighted graph from the sequences. The second step, the 
+clustering step, is to split the graph into subgraphs, which correspond to 
+the clusters~\cite[pp. 64-65]{dong}.
+
+Consider a graph $G$ with a set of vertices $V$ and a set of edges $E$. In 
+graph based clustering, we consider $V$ as the set of sequences and $E$ is 
+the set of similarity scores.
+The first step is to calculate all $E_{ij}$, the similarity score between 
+$V_i$ and $V_j$, based on some distance metric. If the clustering is based on 
+a similarity threshold, edges that are below the similarity threshold can be ignored. \\
 There are many variants to the clustering step.\\
 TODO: Use reference \cite{hartuv} and \cite{kawaji}?
 
 
 
 
-\subsubsection{Greedy algorithm like in \texttt{UCLUST}}
+\subsubsection{Greedy algorithm like \texttt{UCLUST}}
 The \texttt{UCLUST} algorithm is greedy and is developed so that all member
 sequences have similarity $\geq$ $T$ to their centroid.  It works by processing
 one sequence at a time and comparing these to the existing centroids. If a
@@ -367,15 +381,12 @@ how it does it is not very well described.
 
 The similarity calculations are performed with global sequence alignments as
 \cite{usearch} claims that using the word counts to calculate identity is not
-sensitive enough.
-
-Greedy clustering is illustrated in figure \ref{fig:greedy_clustering}.
+sensitive enough. Greedy clustering is illustrated in figure \ref{fig:greedy_clustering}.
 
 \begin{figure}[h!]
-  \centering
   \def\svgwidth{\columnwidth}
   \import{graphics/}{Greedy_Clustering.pdf_tex}
-  \caption{Illustration of greedy clustering.}
+  \caption{Illustration of greedy clustering. Sequences are processed in the order they are read. They either become a centroid for a new cluster or they are assigned to an existing cluster.}
   \label{fig:greedy_clustering}
 \end{figure}
 

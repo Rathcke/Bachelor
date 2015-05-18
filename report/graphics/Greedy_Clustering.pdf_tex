@@ -50,14 +50,14 @@
   \makeatother%
   \begin{picture}(1,0.6251178)%
     \put(0,0){\includegraphics[width=\unitlength]{Greedy_Clustering.pdf}}%
-    \put(0.19015967,0.3914606){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{1}}}%
-    \put(0.19119406,0.29767865){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{2}}}%
-    \put(0.19065982,0.20453327){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{3}}}%
-    \put(0.19073938,0.11103561){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{4}}}%
-    \put(0.19080758,0.01789018){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{5}}}%
-    \put(0.18826114,0.48631681){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{0}}}%
-    \put(0.79497982,0.4849582){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{0}}}%
-    \put(0.79559363,0.29767865){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{2}}}%
+    \put(0.19396474,0.39570329){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{1}}}%
+    \put(0.19474053,0.30199807){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{2}}}%
+    \put(0.19433984,0.20877028){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{3}}}%
+    \put(0.19439952,0.1152783){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{4}}}%
+    \put(0.19445067,0.02205046){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{5}}}%
+    \put(0.19196106,0.49055381){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{0}}}%
+    \put(0.79867974,0.4891952){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{0}}}%
+    \put(0.7991401,0.30199807){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{2}}}%
     \put(0.07563807,0.59056248){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Sequences}}}%
     \put(0.69840679,0.58564062){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Centroids}}}%
     \put(0.00726344,0.47059925){\color[rgb]{0,0,0}\rotatebox{-90}{\makebox(0,0)[lb]{\smash{Direction of  processing}}}}%
