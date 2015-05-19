@@ -406,7 +406,10 @@ a distance matrix and then uses row and column elimination but is optimized to
 $\mathcal{O}(n^2)$ instead of $\mathcal{O}(n^3)$. Even though $\mathcal{O}(n^2)$
 is too heavy for the scope of this project, it produces optimal results and
 builds the entire hierarchy. With a greedy single-linkage approach and without
-building the entire hierarchy, the complexity could be significantly reduced. The distance matrix itself takes $n^2$ time to create, which is already too much, so this indicates the computation of the distances and therefore the merges is an ongoing process with the clustering.
+building the entire hierarchy, the complexity could be significantly reduced.
+The distance matrix itself takes $n^2$ time to create, which is already too
+much, so this indicates the computation of the distances and therefore the
+merges is an ongoing process with the clustering.
 
 \subsubsection{Graph based clustering}
 
@@ -422,11 +425,19 @@ similarity score between $V_i$ and $V_j$, based on some distance metric. If the
 clustering is based on a similarity threshold, edges that are below the
 similarity threshold can be ignored.
 
-% TODO:
-There are many variants to the clustering step.\\
-TODO: Use reference \cite{hartuv} and \cite{kawaji}?
+There are many variants to the clustering step. The reference~\cite{hartuv}
+presents an algorithm that tries to minimize edges that connect two subgraphsb by
+moving vertices from one subgraph to another.
 
+The reference~\cite{kawaji} tries to maximize the density of edges in a
+subgraph. This is done by converting the tree into a simpler tree by removing
+all edges that are under the similarity threshold. 
 
+Since both of these requires that all edges' weights has been computed, it is
+already too slow for efficient sequence clustering. If the subgraphs could be
+constructed while computing distances, the time complexity could be reduced.
+Both hierarchical and graph based clustering indicates that a heuristic
+clustering is needed to obtain the desired performance.
 
 \subsubsection{Greedy algorithm like \texttt{UCLUST}}
 The \texttt{UCLUST} algorithm is greedy and is developed so that all member
