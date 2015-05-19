@@ -154,7 +154,7 @@ vectors~\cite[pp.~53-54]{dong}.
 
 Let $c_x(w)$ be the number of times that a $k$-mer $w$ occurs in the sequence
 $x$. Then the $d2$ distance between two sequences, $x$ and $y$, can be defined
-as follows~\cite[pp.~1-2]{hazelhurst}:
+as follows~\cite[pp.~1-2]{hazelhurst}
 \begin{equation}
   d2_k(x,y) \eqdef \sqrt{\sum_{w \in K(x) \cup K(y)} (c_x(w) - c_y(w))^2}
 \end{equation}
@@ -188,7 +188,7 @@ The Euclidean distance would then be calculated as
 \end{align*}
 
 The first version of the $d2$ distance metric algorithm described above, is
-shown in figure \ref{alg:d2_basic} and it has been implemented as well. The
+shown in algorithm \ref{alg:d2_basic} and it has been implemented as well. The
 substring method extracts up to $k$ characters beginning at index $i$ of the
 string. This algorithm maintains a single frequency vector, as a map structure
 to allow for large $k$ which results in a large number of possible different
@@ -214,7 +214,8 @@ vectors for the two sequences.
       \EndFor
       \State $total \gets 0$
       \ForAll{$e \in$ \texttt{freq\_map}}
-        \State $total \gets total + e.value^2$  \Comment{calculate the Euclidean distance}
+        \State $total \gets total + e.value^2$
+          \Comment{calculate the Euclidean distance}
       \EndFor
       \State \Return $\sqrt{total}$
     \EndFunction
@@ -243,47 +244,60 @@ in this case has the length 10.
 \label{fig:d2_window_concept}
 \end{figure}
 
+For simplicity, the window size can be set equal to the size of the shortest of
+the two sequences. Then the window only moves step by step over the longer of
+the two sequences, while maintaining the position, and the $k$-mer counts, for
+the shorter sequence.
+
+Figure \ref{fig:d2_window_example} shows an example of this, where the $d2$
+distance with the window is 0, since the first sequence is a prefix of the
+other, while the $d2$ distance without a window gives a distance of 2.
 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}
-  %\draw [fill=blue!15,dashed] (-1.9,0.5) rectangle (3.9,2.0);
-  \draw [fill=blue!25,dashed] (-0.7,0.7) rectangle (2.5,1.8);
-  \node at (1.0,1.5) {UAGUCAGCUAC\phantom{A}};
-  \node at (1.0,1.0) {GGCAUAGUCAGCUACAACGU};
+  \draw [fill=blue!15,dashed] (-0.45,0.5) rectangle (2.5,2.4);
+  \draw [fill=blue!25,dashed] (-0.35,0.7) rectangle (1.15,2.2);
+  \node at (1.0,1.5) {AGUAC\phantom{GGAU}};
+  \node at (1.0,1.0) {AGUACGGAU};
+
+  \node at (0.35, 2.0) {\footnotesize $d2_2 = 0$};
+  \node at (1.8, 2.0) {\footnotesize $d2_2 = 2$};
 \end{tikzpicture}
-\caption{Illustration of the concept of a window.}
-\label{fig:d2_window_concept}
+\caption{Example of difference in distance with window.}
+\label{fig:d2_window_example}
 \end{figure}
 
-% TODO: fix
-The $d2$ distance used in this project uses this concept of a window, which is
-of length equal to the shortest of the two sequences being compared. The
-distance between the substrings in the initial, leftmost position of the window
-is calculated using the basic \textsc{d2} algorithm described above, i.e. the
-distance between the shortest of the two sequences and the first substring of
-the same length of the longer sequence.
+The $d2$ distance metric used in this project uses a window of length equal to
+the shortest of the two sequences being compared. The distance between the
+substrings in the initial, leftmost position of the window is calculated using
+the basic \textsc{d2} algorithm described above.
 
 The window then iterates over the longer sequence and calculates the new
 distance between the substring of the longer sequence and the shorter sequence.
 This calculation is done using a kind of forward differences method for
 reducing the calculations to a few fixed operations for calculating the
 distance in the next window from the distance in the current window. This
-concept is described in \cite{hazelhurst}.
+concept is described in~\cite{hazelhurst}.
 
-The algorithm presented here uses a window size equal to the length of the
-shortest of the two sequences. Let $|s|$ be the length of the shortest of the
-two sequences. To begin with the, the $k$-mers in the first $|s|$ characters of
-each sequence are counted and the \emph{Manhattan} distance between these two
-frequency vectors is calculated.
+% TODO: don't skip straight to Manhattan distance.
 
-The Manhattan distance is simply the Euclidean distance where squaring is
-replaced with absolute value and the square root is omitted, i.e. for
-$u, v \in \mathbb{Z}^n$,
+Let $|s|$ be the length of the shortest of the two sequences. To begin with
+the, the $k$-mers in the first $|s|$ characters of each sequence are counted
+and the \emph{Manhattan distance} between these two frequency vectors is
+calculated using. The Manhattan distance is similar to the Euclidean distance
+but with squaring replaced with absolute value and the square root omitted,
+i.e.  for $u, v \in \mathbb{Z}^n$,
 
 \begin{equation}
   d_{Manhattan} \eqdef \sum_{i=1}^{n} |u_i - v_i| \;.
 \end{equation}
+
+This distance metric was chosen for simplicity, to make the calculation of
+distance in subsequent window positions easier, which also improves
+performance, and since there is evidence in the literature that the Manhattan
+distance generally is preferable to Euclidean distance (and $L_k$ distance
+metrics, for $k>2$) for high dimensional distance calculation~\cite{aggarwal}.
 
 This distance is the distance between the subsequences in the first position of
 the window. To calculate the distance in the following window, i.e. advancing
@@ -294,6 +308,19 @@ negative or positive, it can be decided whether the distance increases or
 decreased by 2 or whether it stays the same. Subsequently, the frequency vector
 is updated to reflect the change in the new window. The following illustrates
 the idea of a window and $k$-mers exiting and entering the window:
+
+%%\node at (4.3,1.5) {AUGGAGAGUAUUGGCGACUC\phantom{ACCGGU \dots}};
+%%\node at (4.3,1.0) {GGUCGCGAUGGUGCAUGGCAACCGGU \dots};
+%\begin{figure}[H]
+%\centering
+%\begin{tikzpicture}
+%  \draw [fill=blue!25,dashed] (0,0.7) rectangle (3.95,1.8);
+%  \node at (4.0,1.5) {ACTGATCGTAGCTAGCTAGTGTTG\phantom{TAGCTAAGCTTAGCTGATCG \dots}};
+%  \node at (4.0,1.0) {ACGTAGATCGTGGATGGCTGATCGTAGCTAAGCTTAGCTGATCG \dots};
+%\end{tikzpicture}
+%\caption{Illustration of the concept of a window.}
+%\label{fig:d2_forward_differences}
+%\end{figure}
 
 \begin{verbatim}
       |---- window ----------|
@@ -325,14 +352,19 @@ intersection as the Manhattan distance in the window.
 TODO: Short introduction
 
 \subsubsection{Hierarchical clustering}
-TODO: Fix subsection or explain divisive. Or both?\\
+
+TODO: Fix subsection or explain divisive. Or both? \\ % TODO
+
 There are typically two types of hierarchical clustering algorithms, the
 agglomerative type that works in a bottom-up manner and the divisive type that
-has a top-down approach. This section describes the agglomerative version. In theg
-agglomerative version all sequences start as leaves in a tree, where the leaves are consideredg
-clusters. Each cluster is then merged together with the closest cluster, thusg
-building a tree, level for level, until there is only one cluster left. Alternatively, where the
-clustering is based on a similarity threshold, as in this project, the clusters are merged until no more clusters can be merged. The algorithm is visualized in figure \ref{fig:hierarchical_clustering}.
+has a top-down approach. This section describes the agglomerative version. In
+theg agglomerative version all sequences start as leaves in a tree, where the
+leaves are consideredg clusters. Each cluster is then merged together with the
+closest cluster, thusg building a tree, level for level, until there is only
+one cluster left. Alternatively, where the clustering is based on a similarity
+threshold, as in this project, the clusters are merged until no more clusters
+can be merged. The algorithm is visualized in figure
+\ref{fig:hierarchical_clustering}.
 
 \begin{figure}[h!]
   \centering
@@ -348,39 +380,43 @@ This addresses the question of what is required for a cluster to be "close" to
 another. Besides measuring similarity between sequences with some distance
 metric, a definition for when clusters should be merged is needed.
 
-In the \textit{complete-linkage} approach, all sequences from one cluster
-must be above the threshold of all sequences from the other. In the
+In the \textit{complete-linkage} approach, all sequences from one cluster must
+be above the threshold of all sequences from the other. In the
 \textit{average-linkage}, the average distance of all sequence pairs is
-required to be above the threshold. With the \textit{single-linkage}g
-approach, only a sequence from both clusters need an identity above the similarity threshold.g
+required to be above the threshold. With the \textit{single-linkage}g approach,
+only a sequence from both clusters need an identity above the similarity
+threshold.g
 
-The complete-linkage approach is computationally very heavy as each mergeg
-will take $\mathcal{O}(mn)$ time, where $m$ and $n$ are the sizes of theg
-clusters. The average-linkage method is equally computationally hard. This isg
-not viable for a quick clustering algorithm.
+The complete-linkage approach is computationally very heavy as each merge will
+take $\mathcal{O}(mn)$ time, where $m$ and $n$ are the sizes of the clusters.
+The average-linkage method is equally computationally hard. This is not viable
+for a quick clustering algorithm.
 
-However, the single-linkage approach is often used in sequenceg
-clustering~\cite[pp. 62-63]{dong}. It has the advantage of stopping early ifg
-a link meets the similarity criterion. Though this greedy behaviour can boostg
-performance, it could make a very rough clustering as two sequences from twog
-clusters might be very similar while other sequences could have a very lowg
+However, the single-linkage approach is often used in sequence
+clustering~\cite[pp. 62-63]{dong}. It has the advantage of stopping early if a
+link meets the similarity criterion. Though this greedy behavior can boost
+performance, it could make a very rough clustering as two sequences from two
+clusters might be very similar while other sequences could have a very low
 similarity to each other.
 
-\subsubsection{Graph based clustering}
-The general framework of graph-based clustering consists of two steps. Firstg
-step is to generate a weighted graph from the sequences. The second step, theg
-clustering step, is to split the graph into subgraphs, which correspond tog
-the clusters~\cite[pp. 64-65]{dong}.
 
-Consider a graph $G$ with a set of vertices $V$ and a set of edges $E$. Ing
-graph based clustering, we consider $V$ as the set of sequences and $E$ isg
-the set of similarity scores.
-The first step is to calculate all $E_{ij}$, the similarity score betweeng
-$V_i$ and $V_j$, based on some distance metric. If the clustering is based ong
-a similarity threshold, edges that are below the similarity threshold can be ignored. \\
+\subsubsection{Graph based clustering}
+
+The general framework of graph-based clustering consists of two steps. First
+step is to generate a weighted graph from the sequences. The second step, the
+clustering step, is to split the graph into subgraphs, which correspond to the
+clusters~\cite[pp. 64-65]{dong}.
+
+Consider a graph $G$ with a set of vertices $V$ and a set of edges $E$. In
+graph based clustering, we consider $V$ as the set of sequences and $E$ is the
+set of similarity scores. The first step is to calculate all $E_{ij}$, the
+similarity score between $V_i$ and $V_j$, based on some distance metric. If the
+clustering is based on a similarity threshold, edges that are below the
+similarity threshold can be ignored.
+
+% TODO:
 There are many variants to the clustering step.\\
 TODO: Use reference \cite{hartuv} and \cite{kawaji}?
-
 
 
 
