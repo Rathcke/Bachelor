@@ -59,10 +59,11 @@ against other metrics. The algorithm is attached in appendix
 
 As stated in \cite[pp.~1-2]{andoni}, ``The worst-case running time known for
 this problem has not improved in three decades (..)'', specifically it states
-that the running time of Levenshtein is $O(d^2)$, where $d$ is the length of
-the two sequences, and $O(d^2/\log_2(d))$ for a constant size alphabet. It
-further supports the conclusion that the running time of the Levenshtein
-algorithm is too poor for the large data sets of the problem domain.
+that the running time of Levenshtein is $\mathcal{O}(d^2)$, where $d$ is the
+length of the two sequences, and $\mathcal{O}(d^2/\log_2(d))$ for a constant
+size alphabet. It further supports the conclusion that the running time of the
+Levenshtein algorithm is too poor for the large data sets of the problem
+domain.
 % TODO: what if their lengths are different?
 
 This lack of improvements of the performance of edit distance is one motivation
@@ -138,7 +139,7 @@ alignment-free method, is $k$-mer counting which will be presented and analyzed
 in the following section.
 
 
-\subsubsection{Feature based distance}
+\subsubsection{Feature based distance} \label{sec:kmer_distance}
 
 A $k$-mer, or $k$-gram or simply a \emph{word}, is a subsequence of length
 $k>0$ over some alphabet $\mathcal{A}$ of a sequence. An interesting feature of
@@ -296,8 +297,8 @@ i.e.  for $u, v \in \mathbb{Z}^n$,
 This distance metric was chosen for simplicity, to make the calculation of
 distance in subsequent window positions easier, which also improves
 performance, and since there is evidence in the literature that the Manhattan
-distance generally is preferable to Euclidean distance (and $L_k$ distance
-metrics, for $k>2$) for high dimensional distance calculation~\cite{aggarwal}.
+distance generally is preferable to Euclidean distance for high dimensional
+distance calculation~\cite{aggarwal}.
 
 This distance is the distance between the subsequences in the first position of
 the window. To calculate the distance in the following window, i.e. advancing
@@ -376,8 +377,9 @@ figure \ref{fig:hierarchical_clustering}.
 
 This addresses the question of what is required for a cluster to be "close" to
 another. Besides measuring similarity between sequences with some distance
-metric, a definition for when clusters should be merged is needed. The 
-following is described with respect to that merges happen based on a similarity threshold.
+metric, a definition for when clusters should be merged is needed. The
+following is described with respect to that merges happen based on a similarity
+threshold.
 
 In the \textit{complete-linkage} approach, all sequences from one cluster must
 be above the threshold of all sequences from the other. In the

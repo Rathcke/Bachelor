@@ -1,5 +1,87 @@
 \section{Results and evaluation} \label{sec:results}
 
+\subsection{Overview of datasets used for testing}
+
+\texttt{SILVA}, \texttt{RDP}. Lengths of sequences, dataset size, lots of
+errors?, RNA/DNA etc.
+
+
+\subsection{Testing the distance metric on altered sequences}
+
+Two different sets of highly similar sequences was constructed from a real
+world sequence from \texttt{SILVA} and this was used in the evaluation of the
+distance metric.
+
+One real sequence was chosen, 10 copies of this sequences were made and for
+each of these copies, a few alterations were made. In the first set, a list of
+random indices in the sequence were generated and in each of these indices in
+the sequence, a substitution for a different, randomly chosen nucleotide was
+made. This was done twice, for different degrees of alteration, and the number
+of alterations was equal to respectively 0.1\% and 0.2\% of the length of the
+sequence.
+
+In the second set, the same number of alterations to individual nucleotides
+were made, but in this case they were grouped into alterations of substrings of
+length 5 (one such group being of length less than 5 if the number of
+alterations were not a multiple of 5).
+
+For illustration, figure \ref{fig:alterations} shows an original sequence in
+the first line, the single edits alterated sequence in the second line and the
+chunk alterated sequence in the third line.
+
+\newcommand{\tc}[1]{\textcolor{red}{#1}}
+\begin{figure}[H]
+  \centering
+  \texttt{AAAAAAAAAAAAAAAAAAAAAA} \\
+  \texttt{AAAAA\tc{T}AA\tc{C}AAAA\tc{G}AAAA\tc{T}AAA} \\
+  \texttt{AAA\tc{TC}AAAAAAAAAA\tc{GG}AAAAA}
+  \caption{Two types of alterations to sequences: the original sequence in the
+    first line, single edit alterations in the second line and chunks of edits
+    in the third line.}
+  \label{fig:alterations}
+\end{figure}
+
+The $k$-mer based distance metric, presented in section
+\ref{sec:kmer_distance}, is expected to be more sensitive to a number of
+individual changes than to the same number of changes made in chunks. This test
+serves to confirm this expectation and to give an insight into the change in
+$k$-mer distance when performing a controlled number of edits.
+
+\begin{figure}[H]
+  \centering
+\begin{tabular}{c|c||c|c}
+  \multicolumn{2}{c||}{single edits} & \multicolumn{2}{c}{chunk edits} \\
+  \hline\hline
+  0.1\%   &   0.2\%                 &   0.1\%   &   0.2\%             \\
+  \hline
+  0.944 & 0.889 & 0.993 & 0.984 \\
+  0.947 & 0.887 & 0.993 & 0.984 \\
+  0.944 & 0.893 & 0.993 & 0.98  \\
+  0.941 & 0.902 & 0.99  & 0.987 \\
+  0.944 & 0.894 & 0.993 & 0.984 \\
+  0.947 & 0.894 & 0.997 & 0.978 \\
+  0.941 & 0.895 & 0.99  & 0.978 \\
+  0.945 & 0.891 & 0.99  & 0.987 \\
+  0.945 & 0.889 & 0.99  & 0.984 \\
+  0.946 & 0.897 & 0.99  & 0.984
+\end{tabular}
+\end{figure}
+
+
+\subsection{Constructing a synthetic dataset}
+
+A synthetic dataset was constructed for evaluating the distance metric on
+different types of alterations to sequences and for evaluating the clustering
+algorithm's ability to find the right clusters in a dataset with a clearly
+correct, expected clustering output.
+
+A set of sequences was chosen from \texttt{SILVA} by clustering with a
+similarity threshold of $0.5$ and choosing the 20 first centroids from the
+result. These centroids were confirmed to be dissimilar by calculating the
+distance matrix for the sequences and checking that all the similarities were
+below $0.5$.
+
+
 \subsection{Evaluating distance metric}
 
 To evaluate our implementation of the $k$-mer distance using windows and the
@@ -97,6 +179,7 @@ attributed to our choice of distance metric.
 %Possibly things to look into: confusion matrix, Rand index, normalized
 %mutual information (article: Comparing Clusterings - An Overview).
 
+
 \subsection{Evaluating clustering algorithm on real data}
 
 This section describes one way of evaluating the
@@ -118,7 +201,6 @@ labeled with the numbers of the sequences in the order they were read.
   \caption{Multidimensional scaling with annotations on centroids.}
   \label{fig:mds_tsne}
 \end{figure}
-
 
 
 \subsection{Results}
@@ -163,37 +245,4 @@ labeled with the numbers of the sequences in the order they were read.
            \texttt{RDP\_Pro\_Full\_sort.fna}. Count: 500,000. Throughput
            specifies the number of sequences clustered per second (including
            results output to file), but excludes reading the input file.}
-\end{figure}
-
-
-\subsection{Testing the distance metric on altered sequences}
-
-Two different sets of highly similar sequences was constructed from a real
-world sequence and this was used in the evaluation of the distance metric.
-
-One real sequence was chosen, 10 copies of this sequences were made and for
-each of these copies, a few alterations were made. In the first set, a list of
-random indices in the sequence were generated and in each of these indices in
-the sequence, a substitution for a different, randomly chosen nucleotide was
-made. This was done for twice, for different degrees of alteration, and the
-number of alterations was equal to respectively 0.1\% and 0.2\% of the length
-of the sequence.
-
-In the second set, the same number of alterations to individual nucleotides
-were made, but in this case they were grouped into alterations of substrings of
-length 5 (one such group being of length less than 5 if the number of
-alterations were not a multiple of 5).
-
-For illustration, figure \ref{fig:alterations} shows an original sequence in
-the first line, the single edits alterated sequence in the second line and the
-chunk alterated sequence in the third line.
-
-\newcommand{\tc}[1]{\textcolor{red}{#1}}
-\begin{figure}[H]
-  \centering
-  \texttt{AAAAAAAAAAAAAAAAAAAAAA} \\
-  \texttt{AAAAA\tc{T}AA\tc{C}AAAA\tc{G}AAAA\tc{T}AAA} \\
-  \texttt{AAA\tc{TC}AAAAAAAAAA\tc{GG}AAAAA}
-  \caption{Two types of alterations to sequences.}
-  \label{fig:alterations}
 \end{figure}
