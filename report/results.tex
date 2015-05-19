@@ -54,9 +54,8 @@ Running \texttt{USEARCH} on the file
 parameters \texttt{-clust\_smallmem} and \texttt{-id 0.95} produces the
 following output
 
-\begin{lstlisting}[style=output-style,
-  caption=Output from \texttt{USEARCH} clustering.,
-  label=fig:uclust_silva]
+\begin{figure}[H]
+\begin{lstlisting}[style=output-style]
 28:39 1.1Gb  100.0\% 117205 clusters, max size 83904, avg 13.5
       Seqs  1583830 (1.6M)
   Clusters  117205 (117.2k)
@@ -68,10 +67,14 @@ Singletons  67410 (67.4k), 4.3\% of seqs, 57.5\% of clusters
       Time  28:41
 Throughput  920.3 seqs/sec.
 \end{lstlisting}
+  \caption{Output from \texttt{USEARCH} clustering.}
+  \label{fig:uclust_silva}
+\end{figure}
 
 Running our implementation of the same file but unsorted and with
 \texttt{id=0.9, k=6} og \texttt{max\_rejects=8} produces the following
 
+\begin{figure}[H]
 \begin{lstlisting}[style=output-style]
 Reading 1583830 sequences...
 Finished reading:
@@ -84,6 +87,8 @@ Finished clustering:
 Time: 187.355 sec.
 Throughput: 8453.63seqs/sec.
 \end{lstlisting}
+%TODO caption and label?
+\end{figure}
 
 Even though the \texttt{id}'s does not represent the same threshold due to it
 being two different distance metrics we do get a lot more clusters. Running

@@ -349,10 +349,11 @@ intersection as the Manhattan distance in the window.
 
 \subsection{Cluster analysis algorithms}
 
-TODO: Short introduction
+%TODO: Short introduction
 
 \subsubsection{Hierarchical clustering}
 
+%TODO: Add divisive or explain why not.
 There are typically two types of hierarchical clustering algorithms, the
 agglomerative type that works in a bottom-up manner and the divisive type that
 has a top-down approach. This section describes the agglomerative version. In
@@ -409,7 +410,7 @@ builds the entire hierarchy. With a greedy single-linkage approach and without
 building the entire hierarchy, the complexity could be significantly reduced.
 The distance matrix itself takes $n^2$ time to create, which is already too
 much, so this indicates the computation of the distances and therefore the
-merges is an ongoing process with the clustering.
+merges should be an ongoing process with the clustering.
 
 \subsubsection{Graph based clustering}
 
@@ -466,17 +467,15 @@ identity is not sensitive enough. Greedy clustering is illustrated in figure
   \label{fig:greedy_clustering}
 \end{figure}
 
+
 %TODO? \subsubsection{Greedy algorithm with recalculation of centroids}
 
 % Background: theoretical overview of the field of clustering
-%   TODO: Clustering "history"
-
 
 \subsection{Naive, greedy clustering algorithm}
 
-A very simple, naive, greedy clustering algorithm has been implemented and will
-be described briefly in this section. For the sake of convenience, it will be
-referred to as \textsc{Naive\_Clust}.
+A very simple, naive, greedy clustering algorithm, \textsc{Naive\_Clust}, has
+been implemented and will be described briefly in this section.
 
 Given a list of sequences and an initially empty list of centroids, the
 algorithm works by iterating through the sequences and for every sequence, it
@@ -494,15 +493,15 @@ centroid and is appended to the end of the list of centroids.
 % TODO: refer to algorithm and implementation
 
 This approach is not very useful in practice since it is very computationally
-expensive in the worst case. The running time of the algorithm is very
-dependent on the ordering of the sequences since the centroids will be in the
-same order as in the list of sequences (i.e. the list of centroids is a
-subsequence of the list of sequences) and if the first number of sequences
-happens to be good centroids, which will match a lot of sequences, the
-algorithm will perform good since the search for a centroid will end very
-early. However, if the first number of sequences happens to be very dissimilar
-from the rest of the data, then these will be compared against on every
-iteration even though they might potentially never match anything.
+expensive in the worst case. The running time of the algorithm is very dependent
+on the ordering of the sequences since the centroids will be in the same order
+as in the list of sequences (i.e. the list of centroids is a subsequence of the
+list of sequences) and if the first number of sequences happens to be good
+centroids, which will match a lot of sequences, the algorithm will perform good
+since the search for a centroid will end very early. However, if the first
+sequences happen to be very dissimilar from the rest of the data, then these
+will become centroids and will be compared against on every iteration even
+though they might potentially never match anything.
 
 Thus, there is a motivation to try and create more structure in the collection
 of centroids, improve the search for a centroid to compare with the query
@@ -512,7 +511,8 @@ sequence or improving the ordering of the centroids.
 % expensive to possible traverse the entire list of centroids for each
 % iteration
 
-% TODO: maybe mention the reason for introducing max_rejects
+% TODO: maybe mention the reason for introducing max_rejects and clustering
+% algorithm based on greediness
 
 
 \subsection{\textsc{Simple\_Clust} algorithm}
@@ -530,19 +530,18 @@ after some fixed number of comparisons of a given query sequence.
 be clustered; the $max\_reject$ most frequent $k$-mers for the query sequence
 are calculated and for each of these most frequent $k$-mers, a centroid which
 has that $k$-mer as the most frequently occurring one (if one such centroid
-exists) is compared with the query sequence to check if similarity their is
-above the given threshold. The query sequence is assigned to the cluster for
-the first centroid that matches the query sequence; if no such centroid is
-found, out of the maximum possible $max\_reject$ number of tries, the query
-sequence becomes a centroid for a new cluster and is added to the collection of
-centroids along with the information about the most frequenty occurring $k$-mer
-in the sequence.  % This is repeated for all sequences in the input file.
+exists) is compared with the query sequence to check if their similarity is
+above the given threshold. The query sequence is assigned to the cluster for the
+first centroid that matches the query sequence; if no such centroid is found,
+out of the maximum possible $max\_reject$ number of tries, the query sequence
+becomes a centroid for a new cluster and is added to the collection of centroids
+along with the information about the most frequently occurring $k$-mer in the
+sequence. Algorithm \ref{alg:simple_clust} shows pseudocode for the
+\textsc{Simple\_Clust} algorithm. % This is repeated for all sequences in the
+input file.
 
 % the most frequent $k$-mer is decided and the sequence, along with this
 % information, is added to the collection of centroids.
-
-Algorithm \ref{alg:simple_clust} shows pseudocode for the
-\textsc{Simple\_Clust} algorithm.
 
 \begin{algorithm}
   \caption{\textsc{Simple\_Clust}}
@@ -577,17 +576,18 @@ Algorithm \ref{alg:simple_clust} shows pseudocode for the
 This algorithm did not perform as well as hoped, in particular for larger $k$
 the number of different possible $k$-mers increases exponentially and for e.g.
 $k = 6$ and a four letter alphabet, there are $4^6 = 4096$ different $k$-mers
-and therefore the lookup in line 7 will likely often be unsuccessful.
+and therefore the lookup in line 7 of the algorithm will often be unsuccessful.
 Additionally, the most frequently occurring $k$-mer did not appear to be a
 sufficiently good characteristic for choosing a centroid that is likely to
-match, as is seen from the evaluation in section \ref{sec:results}. I.e. the
-correspondence between the most frequently occurring $k$-mer of two sequences
-and the similarity of the sequences, is evidently not very strong.  % TODO
+match, as it is seen from the evaluation in section \ref{sec:results}. To
+clarify, the correspondence between the most frequently occurring $k$-mer of
+two sequences and the similarity of the sequences, is evidently not very strong.
+% TODO
 
 
 \subsection{\textsc{Prioritized\_Intersect\_Clust}}
 
-This section describes another clustering algorithm that has developed and
+This section describes another clustering algorithm that was developed and
 implemented, named \textsc{Prioritized\_Intersect\_Clust}, which looks at the
 set of $k$-mers occurring in the query and target sequences and bases the
 decision of whether to try comparing or not, on the cardinality of the
@@ -600,11 +600,10 @@ the list. This makes the algorithm less sensitive to the ordering of the input
 sequences. The choice of the centroids will still be made greedily though, in
 lack of well-performing alternatives, but the algorithm should nonetheless be
 less prone to bad performance caused by an unlucky ordering of the input
-sequences.
-
-Algorithm \ref{alg:intersect_clust} shows pseudocode for the
+sequences. Algorithm \ref{alg:intersect_clust} shows pseudocode for the
 \textsc{Prioritized\_Intersect\_Clust} algorithm.
 
+%TODO: Move some of it to results? SILVA not introduced.
 The idea of moving a matching centroid to the front of the list is, among other
 things, inspired by the observation that the results from \texttt{UCLUST} and
 \texttt{VSEARCH} often contain a large number of very small clusters and even
@@ -612,7 +611,7 @@ singleton clusters, i.e. clusters consisting of just a single sequence. For
 example, clustering the data set \texttt{SILVA\_119\_SSURef\_tax\_silva.fasta}
 with \texttt{USEARCH} and a similarity threshold of $0.95$, gives 117,205
 clusters out of which 67,410 clusters are singleton clusters, that is more than
-half of the clusters. These results are shown in listing \ref{fig:uclust_silva}
+half of the clusters. These results are shown in figure \ref{fig:uclust_silva}
 in section \ref{sec:results}.
 
 \begin{algorithm}
