@@ -7,6 +7,7 @@ errors?, RNA/DNA etc.
 
 
 \subsection{Testing the distance metric on altered sequences}
+\label{sec:altered_sequences}
 
 Two different sets of highly similar sequences was constructed from a real
 world sequence from \texttt{SILVA} and this was used in the evaluation of the
@@ -17,7 +18,7 @@ each of these copies, a few alterations were made. In the first set, a list of
 random indices in the sequence were generated and in each of these indices in
 the sequence, a substitution for a different, randomly chosen nucleotide was
 made. This was done twice, for different degrees of alteration, and the number
-of alterations was equal to respectively 0.1\% and 0.2\% of the length of the
+of alterations was equal to respectively 1\% and 2\% of the length of the
 sequence.
 
 In the second set, the same number of alterations to individual nucleotides
@@ -47,39 +48,57 @@ individual changes than to the same number of changes made in chunks. This test
 serves to confirm this expectation and to give an insight into the change in
 $k$-mer distance when performing a controlled number of edits.
 
+The similarities between the original sequence from \texttt{SILVA} and the 10
+altered sequences, for the four different types of alterations, are shown in
+figure \ref{fig:altered_seqs_similarities}.
+
 \begin{figure}[H]
   \centering
-\begin{tabular}{c|c||c|c}
-  \multicolumn{2}{c||}{single edits} & \multicolumn{2}{c}{chunk edits} \\
-  \hline\hline
-  0.1\%   &   0.2\%                 &   0.1\%   &   0.2\%             \\
-  \hline
-  0.944 & 0.889 & 0.993 & 0.984 \\
-  0.947 & 0.887 & 0.993 & 0.984 \\
-  0.944 & 0.893 & 0.993 & 0.98  \\
-  0.941 & 0.902 & 0.99  & 0.987 \\
-  0.944 & 0.894 & 0.993 & 0.984 \\
-  0.947 & 0.894 & 0.997 & 0.978 \\
-  0.941 & 0.895 & 0.99  & 0.978 \\
-  0.945 & 0.891 & 0.99  & 0.987 \\
-  0.945 & 0.889 & 0.99  & 0.984 \\
-  0.946 & 0.897 & 0.99  & 0.984
-\end{tabular}
+  \begin{tabular}{c|c||c|c}
+    \multicolumn{2}{c||}{single edits}  & \multicolumn{2}{c}{chunk edits} \\
+    \hline\hline
+    1\%   &   2\%                   &   1\%   &   2\% \\
+    \hline
+    0.944   & 0.889                     & 0.980     & 0.960 \\
+    0.947   & 0.887                     & 0.979     & 0.960 \\
+    0.944   & 0.893                     & 0.979     & 0.960 \\
+    0.941   & 0.902                     & 0.979     & 0.961 \\
+    0.944   & 0.894                     & 0.979     & 0.958 \\
+    0.947   & 0.894                     & 0.979     & 0.958 \\
+    0.941   & 0.895                     & 0.982     & 0.958 \\
+    0.945   & 0.891                     & 0.979     & 0.961 \\
+    0.945   & 0.889                     & 0.979     & 0.958 \\
+    0.946   & 0.897                     & 0.981     & 0.958
+  \end{tabular}
+  \caption{Similarity measures for 1\% and 2\% single edits, respectively,
+    and 1\% and 2\% chunk edits, respectively, to 10 copies of a single
+    sequence.}
+  \label{fig:altered_seqs_similarities}
 \end{figure}
+
+As expected, the single edits result in a lower similarity that the
+corresponding chunk edits. This is because five individual changes will affect
+the count of up to $5 \cdot k$ $k$-mers, while five changes in sequence will
+only affect up to $4+k$ $k$-mers.
 
 
 \subsection{Constructing a synthetic dataset}
 
-A synthetic dataset was constructed for evaluating the distance metric on
-different types of alterations to sequences and for evaluating the clustering
-algorithm's ability to find the right clusters in a dataset with a clearly
-correct, expected clustering output.
+A synthetic dataset was constructed for evaluating the clustering algorithm's
+ability to find the right clusters in a dataset with a clearly correct,
+expected clustering output.
 
 A set of sequences was chosen from \texttt{SILVA} by clustering with a
 similarity threshold of $0.5$ and choosing the 20 first centroids from the
 result. These centroids were confirmed to be dissimilar by calculating the
 distance matrix for the sequences and checking that all the similarities were
 below $0.5$.
+
+For each of these sequences, 10 copies were made and chunks of changes were
+made to these as described above in section \ref{sec:altered_sequences}. This
+should yield a set of 210 sequences with 20 expected clusters, which each
+should contain sequences with similarities of approximately $0.98$ for $1\%$
+changes and approximately $0.96$ for $2\%$ changes.
 
 
 \subsection{Evaluating distance metric}
