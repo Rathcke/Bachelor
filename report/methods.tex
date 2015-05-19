@@ -353,18 +353,16 @@ TODO: Short introduction
 
 \subsubsection{Hierarchical clustering}
 
-TODO: Fix subsection or explain divisive. Or both? \\ % TODO
-
 There are typically two types of hierarchical clustering algorithms, the
 agglomerative type that works in a bottom-up manner and the divisive type that
 has a top-down approach. This section describes the agglomerative version. In
-theg agglomerative version all sequences start as leaves in a tree, where the
-leaves are consideredg clusters. Each cluster is then merged together with the
-closest cluster, thusg building a tree, level for level, until there is only
-one cluster left. Alternatively, where the clustering is based on a similarity
-threshold, as in this project, the clusters are merged until no more clusters
-can be merged. The algorithm is visualized in figure
-\ref{fig:hierarchical_clustering}.
+the agglomerative version all sequences start as leaves in a tree, where the
+leaves are considered clusters. Each cluster is then merged together with the
+closest cluster, thus building a tree, level for level, until there is only one
+cluster left. This gives a hierarchy of the clusters. Alternatively, when the
+clustering is based on a similarity threshold, as in this project, the clusters
+are merged until no more clusters can be merged. The algorithm is visualized in
+figure \ref{fig:hierarchical_clustering}.
 
 \begin{figure}[h!]
   \centering
@@ -378,14 +376,15 @@ can be merged. The algorithm is visualized in figure
 
 This addresses the question of what is required for a cluster to be "close" to
 another. Besides measuring similarity between sequences with some distance
-metric, a definition for when clusters should be merged is needed.
+metric, a definition for when clusters should be merged is needed. The 
+following is described with respect to that merges happen based on a similarity threshold.
 
 In the \textit{complete-linkage} approach, all sequences from one cluster must
 be above the threshold of all sequences from the other. In the
 \textit{average-linkage}, the average distance of all sequence pairs is
-required to be above the threshold. With the \textit{single-linkage}g approach,
+required to be above the threshold. With the \textit{single-linkage} approach,
 only a sequence from both clusters need an identity above the similarity
-threshold.g
+threshold.
 
 The complete-linkage approach is computationally very heavy as each merge will
 take $\mathcal{O}(mn)$ time, where $m$ and $n$ are the sizes of the clusters.
@@ -393,12 +392,19 @@ The average-linkage method is equally computationally hard. This is not viable
 for a quick clustering algorithm.
 
 However, the single-linkage approach is often used in sequence
-clustering~\cite[pp. 62-63]{dong}. It has the advantage of stopping early if a
-link meets the similarity criterion. Though this greedy behavior can boost
-performance, it could make a very rough clustering as two sequences from two
-clusters might be very similar while other sequences could have a very low
-similarity to each other.
+clustering~\cite[pp. 62-63]{dong}. It has the advantage of behaving greedily
+and stopping early if a link meets the similarity criterion instead of
+calculating all links to find the minimal distance. Though the greedy behavior
+can boost performance, it could make a very rough clustering as two sequences
+from the clusters might be very similar while other sequences could have a very
+low similarity to each other.
 
+There exists an agglomerative method using single-linkage with complexity
+$\mathcal{O}(n^2)$ known as SLINK~\cite{sibson} and
+another using complete-linkage~\cite{defays}. Even though $\mathcal{O}(n^2)$ is
+too heavy for the scope of this project, it produces optimal results and builds
+the entire hierarchy. With a greedy single-linkage approach and without building
+the entire hierarchy, the complexity could be significantly reduced.
 
 \subsubsection{Graph based clustering}
 
