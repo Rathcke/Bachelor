@@ -2,26 +2,138 @@
 
 \subsection{Distance matrices for altered sequences}
 
-\begin{adjustbox}{center}
-\lstinputlisting[style=output-style, linewidth=1.15\textwidth,
-  caption=Distance matrix for similar sequences with 0.01\% single changes.,
-  label=fig:single01]{output/single_0.01.txt}
-\end{adjustbox}
+%\begin{adjustbox}{center}
+%\lstinputlisting[style=output-style, linewidth=1.15\textwidth,
+%  caption=Distance matrix for similar sequences with 0.01\% single changes.,
+%  label=fig:single01]{output/single_0.01.txt}
+%\end{adjustbox}
+%
+%\begin{adjustbox}{center}
+%\lstinputlisting[style=output-style, linewidth=1.15\textwidth,
+%  caption=Distance matrix for similar sequences with 0.02\% single changes.,
+%  label=fig:single02]{output/single_0.02.txt}
+%\end{adjustbox}
+%
+%\begin{adjustbox}{center}
+%\lstinputlisting[style=output-style, linewidth=1.15\textwidth,
+%  caption=Distance matrix for similar sequences with 0.01\% chunk changes.,
+%  label=fig:chunks01]{output/chunks_0.002.txt}
+%\end{adjustbox}
+%
+%\begin{adjustbox}{center}
+%\lstinputlisting[style=output-style, linewidth=1.15\textwidth,
+%  caption=Distance matrix for similar sequences with 0.02\% chunk changes.,
+%  label=fig:chunks02]{output/chunks_0.004.txt}
+%\end{adjustbox}
 
-\begin{adjustbox}{center}
-\lstinputlisting[style=output-style, linewidth=1.15\textwidth,
-  caption=Distance matrix for similar sequences with 0.02\% single changes.,
-  label=fig:single02]{output/single_0.02.txt}
-\end{adjustbox}
 
-\begin{adjustbox}{center}
-\lstinputlisting[style=output-style, linewidth=1.15\textwidth,
-  caption=Distance matrix for similar sequences with 0.01\% chunk changes.,
-  label=fig:chunks01]{output/chunks_0.002.txt}
-\end{adjustbox}
+\newpage
+\subsection{Clustering results from \texttt{klust} on \texttt{SILVA}}
 
-\begin{adjustbox}{center}
-\lstinputlisting[style=output-style, linewidth=1.15\textwidth,
-  caption=Distance matrix for similar sequences with 0.02\% chunk changes.,
-  label=fig:chunks02]{output/chunks_0.004.txt}
-\end{adjustbox}
+\begingroup
+\setlength{\LTleft}{-20cm plus -1fill}
+\setlength{\LTright}{\LTleft}
+\begin{longtable}{c|c|c|c|c|c|c|c|c}
+  $k$ & id & time (sec.) & throughput (seqs./sec.) & clusters & max size & avg size & min size & max mem \\
+  \hline \hline
+  4   &  0.75  &  4.34172  &  23032.4  &  5280   &  6392  &  18.9394  &  1  &  63  MB \\
+  4   &  0.75  &  5.70606  &  17525.2  &  6647   &  3301  &  15.0444  &  1  &  64  MB \\
+  4   &  0.75  &  3.40991  &  29326.3  &  4595   &  8371  &  21.7628  &  1  &  63  MB \\
+  \hline
+  4   &  0.8   &  8.49984  &  11764.9  &  8139   &  5238  &  12.2865  &  1  &  65  MB \\
+  4   &  0.8   &  11.0014  &  9089.72  &  10031  &  2762  &  9.9691   &  1  &  66  MB \\
+  4   &  0.8   &  6.31711  &  15830    &  7128   &  7308  &  14.0292  &  1  &  64  MB \\
+  \hline
+  4   &  0.85  &  17.3238  &  5772.41  &  12233  &  2677  &  8.17461  &  1  &  67  MB \\
+  4   &  0.85  &  22.6612  &  4412.83  &  15072  &  1172  &  6.63482  &  1  &  69  MB \\
+  4   &  0.85  &  13.3771  &  7475.44  &  10842  &  4934  &  9.22339  &  1  &  67  MB \\
+  \hline
+  4   &  0.9   &  38.829   &  2575.4   &  18998  &  2203  &  5.26371  &  1  &  71  MB \\
+  4   &  0.9   &  49.6064  &  2015.87  &  23231  &  1164  &  4.30459  &  1  &  74  MB \\
+  4   &  0.9   &  29.7916  &  3356.65  &  16752  &  1802  &  5.96944  &  1  &  70  MB \\
+  \hline
+  4   &  0.95  &  92.8738  &  1076.73  &  31105  &  1506  &  3.21492  &  1  &  78  MB \\
+  4   &  0.95  &  124.224  &  804.996  &  38735  &  411   &  2.58164  &  1  &  83  MB \\
+  4   &  0.95  &  71.3566  &  1401.41  &  27689  &  1223  &  3.61154  &  1  &  76  MB \\
+  \hline
+  5   &  0.75  &  4.41397  &  22655.3  &  5311   &  6312  &  18.8288  &  1  &  63  MB \\
+  5   &  0.75  &  5.62834  &  17767.2  &  6648   &  4253  &  15.0421  &  1  &  64  MB \\
+  5   &  0.75  &  3.5468   &  28194.4  &  4635   &  8331  &  21.575   &  1  &  63  MB \\
+  \hline
+  5   &  0.8   &  8.56565  &  11674.5  &  8199   &  5339  &  12.1966  &  1  &  65  MB \\
+  5   &  0.8   &  11.097   &  9011.41  &  10074  &  2503  &  9.92654  &  1  &  66  MB \\
+  5   &  0.8   &  6.5189   &  15340    &  7197   &  7943  &  13.8947  &  1  &  64  MB \\
+  \hline
+  5   &  0.85  &  17.6955  &  5651.14  &  12342  &  2677  &  8.10241  &  1  &  68  MB \\
+  5   &  0.85  &  22.4969  &  4445.07  &  15134  &  1172  &  6.60764  &  1  &  69  MB \\
+  5   &  0.85  &  13.5184  &  7397.31  &  10984  &  4907  &  9.10415  &  1  &  67  MB \\
+  \hline
+  5   &  0.9   &  39.2715  &  2546.38  &  19283  &  2248  &  5.18592  &  1  &  71  MB \\
+  5   &  0.9   &  49.5027  &  2020.09  &  23348  &  1164  &  4.28302  &  1  &  74  MB \\
+  5   &  0.9   &  30.6583  &  3261.76  &  17122  &  1636  &  5.84044  &  1  &  70  MB \\
+  \hline
+  5   &  0.95  &  97.8322  &  1022.16  &  31919  &  1373  &  3.13293  &  1  &  79  MB \\
+  5   &  0.95  &  126.661  &  789.512  &  39082  &  409   &  2.55872  &  1  &  83  MB \\
+  5   &  0.95  &  80.0525  &  1249.18  &  28646  &  1084  &  3.49089  &  1  &  77  MB \\
+  \hline
+  6   &  0.75  &  7.72845  &  12939.2  &  7247   &  3384  &  13.7988  &  1  &  65  MB \\
+  6   &  0.75  &  7.93585  &  12601    &  7902   &  2733  &  12.655   &  1  &  65  MB \\
+  6   &  0.75  &  6.91809  &  14454.9  &  6865   &  8073  &  14.5666  &  1  &  64  MB \\
+  \hline
+  6   &  0.8   &  13.7748  &  7259.65  &  10349  &  3388  &  9.66277  &  1  &  66  MB \\
+  6   &  0.8   &  14.5201  &  6887.01  &  11453  &  2386  &  8.73134  &  1  &  67  MB \\
+  6   &  0.8   &  11.5572  &  8652.6   &  9834   &  6099  &  10.1688  &  1  &  66  MB \\
+  \hline
+  6   &  0.85  &  26.4117  &  3786.2   &  15031  &  2171  &  6.65292  &  1  &  69  MB \\
+  6   &  0.85  &  28.5587  &  3501.56  &  16761  &  1362  &  5.96623  &  1  &  70  MB \\
+  6   &  0.85  &  21.3544  &  4682.87  &  13972  &  2377  &  7.15717  &  1  &  68  MB \\
+  \hline
+  6   &  0.9   &  52.8345  &  1892.7   &  22067  &  1258  &  4.53165  &  1  &  73  MB \\
+  6   &  0.9   &  58.0698  &  1722.06  &  25051  &  1161  &  3.99186  &  1  &  75  MB \\
+  6   &  0.9   &  42.6778  &  2343.14  &  20308  &  1533  &  4.92417  &  1  &  72  MB \\
+  \hline
+  6   &  0.95  &  113.567  &  880.538  &  34641  &  1296  &  2.88675  &  1  &  80  MB \\
+  6   &  0.95  &  137.807  &  725.654  &  40727  &  489   &  2.45537  &  1  &  84  MB \\
+  6   &  0.95  &  95.6595  &  1045.37  &  31577  &  871   &  3.16686  &  1  &  78  MB \\
+  \hline
+  7   &  0.75  &  13.4381  &  7441.53  &  10161  &  3442  &  9.84155  &  1  &  66  MB \\
+  7   &  0.75  &  13.2312  &  7557.87  &  10456  &  2122  &  9.56389  &  1  &  66  MB \\
+  7   &  0.75  &  12.0883  &  8272.46  &  9923   &  6355  &  10.0776  &  1  &  66  MB \\
+  \hline
+  7   &  0.8   &  20.6597  &  4840.34  &  12987  &  1928  &  7.70001  &  1  &  68  MB \\
+  7   &  0.8   &  20.4061  &  4900.49  &  13610  &  2059  &  7.34754  &  1  &  68  MB \\
+  7   &  0.8   &  17.7351  &  5638.54  &  12372  &  3325  &  8.08277  &  1  &  67  MB \\
+  \hline
+  7   &  0.85  &  34.8263  &  2871.39  &  17542  &  2244  &  5.7006   &  1  &  71  MB \\
+  7   &  0.85  &  35.7808  &  2794.79  &  18764  &  1166  &  5.32935  &  1  &  71  MB \\
+  7   &  0.85  &  29.3528  &  3406.83  &  16601  &  2077  &  6.02373  &  1  &  70  MB \\
+  \hline
+  7   &  0.9   &  62.5385  &  1599.01  &  24412  &  1069  &  4.09635  &  1  &  74  MB \\
+  7   &  0.9   &  66.9835  &  1492.9   &  26870  &  897   &  3.72162  &  1  &  76  MB \\
+  7   &  0.9   &  52.448   &  1906.65  &  22819  &  1406  &  4.38231  &  1  &  73  MB \\
+  \hline
+  7   &  0.95  &  128.539  &  777.975  &  37026  &  876   &  2.7008   &  1  &  82  MB \\
+  7   &  0.95  &  149.577  &  668.553  &  42443  &  510   &  2.3561   &  1  &  85  MB \\
+  7   &  0.95  &  110.311  &  906.531  &  34121  &  852   &  2.93075  &  1  &  80  MB \\
+  \hline
+  8   &  0.75  &  20.1829  &  4954.7   &  12571  &  2468  &  7.95482  &  1  &  68  MB \\
+  8   &  0.75  &  19.8615  &  5034.87  &  12913  &  2232  &  7.74413  &  1  &  68  MB \\
+  8   &  0.75  &  18.424   &  5427.71  &  12433  &  5749  &  8.04311  &  1  &  68  MB \\
+  \hline
+  8   &  0.8   &  28.3631  &  3525.71  &  15190  &  2128  &  6.58328  &  1  &  69  MB \\
+  8   &  0.8   &  27.1975  &  3676.8   &  15769  &  1599  &  6.34156  &  1  &  69  MB \\
+  8   &  0.8   &  24.8688  &  4021.11  &  14769  &  2618  &  6.77094  &  1  &  69  MB \\
+  \hline
+  8   &  0.85  &  43.6116  &  2292.97  &  19543  &  2144  &  5.11692  &  1  &  72  MB \\
+  8   &  0.85  &  43.0474  &  2323.02  &  20441  &  1072  &  4.89213  &  1  &  72  MB \\
+  8   &  0.85  &  37.0957  &  2695.73  &  18742  &  2000  &  5.33561  &  1  &  71  MB \\
+  \hline
+  8   &  0.9   &  72.6981  &  1375.55  &  26308  &  1156  &  3.80113  &  1  &  76  MB \\
+  8   &  0.9   &  75.544   &  1323.73  &  28427  &  884   &  3.51778  &  1  &  77  MB \\
+  8   &  0.9   &  62.2554  &  1606.29  &  24872  &  790   &  4.02059  &  1  &  75  MB \\
+  \hline
+  8   &  0.95  &  141.526  &  706.585  &  38983  &  643   &  2.56522  &  1  &  83  MB \\
+  8   &  0.95  &  160.563  &  622.809  &  43978  &  436   &  2.27386  &  1  &  86  MB \\
+  8   &  0.95  &  121.993  &  819.718  &  36174  &  912   &  2.76442  &  1  &  81  MB \\
+\end{longtable}
+\endgroup
