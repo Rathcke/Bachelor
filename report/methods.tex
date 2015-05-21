@@ -538,42 +538,7 @@ first centroid that matches the query sequence; if no such centroid is found,
 out of the maximum possible $max\_reject$ number of tries, the query sequence
 becomes a centroid for a new cluster and is added to the collection of centroids
 along with the information about the most frequently occurring $k$-mer in the
-sequence. Algorithm \ref{alg:simple_clust} shows pseudocode for the
-\textsc{Simple\_Clust} algorithm. % This is repeated for all sequences in the
-input file.
-
-% the most frequent $k$-mer is decided and the sequence, along with this
-% information, is added to the collection of centroids.
-
-\begin{algorithm}
-  \caption{\textsc{Simple\_Clust}}
-  \label{alg:simple_clust}
-  \begin{algorithmic}[1]
-    \Require{$S$ is an array of [DR]NA sequences, $k \in \mathbb{Z}^+$ and
-             $max\_rejects \in \mathbb{Z}^+$, $id \in [0,1]$}
-    \Statex
-    \Function{Simple\_Clust}{$S, k, max\_rejects$}
-      \State $cluster\_count \gets 0$
-      \State $centroids \gets []$ \Comment{map from $k$-mer to sequence}
-      \ForAll{$s \in S$}
-        \State $mfk \gets$ $max\_rejects$ most frequent $k$-mers in $s$
-        \ForAll{$m \in mfk$}
-          \If{$centroids[m]$ does not exists}
-            \State continue
-          \ElsIf{$distance(s, centroids[m]) \geq id$}
-            \State add $s$ to cluster with centroid $centroids[m]$
-            \State break
-          \EndIf
-        \EndFor
-        \If{matching centroid was not found}
-          \State centroids.insert(mfk[0], s)
-        \EndIf
-      \EndFor
-      \State \Return $cluster\_count$
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
+sequence. Pseudocode for the algorithm is attached in appendix \ref{app:simple_clust}.
 
 This algorithm did not perform as well as hoped, in particular for larger $k$
 the number of different possible $k$-mers increases exponentially and for e.g.
