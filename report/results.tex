@@ -148,11 +148,17 @@ result. These centroids were confirmed to be dissimilar by calculating the
 distance matrix for the sequences and checking that all the similarities were
 below $0.5$.
 
-For each of these sequences, 10 copies were made and chunks of changes were
-made to these as described above in section \ref{sec:altered_sequences}. This
-should yield a set of 210 sequences with 20 expected clusters, which each
-should contain sequences with similarities of approximately $0.98$ for $1\%$
-changes and approximately $0.96$ for $2\%$ changes.
+For each of these sequences, 999 copies were made and chunks of changes were
+made to these as described above in section \ref{sec:altered_sequences},
+corresponding to 2\% of the characters of each sequence. This yields a set of
+$20,000$ sequences with 20 expected clusters, which each should contain
+sequences with similarities of approximately $0.92$ since all sequences are
+changed and a 2\% change to a sequence gives an average similarity from the
+original sequence of around $0.96$, cf. section \ref{sec:altered_sequences}.
+
+The synthetic dataset was made fairly large to be able to properly test the
+clustering algorithm's ability to search for the correct centroid and not stop
+the search prematurely
 
 
 \subsection{Evaluating distance metric}
