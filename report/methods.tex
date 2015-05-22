@@ -347,6 +347,10 @@ In the context of $k$-mer frequencies, the union can be interpreted as the
 total number of $k$-mers in the window in the two sequences, and the
 intersection as the Manhattan distance in the window.
 
+An algorithm \textsc{K-Dist} for calculating the $d2$ distance, using windows
+and the Jaccard index, has been designed and implemented. This is the distance
+metric used in the \texttt{klust} program. % TODO: pseudecode
+
 
 \subsection{Cluster analysis algorithms}
 
@@ -525,9 +529,6 @@ tries to address some of the problems with the \textsc{Naive\_Clust} algorithm
 by imposing more structure on the collection of centroids and by giving up
 after some fixed number of comparisons of a given query sequence.
 
-% We have developed a clustering algorithm, named \textsc{Simple\_Clust}
-% (Algorithm \ref{alg:simple_clust}), which will be described in this section.
-
 \textsc{Simple\_Clust} works by iterating sequentially through the sequences to
 be clustered; the $max\_reject$ most frequent $k$-mers for the query sequence
 are calculated and for each of these most frequent $k$-mers, a centroid which
@@ -539,6 +540,38 @@ out of the maximum possible $max\_reject$ number of tries, the query sequence
 becomes a centroid for a new cluster and is added to the collection of centroids
 along with the information about the most frequently occurring $k$-mer in the
 sequence. Pseudocode for the algorithm is attached in appendix \ref{app:simple_clust}.
+
+
+\begin{algorithm}
+  \caption{\textsc{Simple\_Clust}}
+  \label{alg:simple_clust}
+  \begin{algorithmic}[1]
+    \Require{$S$ is an array of [DR]NA sequences, $k \in \mathbb{Z}^+$ and
+             $max\_rejects \in \mathbb{Z}^+$, $id \in [0,1]$}
+    \Statex
+    \Function{Simple\_Clust}{$S, k, max\_rejects$}
+      \State $cluster\_count \gets 0$
+      \State $centroids \gets []$ \Comment{map from $k$-mer to sequence}
+      \ForAll{$s \in S$}
+        \State $mfk \gets$ $max\_rejects$ most frequent $k$-mers in $s$
+        \ForAll{$m \in mfk$}
+          \If{$centroids[m]$ does not exists}
+            \State continue
+          \ElsIf{$distance(s, centroids[m]) \geq id$}
+            \State add $s$ to cluster with centroid $centroids[m]$
+            \State break
+          \EndIf
+        \EndFor
+        \If{matching centroid was not found}
+          \State centroids.insert(mfk[0], s)
+        \EndIf
+      \EndFor
+      \State \Return $cluster\_count$
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+>>>>>>> ff45d07e36dd25b5fc11d9db1c815c5608b7542c
 
 This algorithm did not perform as well as hoped, in particular for larger $k$
 the number of different possible $k$-mers increases exponentially and for e.g.

@@ -10,26 +10,24 @@ section.
 \begin{description}
   \item[\texttt{SILVA}] \hfill \\
     The dataset \texttt{SILVA\_119\_SSURef\_tax\_silva.fasta} has a size of
-    around 2.3GB and contains $1,583,830$ RNA sequences of average length
-    1415.46, minimum length 900, maximum length 3845 and median length 1389.
-    The data looks very clean and contains very few characters aside from the
-    actual RNA bases, i.e. only very few 'R', 'N', 'K' etc.  characters.
+    around 2.3GB and contains $1,583,830$ RNA sequences.
 
   \item[\texttt{RDP}] \hfill \\
     The dataset \texttt{RDP\_Pro\_Full.sort.fna} has a size of around 3.5 GB
-    and contains $3,019,928$ DNA sequences of average length 1044.19, minimum
-    length 400, maximum length 2922 and median length 1132.
+    and contains $3,019,928$ DNA sequences.
 \end{description}
 
 Various statistics about the datasets are shown in figure \ref{fig:data_stats}.
+The error ratio is the ratio between the number of non DNA/RNA bases, i.e. 'R',
+'Y', 'K' etc., and the total number of characters in the sequences.
 
 \begin{figure}[H]
   \centering
-  \begin{tabular}{c | c | c | c | c | c }
-    Dataset        & Sequences & Avg. len. & Min. len. & Max. len. & Median len.\\
+  \begin{tabular}{c |  c | c | c | c | c}
+    Dataset        & Avg. len. & Min. len. & Max. len. & Median len. & Error ratio \\
     \hline
-    \texttt{SILVA} & 1,583,830 & 1415.46   & 900       & 3845      & 1389       \\
-    \texttt{RDP}   & 3,019,928 & 1044.19   & 400       & 2922      & 1132       \\
+    \texttt{SILVA} & 1,415.46  & 900       & 3,845     & 1,389       & 0.000156146 \\
+    \texttt{RDP}   & 1,044.19  & 400       & 2,922     & 1,132       & 0.000798764 \\
   \end{tabular}
   \caption{Various information about the different datasets.}
   \label{fig:data_stats}
@@ -159,10 +157,10 @@ changes and approximately $0.96$ for $2\%$ changes.
 
 \subsection{Evaluating distance metric}
 
-To evaluate our implementation of the $k$-mer distance using windows and the
-Jaccard index, the Levenshtein distance was used as reference. Since the
-Levenshtein distance does not produce values between $0$ and $1$, the Jaccard
-index was used here as well.
+To evaluate the \textsc{K-Dist} algorithm, presented in section
+\ref{sec:kmer_distance}, the Levenshtein distance was used as reference. Since
+the Levenshtein distance does not produce values between $0$ and $1$, the
+Jaccard index was used here as well.
 
 In figure \ref{fig:Levenshtein_vs_Kmer} is three scatter plots with the
 Levenshtein distance on the $y$-axis and our version of the $k$-mer distance on
@@ -326,3 +324,4 @@ labeled with the numbers of the sequences in the order they were read.
            specifies the number of sequences clustered per second (including
            results output to file), but excludes reading the input file.}
 \end{figure}
+
