@@ -5,6 +5,7 @@
 \usepackage{tikz}
 \usetikzlibrary{shapes,matrix}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{amsmath, amssymb}
 \usepackage{mathtools}
 \usepackage{amsfonts}
@@ -66,6 +67,21 @@
   basicstyle=\ttfamily\footnotesize,
   frame=tb,
 }
+\lstdefinestyle{output-top-style}{
+  basicstyle=\ttfamily\footnotesize,
+  frame=t,
+  belowskip=0em,
+}
+\lstdefinestyle{output-no-style}{
+  basicstyle=\ttfamily\footnotesize,
+  aboveskip=0em,
+  belowskip=0em,
+}
+\lstdefinestyle{output-bot-style}{
+  basicstyle=\ttfamily\footnotesize,
+  frame=b,
+  aboveskip=0em,
+}
 
 % handy commands etc.
 \newcommand{\eqdef}{\overset{\mathrm{def}}{=\joinrel=}}
@@ -109,6 +125,7 @@
 \newpage
 \appendix
 \input{app_algorithms.tex}
+\newpage
 \input{app_results.tex}
 
 \end{document}

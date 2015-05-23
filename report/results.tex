@@ -136,29 +136,41 @@ the count of up to $5 \cdot k$ $k$-mers, while five changes in sequence will
 only affect up to $4+k$ $k$-mers.
 
 
-\subsection{Constructing a synthetic dataset}
+\subsection{Constructing a synthetic dataset} \label{sec:synth_dataset}
 
 A synthetic dataset was constructed for evaluating the clustering algorithm's
 ability to find the right clusters in a dataset with a clearly correct,
 expected clustering output.
 
-A set of sequences was chosen from \texttt{SILVA} by clustering with a
-similarity threshold of $0.5$ and choosing the 20 first centroids from the
-result. These centroids were confirmed to be dissimilar by calculating the
-distance matrix for the sequences and checking that all the similarities were
-below $0.5$.
+A set of 380 sequences with mutual similarities of at most 0.6 was extracted
+from \texttt{SILVA}, using the \textsc{K-Dist} distance metric (algorithm
+\ref{alg:K-Dist}) with parameter $k=5$. For each of these sequences, 999 copies
+were made and chunks of changes were made to these as described above in
+section \ref{sec:altered_sequences}, corresponding to 2\% of the characters of
+each sequence. This yields a set of $380,000$ sequences with 380 expected
+clusters, which each should contain sequences with similarities of
+approximately $0.92$ since all sequences are changed and a 2\% change to a
+sequence gives an average similarity from the original sequence of around
+$0.96$, cf. section \ref{sec:altered_sequences}.
 
-For each of these sequences, 999 copies were made and chunks of changes were
-made to these as described above in section \ref{sec:altered_sequences},
-corresponding to 2\% of the characters of each sequence. This yields a set of
-$20,000$ sequences with 20 expected clusters, which each should contain
-sequences with similarities of approximately $0.92$ since all sequences are
-changed and a 2\% change to a sequence gives an average similarity from the
-original sequence of around $0.96$, cf. section \ref{sec:altered_sequences}.
+The sequences expected to be in the same cluster was given the same description
+in the \texttt{FASTA} file, i.e. the same text string after ``>'', to make it
+easy to evaluate the result from the clustering.
 
-The synthetic dataset was made fairly large to be able to properly test the
-clustering algorithm's ability to search for the correct centroid and not stop
-the search prematurely
+The synthetic dataset was made fairly large, both in number of sequences and in
+number of expected clusters, to be able to properly test the clustering
+algorithm's ability to search for the correct centroid and not stop the search
+prematurely which would result in a new cluster being created and a different
+clustering result than the expected one.
+
+As hoped, running \texttt{klust} on the constructed dataset gives a clustering
+output consisting of 380 clusters with 1000 sequences in each (including the
+centroid). The terminal output from the program is shown in figure
+\ref{fig:synth_silva_output} in appendix \ref{app:synth_dataset} and an excerpt
+from the clustering ouput file created by the program is shown in figure
+\ref{fig:synth_silva_clustering} in the same appendix.
+
+
 
 
 \subsection{Evaluating distance metric}
