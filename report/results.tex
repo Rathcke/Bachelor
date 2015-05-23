@@ -136,11 +136,13 @@ the count of up to $5 \cdot k$ $k$-mers, while five changes in sequence will
 only affect up to $4+k$ $k$-mers.
 
 
-\subsection{Constructing a synthetic dataset} \label{sec:synth_dataset}
+\subsection{Evaluating \textsc{Prioritized\_Intersect\_Clust} on a synthetic
+  dataset} \label{sec:synth_dataset}
+  %Constructing a synthetic dataset}
 
-A synthetic dataset was constructed for evaluating the clustering algorithm's
-ability to find the right clusters in a dataset with a clearly correct,
-expected clustering output.
+A synthetic dataset was constructed for evaluating the algorithm
+\textsc{Prioritized\_Intersect\_Clust}'s ability to find the right clusters in
+a dataset with a clearly correct, expected clustering output.
 
 A set of 380 sequences with mutual similarities of at most 0.6 was extracted
 from \texttt{SILVA}, using the \textsc{K-Dist} distance metric (algorithm
@@ -169,6 +171,23 @@ centroid). The terminal output from the program is shown in figure
 \ref{fig:synth_silva_output} in appendix \ref{app:synth_dataset} and an excerpt
 from the clustering ouput file created by the program is shown in figure
 \ref{fig:synth_silva_clustering} in the same appendix.
+
+
+\subsubsection{Multidimensional scaling of the synthetic dataset}
+
+Multidimensional scaling (MDS) of the distance matrix of the sequences in the
+synthetic dataset was made and the sequences in the same cluster from the above
+test were colored with the same color and the centroid with a ``+'' marker.
+
+The MDS of the first 400 sequences of the synthetic dataset, i.e. the first 40
+clusters, is shown in figure \ref{fig:mds_synth}.
+
+\begin{figure}[H]
+  \includegraphics[width=\textwidth]{output/MDS_t-SNE_synth_silva_400.png}
+  \caption{Multidimensional scaling of the first 400 sequences (40 clusters) of
+    the synthetic dataset.}
+  \label{fig:mds_synth}
+\end{figure}
 
 
 
