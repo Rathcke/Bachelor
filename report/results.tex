@@ -52,6 +52,7 @@ The error ratio is the ratio between the number of non DNA/RNA bases, i.e. 'R',
 
 \subsection{Testing the distance metric on altered sequences}
 \label{sec:altered_sequences}
+%TODO: Misleading title?
 
 % TODO: can't get this crap right....
 %A few different sets of highly similar sequences were synthetically constructed
@@ -197,29 +198,26 @@ clusters, is shown in figure \ref{fig:mds_synth}.
 To evaluate the \textsc{K-Dist} algorithm, presented in section
 \ref{sec:kmer_distance}, the Levenshtein distance was used as reference. Since
 the Levenshtein distance does not produce values between $0$ and $1$, the
-Jaccard index was used here as well.
+Jaccard index was used here as well. %TODO: How is it used
 
-In figure \ref{fig:Levenshtein_vs_Kmer} is three scatter plots with the
-Levenshtein distance on the $y$-axis and our version of the $k$-mer distance on
-the $x$-axis. The three plots are with $k=4, k=6$ and $k=8$.
+In figure \ref{fig:Levenshtein_vs_Kmer} are three scatter plots with the
+Levenshtein distance on the $y$-axis and the distance that \textsc{K-Dist} 
+produces on the $x$-axis. The three plots are with $k=4, k=6$ and $k=8$ respectively.
 
 The scatter plots gives an indication about when and how sensitive our
-implemented distance metric is. We want the distance to be as close as possible
-to a linear function without too much variance, but not necessarily to the line
-$y=x$. If it can be expressed linearly it means there is a correlation between
-the two. If it can be expressed as $y=x$ (or close) it means that they measure
-the same distance which is favourable.
+implemented distance metric is. 
 
-When $k=4$ there is a linear relation when the identity $I>0.9$, but when
-$I<0.9$ there is too much variance in the points from any linear function.
+When $k=4$, there is a linear relation when the identity $I>0.9$, but when
+$I<0.9$ there is too much variance to express it as a linear function.
 
-With $k=6$ there seems to be a linear relation when $I>0.8$. When $I<0.8$ there
-is more variance though less than when $k=4$.
+With $k=6$, there seems to be a linear relation when $I>0.8$. When $I<0.8$ there
+is more variance, though less than when $k=4$.
 
 When $k=8$, it is very similar to $k=6$. It seems there is a linear relation
 for $I>0.8$ again and when $I<0.8$ the variance is greater.
+%TODO: This section is shit
 
-\begin{figure}
+\begin{figure}[H]
   \begin{subfigure}[b]{0.5\textwidth}
     \includegraphics[scale=0.34]{graphics/k4.png}
   \end{subfigure}
@@ -282,7 +280,7 @@ Throughput: 8453.63seqs/sec.
 %TODO caption and label?
 \end{figure}
 
-Even though the \texttt{id}'s does not represent the same threshold due to it
+Even though the \texttt{id}'s do not represent the same threshold due to it
 being two different distance metrics we do get a lot more clusters. Running
 it with similar \texttt{id}'s produces almost the same amount of clusters, so
 the problem lies in the way we choose our centroids we compare a query
@@ -291,6 +289,7 @@ sequence with.
 Our implementation, however, is faster by a factor of $10$. This can be
 attributed to our choice of distance metric.
 
+%TODO: This section is also chaos
 %Possibly things to look into: confusion matrix, Rand index, normalized
 %mutual information (article: Comparing Clusterings - An Overview).
 
@@ -362,3 +361,4 @@ labeled with the numbers of the sequences in the order they were read.
            results output to file), but excludes reading the input file.}
 \end{figure}
 
+%TODO: Yeah well, results not done - update tables with other algorithms etc.

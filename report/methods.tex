@@ -25,7 +25,7 @@ would have a distance of 2 (e.g. substituting T for G and inserting a C). Howeve
 there are some cases where the relevance of the distance is arguable. Consider
 the sequences
 \begin{center}
-  \texttt{AACC} \\
+  \texttt{AACC} \\ %TODO: Reversals? Other example? Biology argument? 
   \texttt{CCAA}
 \end{center}
 with a distance of 4. The two sequences actually have the maximal distance
@@ -39,7 +39,7 @@ might not be appropriate.
 %into a dynamic programming solution, which solves subproblems just once, stores
 %and reuses the intermediate results. This dynamic programming bottom up
 %solution was however still very slow, yielding a performance of around 70
-%comparisons per second.
+%comparisons per second. TODO: remove this?
 
 A bottom-up dynamic programming version of the Levenshtein distance metric was
 implemented and tested on real DNA/RNA data to evaluate its performance, and it
@@ -50,7 +50,7 @@ further, but because of the characteristics of an edit distance algorithm like
 Levenshtein and because of the performance requirements for this project, it
 was decided to not pursue further optimization and instead focus on other types
 of algorithms. Furthermore, the Levenshtein distance penalizes reversals, i.e.
-it results in an increased distance.
+it results in an increased distance. %TODO: Data to show levenshtein is crap?
 
 The Levenshtein distance can still be used for evaluation and benchmarking
 against other metrics. The algorithm is attached in appendix
@@ -73,7 +73,7 @@ for the introduction of the concept of sequence alignment.
 %where $n$ and $m$ are the lengths of the sequences, and this running time seems
 %to be inherent in this approach to measuring distance between sequences, as it
 %needs to consider all possible edits to one sequence for each position in the
-%other sequence.
+%other sequence. TODO: remove this?
 
 
 \subsubsection{Sequence alignment}
@@ -330,11 +330,12 @@ the idea of a window and $k$-mers exiting and entering the window:
       ^^^^                 ^^^^
       k-mer exiting        k-mer entering
 \end{verbatim}
+%TODO: Change figure to be consistent
 
-The Manhattan distance can be hard to use in practice, because it is very
+The Manhattan distance can be a bad measurement for similarity, because it is very
 dependent on the length of the shortest sequence (the length of the window),
 the concept of the \emph{Jaccard index}~\cite{jaccard1901,jaccard1912}, or the
-\emph{Jaccard similarity coefficient}, is used to ``normalize'' the distance to
+\emph{Jaccard similarity coefficient}, is used to normalize the distance to
 a value in the interval $[0,1]$.
 
 The Jaccard index of two sets $A$ and $B$ is defined as follows:
@@ -346,6 +347,7 @@ The Jaccard index of two sets $A$ and $B$ is defined as follows:
 In the context of $k$-mer frequencies, the union can be interpreted as the
 total number of $k$-mers in the window in the two sequences, and the
 intersection as the Manhattan distance in the window.
+% TODO: "How is this related to distance measure", måske fint nok?
 
 An algorithm \textsc{K-Dist} for calculating the $d2$ distance, using windows
 and the Jaccard index, has been designed and implemented. This is the distance
@@ -509,10 +511,7 @@ identity is not sensitive enough. Greedy clustering is illustrated in figure
   \label{fig:greedy_clustering}
 \end{figure}
 
-
-%TODO? \subsubsection{Greedy algorithm with recalculation of centroids}
-
-% Background: theoretical overview of the field of clustering
+%TODO: Why choose the greedy clustering
 
 \subsection{Naive, greedy clustering algorithm}
 
@@ -577,35 +576,6 @@ becomes a centroid for a new cluster and is added to the collection of centroids
 along with the information about the most frequently occurring $k$-mer in the
 sequence. Pseudocode for the algorithm is attached in appendix \ref{app:simple_clust}.
 
-\begin{algorithm}
-  \caption{\textsc{Simple\_Clust}}
-  \label{alg:simple_clust}
-  \begin{algorithmic}[1]
-    \Require{$S$ is an array of [DR]NA sequences, $k \in \mathbb{Z}^+$ and
-             $max\_rejects \in \mathbb{Z}^+$, $id \in [0,1]$}
-    \Statex
-    \Function{Simple\_Clust}{$S, k, max\_rejects$}
-      \State $cluster\_count \gets 0$
-      \State $centroids \gets []$ \Comment{map from $k$-mer to sequence}
-      \ForAll{$s \in S$}
-        \State $mfk \gets$ $max\_rejects$ most frequent $k$-mers in $s$
-        \ForAll{$m \in mfk$}
-          \If{$centroids[m]$ does not exists}
-            \State continue
-          \ElsIf{$distance(s, centroids[m]) \geq id$}
-            \State add $s$ to cluster with centroid $centroids[m]$
-            \State break
-          \EndIf
-        \EndFor
-        \If{matching centroid was not found}
-          \State centroids.insert(mfk[0], s)
-        \EndIf
-      \EndFor
-      \State \Return $cluster\_count$
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
 This algorithm did not perform as well as hoped, in particular for larger $k$
 the number of different possible $k$-mers increases exponentially and for e.g.
 $k = 6$ and a four letter alphabet, there are $4^6 = 4096$ different $k$-mers
@@ -615,7 +585,7 @@ sufficiently good characteristic for choosing a centroid that is likely to
 match, as it is seen from the evaluation in section \ref{sec:results}. To
 clarify, the correspondence between the most frequently occurring $k$-mer of
 two sequences and the similarity of the sequences, is evidently not very strong.
-% TODO
+% TODO: Move to results?
 
 
 \subsection{\textsc{Prioritized\_Intersect\_Clust}}
