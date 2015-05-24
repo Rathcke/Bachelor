@@ -355,9 +355,9 @@ metric used in the \texttt{klust} program.
   \caption{\textsc{K-Dist} algorithm}
   \label{alg:K-Dist}
   \begin{algorithmic}[1]
-    \Require{$s$ and $t$ are DNA or RNA sequence, $k \in \mathbb{Z}^+$ and $thrs\in [0,1]$ }
+    \Require{$s$ and $t$ are DNA or RNA sequence, $k \in \mathbb{Z}^+$}
     \Statex
-    \Function{d2}{$s, t, k, thrs$}
+    \Function{d2}{$s, t, k$}
       \State set $s$ to the shortest sequence and $t$ to the longest sequence
       \State initialize array \texttt{kmers} of size $4^k$
       \State $cur\_dist \gets 0$
@@ -374,7 +374,7 @@ metric used in the \texttt{klust} program.
         \State \texttt{kmers}[$t$.substring($i$, $k$)]\texttt{-{}-}
         \State \texttt{kmers}[$t$.substring($length(s)-k+i+1$, $k$)]\texttt{++}
         \State update $cur\_dist$ to current Manhattan distance
-        \State set $min\_dist=min(min\_dist, cur\_dist)$
+        \State set $min\_dist \gets min(min\_dist, cur\_dist)$
       \EndFor
           \State $total \gets 2(length(s)-k+1)$ \Comment{\parbox[t]{.3\linewidth}{Maximal distance}}
       \State \Return{$(total-min\_dist) / total$} \Comment{\parbox[t]{.3\linewidth}{Jaccard index}}
@@ -696,3 +696,11 @@ in section \ref{sec:results}.
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
+
+An illustration of the method is seen in figure \ref{fig:prioritized_intersect_clust}
+\begin{figure}[h!]
+  \def\svgwidth{\columnwidth}
+  \import{graphics/}{Prioritized_Intersect_Clust.pdf_tex}
+  \caption{Illustration of Prioritized intersect clust. The centroid labeled $3$ is pushed to the front of list because it was the latest match to a sequence. The centroids labeled $4$ and $5$ has a link to the centroids $0$ and $1$ respectively because they have been close to matching them.}
+  \label{fig:prioritized_intersect_clust}
+\end{figure}
