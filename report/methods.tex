@@ -349,36 +349,35 @@ intersection as the Manhattan distance in the window.
 
 An algorithm \textsc{K-Dist} for calculating the $d2$ distance, using windows
 and the Jaccard index, has been designed and implemented. This is the distance
-metric used in the \texttt{klust} program.dsa
+metric used in the \texttt{klust} program.
 
 \begin{algorithm}
   \caption{\textsc{K-Dist} algorithm}
   \label{alg:K-Dist}
   \begin{algorithmic}[1]
-    \Require{$s$ and $t$ are DNA or RNA, $k \in \mathbb{Z}^+$ and $thrs\in [0,1]$ }
+    \Require{$s$ and $t$ are DNA or RNA sequence, $k \in \mathbb{Z}^+$ and $thrs\in [0,1]$ }
     \Statex
     \Function{d2}{$s, t, k, thrs$}
-      \State set $s$ to $min(s,t)$ and $t$ to $max(s,t)$
+      \State set $s$ to the shortest sequence and $t$ to the longest sequence
       \State initialize array \texttt{kmers} of size $4^k$
-      \State initialize $cur\_dist$ of type \texttt{int}
+      \State $cur\_dist \gets 0$
       \For{$i \gets 0$ to $length(s) - k$}
         \State \texttt{kmers}[$s$.substring($i$, $k$)]\texttt{++}
         \Comment{\parbox[t]{.3\linewidth}{$k$-mer counting}}
-        \State \texttt{kmers}[$t$.substring($i$, $k$)]\texttt{--}
-        \State update $cur\_dist$ to current Manhattan distance
+        \State \texttt{kmers}[$t$.substring($i$, $k$)]\texttt{-{}-}
       \EndFor
-      \State $total \gets 2(length(s)-k+1)$ \Comment{\parbox[t]{.3\linewidth}{maximal distance}}
-      \If{$(total-cur\_dist) / total >= thrs$} \Comment{\parbox[t]{.3\linewidth}{Jaccard index}}
-      	\State \Return $(total-cur\_dist) / total$
-      \EndIf
-      \State initialize $min\_dist$ of type \texttt{int}
-      \For{$i \gets 0$ to $length(t) - length(s)$} \Comment{\parbox[t]{.3\linewidth}{no. of windows}}
-        \State \texttt{kmers}[$t$.substring($i$, $k$)]\texttt{--}
+      \ForAll{$c \in$ \texttt{kmers}}
+        \State $cur\_dist \gets cur\_dist + |c|$ \Comment{\parbox[t]{.3\linewidth}{Manhattan distance}}
+      \EndFor
+      \State $min\_dist \gets cur\_dist$
+      \For{$i \gets 0$ to $length(t) - length(s)$} \Comment{\parbox[t]{.3\linewidth}{No. of windows}}
+        \State \texttt{kmers}[$t$.substring($i$, $k$)]\texttt{-{}-}
         \State \texttt{kmers}[$t$.substring($length(s)-k+i+1$, $k$)]\texttt{++}
         \State update $cur\_dist$ to current Manhattan distance
         \State set $min\_dist=min(min\_dist, cur\_dist)$
       \EndFor
-      \State \Return{$(total-min\_dist) / total$}
+          \State $total \gets 2(length(s)-k+1)$ \Comment{\parbox[t]{.3\linewidth}{Maximal distance}}
+      \State \Return{$(total-min\_dist) / total$} \Comment{\parbox[t]{.3\linewidth}{Jaccard index}}
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
