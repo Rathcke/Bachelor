@@ -374,7 +374,7 @@ metric used in the \texttt{klust} program.
         \State \texttt{kmers}[$t$.substring($i$, $k$)]\texttt{-{}-}
         \State \texttt{kmers}[$t$.substring($length(s)-k+i+1$, $k$)]\texttt{++}
         \State update $cur\_dist$ to current Manhattan distance
-        \State set $min\_dist \gets min(min\_dist, cur\_dist)$
+        \State $min\_dist \gets min(min\_dist, cur\_dist)$
       \EndFor
           \State $total \gets 2(length(s)-k+1)$ \Comment{\parbox[t]{.3\linewidth}{Maximal distance}}
       \State \Return{$(total-min\_dist) / total$} \Comment{\parbox[t]{.3\linewidth}{Jaccard index}}
@@ -654,7 +654,7 @@ in section \ref{sec:results}.
     \Require{$S$ is an array of [DR]NA sequences, $k \in \mathbb{Z}^+$,
             $max\_rejects \in \mathbb{Z}^+$ and $id \in [0,1]$}
     \Statex
-    \Function{Prioritized\_Intersect\_Clust}{$S, k, max\_rejects$}
+    \Function{Prioritized\_Intersect\_Clust}{$S, k, max\_rejects, id$}
       \State $centroids \gets [~]$ \Comment{initialize empty list of centroids}
       \ForAll{$s \in S$}
         \State $match \gets false$
@@ -666,16 +666,17 @@ in section \ref{sec:results}.
             \State $break$
           \EndIf
 
-          \State\Comment{$K(s)$: set of $k$-mers in $s$}
+          \State
+          \LineComment{$K(x)$: set of $k$-mers in $x$}
           \If{$|K(s) \cap K(c)| \geq |K(c)| \cdot id$}
-            \If{\Call{d2}{s, c, k} $ \geq id$}
+            \If{\Call{\textsc{K-Dist}}{s, c, k} $ \geq id$}
               \State Add $s$ to cluster represented by $c$.
               \State Move $c$ to the front of $centroids$.
               \State $match \gets true$
               \State $break$
             \EndIf
             \State
-            \If{\Call{has\_link}{c} \texttt{AND} \Call{d2}{s, c.link, k} $ \geq id$}
+            \If{\Call{has\_link}{c} \texttt{AND} \Call{\textsc{K-Dist}}{s, c.link, k} $ \geq id$}
               \State Add $s$ to cluster represented by $c.link$.
               \State Move $c.link$ to the front of $centroids$.
               \State $match \gets true$
@@ -704,3 +705,43 @@ An illustration of the method is seen in figure \ref{fig:prioritized_intersect_c
   \caption{Illustration of Prioritized intersect clust. The centroid labeled $3$ is pushed to the front of list because it was the latest match to a sequence. The centroids labeled $4$ and $5$ has a link to the centroids $0$ and $1$ respectively because they have been close to matching them.}
   \label{fig:prioritized_intersect_clust}
 \end{figure}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+
+\subsubsection{Time complexity analysis}
+
+The \textsc{Prioritized\_Intersect\_Clust} algorithm iterates over the array
+of sequences $S$, that is $|S|$ iterations, and for each of these iterations,
+the algorithms iterates over the list of centroids $centroids$.
+
+In the worst case, the $centroids$ list will grow with one element in each
+iteration of the outer loop, because in the worst case, every sequence will
+become a centroid of its own. Thus, the number of iterations in the innner loop
+will be the sequence
+\[
+  1 + 2 + 3 + \ldots + |S| \,,
+\]
+that is, the $|S|$'th triangular number, which can be expresses as
+\begin{equation}
+  \frac{\abs{S}\left(\abs{S}+1\right)}{2} \,. \label{eq:triangular_number}
+\end{equation}
+
+The inner loop contains a constant amount of work and at most two calls to
+\textsc{K-Dist}, which will also be treates as contant time in this context,
+since the running time of the clustering algorithm will be expressed in the
+number of sequences, rather than the lengths of the sequences. The $K(s) \cap
+K(c)$ calculation of the intersection between the two sets of $k$-mers $s$ and
+$c$, respectively, will also be treated as constant since it also depends on
+the lengths of $s$ and $c$ and not on the number of sequences to be clustered.
+
+Thus, the \textsc{Prioritized\_Intersect\_Clust} algorithm iterates over the
+contant amount of work in the inner loop the number of times expressed in
+(\ref{eq:triangular_number}) and so the running time is quadratic in the number
+of sequences, i.e.:
+\begin{equation}
+  \mathcal{O}\left(\abs{S}^2\right)
+\end{equation}
