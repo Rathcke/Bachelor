@@ -211,7 +211,7 @@ vectors for the two sequences.
         \State \texttt{freq\_map}[$s$.substring($i$, $k$)]\texttt{++}
       \EndFor
       \For{$i \gets 0$ to $length(t) - k$}
-        \State \texttt{freq\_map}[$t$.substring($i$, $k$)]\texttt{--}
+        \State \texttt{freq\_map}[$t$.substring($i$, $k$)]\texttt{-{}-}
       \EndFor
       \State $total \gets 0$
       \ForAll{$e \in$ \texttt{freq\_map}}
@@ -449,6 +449,7 @@ The distance matrix itself takes $n^2$ time to create, which is already too
 much, so this indicates the computation of the distances and therefore the
 merges should be an ongoing process with the clustering.
 
+
 \subsubsection{Graph based clustering}
 
 The general framework of graph-based clustering consists of two steps. First
@@ -477,7 +478,9 @@ constructed while computing distances, the time complexity could be reduced.
 Both hierarchical and graph based clustering indicates that a heuristic
 clustering is needed to obtain the desired performance.
 
+
 \subsubsection{Greedy algorithm like \texttt{UCLUST}}
+
 The \texttt{UCLUST} algorithm is greedy and is developed so that all member
 sequences have similarity $\geq$ $T$ to their centroid.  It works by processing
 one sequence at a time and comparing these to the existing centroids. If a
@@ -500,7 +503,9 @@ identity is not sensitive enough. Greedy clustering is illustrated in figure
 \begin{figure}[h!]
   \def\svgwidth{\columnwidth}
   \import{graphics/}{Greedy_Clustering.pdf_tex}
-  \caption{Illustration of greedy clustering. Sequences are processed in the order they are read. They either become a centroid for a new cluster or they are assigned to an existing cluster.}
+  \caption{Illustration of greedy clustering. Sequences are processed in the
+    order they are read. They either become a centroid for a new cluster or
+    they are assigned to an existing cluster.}
   \label{fig:greedy_clustering}
 \end{figure}
 
