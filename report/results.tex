@@ -234,69 +234,9 @@ for $I>0.8$ again and when $I<0.8$ the variance is greater.
   \label{fig:Levenshtein_vs_Kmer}
 \end{figure}
 
-
-\subsection{Comparing with UCLUST on real life data}
-% Testing USEARCH 32-bit on real data
-% Testing clustering algorithm with d2 distance and comparing performance to
-% USEARCH.
-Running \texttt{USEARCH} on the file
-\texttt{SILVA\_119\_SSURef\_tax\_silva.fasta} after it is sorted with
-parameters \texttt{-clust\_smallmem} and \texttt{-id 0.95} produces the
-following output
-
-\begin{figure}[H]
-\begin{lstlisting}[style=output-style]
-28:39 1.1Gb  100.0\% 117205 clusters, max size 83904, avg 13.5
-      Seqs  1583830 (1.6M)
-  Clusters  117205 (117.2k)
-  Max size  83904 (83.9k)
-  Avg size  13.5
-  Min size  1
-Singletons  67410 (67.4k), 4.3\% of seqs, 57.5\% of clusters
-   Max mem  1.1Gb
-      Time  28:41
-Throughput  920.3 seqs/sec.
-\end{lstlisting}
-  \caption{Output from \texttt{USEARCH} clustering.}
-  \label{fig:uclust_silva}
-\end{figure}
-
-Running our implementation of the same file but unsorted and with
-\texttt{id=0.9, k=6} og \texttt{max\_rejects=8} produces the following
-
-\begin{figure}[H]
-\begin{lstlisting}[style=output-style]
-Reading 1583830 sequences...
-Finished reading:
-Time: 24.8109 sec.
-Seqs/sec: 63836
-Clustering 1583830 sequences...
-26.4602
-# of clusters: 1364006
-Finished clustering:
-Time: 187.355 sec.
-Throughput: 8453.63seqs/sec.
-\end{lstlisting}
-%TODO caption and label?
-\end{figure}
-
-Even though the \texttt{id}'s do not represent the same threshold due to it
-being two different distance metrics we do get a lot more clusters. Running
-it with similar \texttt{id}'s produces almost the same amount of clusters, so
-the problem lies in the way we choose our centroids we compare a query
-sequence with.
-
-Our implementation, however, is faster by a factor of $10$. This can be
-attributed to our choice of distance metric.
-
-%TODO: This section is also chaos
-%Possibly things to look into: confusion matrix, Rand index, normalized
-%mutual information (article: Comparing Clusterings - An Overview).
-
-
 \subsection{Evaluating clustering algorithm on real data}
 
-This section describes one way of evaluating the
+This section describes different ways of evaluating the
 \textsc{Prioritized\_Intersect\_Clust} algorithm on real \texttt{RNA} data
 (\texttt{SILVA}) using multidimensional scaling (MDS) and t-distributed
 Stochastic Neighbor Embedding (t-SNE). This was done using \texttt{Python} with
@@ -316,6 +256,17 @@ labeled with the numbers of the sequences in the order they were read.
   \label{fig:mds_tsne}
 \end{figure}
 
+Another test is what parameters and settings works well for the performance of
+the program and quality of the clustering. The table in
+\ref{app:klust_data_parameters} shows output data from running the first
+$100,000$ sequences from \texttt{SILVA} with different parameters. Sorting by
+increasing length is on average $21.65\%$ faster and never slower than not
+sorting. It is also on average $42.63\%$ faster and never slower than sorting
+by decreasing length. Furthermore, sorting by increasing length on average has
+$8.77\%$ fewer clusters and never more clusters than not sorting. It has
+$25.07\%$ fewer clusters on average and never more clusters than when sorting
+by decreasing length. \\
+So it shows that sorting by increasing length is always preferrable, so in the following tests this will be used.
 
 \subsection{Results}
 \begin{figure}[H]
@@ -360,5 +311,215 @@ labeled with the numbers of the sequences in the order they were read.
            specifies the number of sequences clustered per second (including
            results output to file), but excludes reading the input file.}
 \end{figure}
+
+Results of performance
+
+\begingroup
+\setlength{\LTleft}{-20cm plus -1fill}
+\setlength{\LTright}{\LTleft}
+\begin{longtable}{c|cc|c|c|c|c}
+  \multirow{2}{*}{}
+  Clustering & \multicolumn{2}{c|}{Parameters} & Sorting & Time & Throughput & Max memory \\
+  algorithm & & & & (sec.) & (seqs./sec.) & \\
+  \hline \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 5 & & & & \\
+  \textsc{Intersect} & id & 0.8 & no & 623.622 & 2539.73 & 1013 MB \\
+  \textsc{Clust} & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 5 & & & & \\
+  \textsc{Intersect} & id & 0.8 & incr. & 501.697 & 3156.94 & 1013 MB \\
+  \textsc{Clust} & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 5 & & & & \\
+  \textsc{Intersect} & id & 0.85 & no & 1314.18 & 1205.18 & 1013 MB \\
+  \textsc{Clust} & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 5 & & & & \\
+  \textsc{Intersect} & id & 0.85 & incr & 1144.55 & 1383.81 & 1013 MB \\
+  \textsc{Clust} & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 5 & & & & \\
+  \textsc{Intersect} & id & 0.90 & no & 2982.8 & 530.988 & 1030 MB \\
+  \textsc{Clust} & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 5 & & & & \\
+  \textsc{Intersect} & id & 0.90 & incr. & 2578.88 & 614.155 & 1021 MB \\
+  \textsc{Clust} & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 6 & & & & \\
+  \textsc{Intersect} & id & 0.8 & no & 1021.26 & 1550.86 & 1014 MB \\
+  \textsc{Clust} & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 6 & & & & \\
+  \textsc{Intersect} & id & 0.8 & incr. & 856.785 & 1848.57 & 1014 MB \\
+  \textsc{Clust} & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 6 & & & & \\
+  \textsc{Intersect} & id & 0.85 & no & 2014.1 & 786.373 & 1014 MB \\
+  \textsc{Clust} & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 6 & & & & \\
+  \textsc{Intersect} & id & 0.85 & incr. & 1812.02 & 874.066 & 1012 MB \\
+  \textsc{Clust} & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 6 & & & & \\
+  \textsc{Intersect} & id & 0.9 & no & 4245.53 & 373.059 & 1045 MB \\
+  \textsc{Clust} & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 6 & & & & \\
+  \textsc{Intersect} & id & 0.9 & incr. & 3450.59 & 459.003 & 1039 MB \\
+  \textsc{Clust} & m & 8 & & & & \\
+  \\
+  \caption{Performance results for different parameters of
+    \texttt{klust} on the entire \texttt{SILVA} dataset.}
+  \label{fig:full_silva_results_performance}
+\end{longtable}
+\endgroup
+
+Results of the clustering.
+
+\begingroup
+\setlength{\LTleft}{-20cm plus -1fill}
+\setlength{\LTright}{\LTleft}
+\begin{longtable}{c|cc|c|c|cc}
+  Clustering algorithm & \multicolumn{2}{c|}{Parameters} & Sorting & Clusters & \multicolumn{2}{c}{Cluster sizes} \\
+  & & & & & \\
+  \hline \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 5 & & & Max & 68542 \\
+  \textsc{Intersect} & id & 0.8 & no & 70080 & Avg & 22.6003 \\
+  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 5 & & & Max & 57121 \\
+  \textsc{Intersect} & id & 0.8 & incr. & 60111 & Avg & 26.3484 \\
+  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 5 & & & Max & 76164 \\
+  \textsc{Intersect} & id & 0.85 & no & 112063 & Avg & 14.1334 \\
+  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 5 & & & Max & 57885 \\
+  \textsc{Intersect} & id & 0.85 & incr. & 98354 & Avg & 16.1034 \\
+  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 5 & & & Max & 46915 \\
+  \textsc{Intersect} & id & 0.9 & no & 179222 & Avg & 8.83725 \\
+  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 5 & & & Max & 71407 \\
+  \textsc{Intersect} & id & 0.9 & incr. & 159812 & Avg & 9.91058 \\
+  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 6 & & & Max & 87170 \\
+  \textsc{Intersect} & id & 0.8 & no & 93055 & Avg & 17.0204 \\
+  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 6 & & & Max & 60256 \\
+  \textsc{Intersect} & id & 0.8 & incr. & 86905 & Avg & 18.2248 \\
+  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 6 & & & Max & 63452 \\
+  \textsc{Intersect} & id & 0.85 & no & 138023 & Avg & 11.4751 \\
+  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 6 & & & Max & 79599 \\
+  \textsc{Intersect} & id & 0.85 & incr. & 127711 & Avg & 12.4017 \\
+  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 6 & & & Max & 43381 \\
+  \textsc{Intersect} & id & 0.9 & no & 207890 & Avg & 7.6186 \\
+  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {}\textsc{Prioritized} & k & 6 & & & Max & 49479 \\
+  \textsc{Intersect} & id & 0.9 & incr. & 191361 & Avg & 8.27666 \\
+  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  \\
+  \caption{Clustering results for different parameters of
+    \texttt{klust} on the entire \texttt{SILVA} dataset.}  
+  \label{fig:full_silva_results_clusters}
+\end{longtable}
+\endgroup
+
+\subsection{Comparing with UCLUST on real life data}
+% Testing USEARCH 32-bit on real data
+% Testing clustering algorithm with d2 distance and comparing performance to
+% USEARCH.
+Running \texttt{USEARCH} on the file
+\texttt{SILVA\_119\_SSURef\_tax\_silva.fasta} after it is sorted with
+parameters \texttt{-clust\_smallmem} and \texttt{-id 0.95} produces the
+following output
+
+\begin{figure}[H]
+\begin{lstlisting}[style=output-style]
+28:39 1.1Gb  100.0\% 117205 clusters, max size 83904, avg 13.5
+      Seqs  1583830 (1.6M)
+  Clusters  117205 (117.2k)
+  Max size  83904 (83.9k)
+  Avg size  13.5
+  Min size  1
+Singletons  67410 (67.4k), 4.3\% of seqs, 57.5\% of clusters
+   Max mem  1.1Gb
+      Time  28:41
+Throughput  920.3 seqs/sec.
+\end{lstlisting}
+  \caption{Output from \texttt{USEARCH} clustering.}
+  \label{fig:uclust_silva}
+\end{figure}
+
+Benchmarks from \textsc{Prioritized\_Intersect\_Clust} can be seen in the previous section. 
+% Running our implementation of the same file but unsorted and with
+% \texttt{id=0.9, k=6} og \texttt{max\_rejects=8} produces the following
+
+% \begin{figure}[H]
+% \begin{lstlisting}[style=output-style]
+% Reading 1583830 sequences...
+% Finished reading:
+% Time: 24.8109 sec.
+% Seqs/sec: 63836
+% Clustering 1583830 sequences...
+% 26.4602
+% # of clusters: 1364006
+% Finished clustering:
+% Time: 187.355 sec.
+% Throughput: 8453.63seqs/sec.
+% \end{lstlisting}
+% %TODO caption and label?
+% \end{figure}
+
+% Even though the \texttt{id}'s do not represent the same threshold due to it
+% being two different distance metrics we do get a lot more clusters. Running
+% it with similar \texttt{id}'s produces almost the same amount of clusters, so
+% the problem lies in the way we choose our centroids we compare a query
+% sequence with.
+
+% Our implementation, however, is faster by a factor of $10$. This can be
+% attributed to our choice of distance metric.
+
+%TODO: This section is also chaos
+%Possibly things to look into: confusion matrix, Rand index, normalized
+%mutual information (article: Comparing Clusterings - An Overview).
 
 %TODO: Yeah well, results not done - update tables with other algorithms etc.
