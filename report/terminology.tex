@@ -18,11 +18,10 @@ length substrings occur in the sequences and how many times.
 
 The \emph{similarity} or \emph{identity} between sequences denotes a relative
 measure of the distance between the sequences, i.e. a normalized distance
-measure where 0 means \emph{no similarity} and 1 means \emph{perfect
-similarity}. A \emph{similarity threshold} or \emph{identity threshold} is a
-similarity that two sequences must have to belong in the same cluster.  When
-two sequences are within the given similarity threshold, they are said to
-\emph{match} one another.
+measure where 0 means no similarity and 1 means perfect similarity. A
+\emph{similarity threshold} or \emph{identity threshold} is a similarity that
+two sequences must have to belong in the same cluster.  When two sequences are
+above a given similarity threshold, they are said to \emph{match} one another.
 
 The terms \emph{query sequence} and \emph{target sequence} will be used to
 denote the sequence being searched for and a sequence being compared to,
@@ -30,17 +29,16 @@ respectively.
 
 The name \texttt{USEARCH} denotes both the piece of software developed by
 Robert C. Edgar and the algorithm used in the program for searching for
-sequences in some database, e.g. for searching for a centroid that is within
-the given distance threshold of some sequence. The name \texttt{UCLUST} refers
-to the clustering algorithm used in the \texttt{USEARCH} program.
+sequences in some database, e.g. for searching for a centroid that is above a
+given distance threshold of some sequence. The name \texttt{UCLUST} refers to
+the clustering algorithm used in the \texttt{USEARCH} program.
 
 
 \subsection{Notation}
+
 Let $s$ and $t$ be sequences.
 \begin{itemize}
   \item $d(s,t)$ denotes the distance between $s$ and $t$
   \item $|s|$ denotes the length of $s$
   \item $s \sqsubseteq t$ denotes that $s$ is a substring of $t$
-  \item $J(A,B)$ denotes the Jaccard index, or Jaccard similarity coefficient,
-    of sets $A$ and $B$
 \end{itemize}

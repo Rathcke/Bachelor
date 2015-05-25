@@ -13,9 +13,9 @@ can no longer keep up.~\cite{rothberg}
 
 There are not many available algorithms and tools for efficient clustering of
 sequencing data. The one tool which is currently doing the job,
-\texttt{USEARCH}~\cite{edgar, usearch}, is closed-source and although the
-32-bit version is available for free, the usable memory is limited to 4 GB and
-the 64-bit version is costly.
+\texttt{USEARCH}~\cite{edgar,usearch}, is closed-source and although the 32-bit
+version is available for free, the usable memory is limited to 4 GB and the
+64-bit version is costly.
 
 As the amount of sequencing data grows, clusterings becomes increasingly more
 relevant as it can be used to reduce a large set of sequences to a much smaller
@@ -37,7 +37,7 @@ comparing the distribution of all possible substrings of a fixed length $k$ in
 each sequence, as an approximation for measuring sequence similarity.
 Furthermore, it utilizes the $k$-mers occurring in the centroids for improving
 the search for a centroid that is likely to be a good representative for a
-given centroid.
+given sequence.
 
 Earlier works have been very focused on techniques based on sequence alignment,
 with \texttt{UCLUST} being one such example. However, a clustering algorithm
@@ -45,7 +45,6 @@ with a similarity measure based on $k$-mers, can possible give an improved
 performance in terms of speed, while still being a sufficiently good
 approximation.
 
-% TODO, maybe add joke: klust, or \texttt{$k$-lust} depending on your temper
 Our program, named \texttt{klust}, has been implemented in \texttt{C++}, is
 hosted on GitHub and is available at \url{https://github.com/Rathcke/klust}.
 
