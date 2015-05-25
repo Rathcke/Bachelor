@@ -1,0 +1,127 @@
+\subsection{Cluster analysis algorithms}
+
+There are several approaches to clustering sequence data. This section describes different clustering paradigms. It discusses strength, weaknesses and potential in the methods.
+
+\subsubsection{Hierarchical clustering}
+
+%TODO: Add divisive or explain why not.
+There are typically two types of hierarchical clustering algorithms, the
+agglomerative type that works in a bottom-up manner and the divisive type that
+has a top-down approach. This section describes the agglomerative version. In
+the agglomerative version all sequences start as leaves in a tree, where the
+leaves are considered clusters. Each cluster is then merged together with the
+closest cluster, thus building a tree, level for level, until there is only one
+cluster left. This gives a hierarchy of the clusters. Alternatively, when the
+clustering is based on a similarity threshold, as in this project, the clusters
+are merged until no more clusters can be merged. The algorithm is visualized in
+figure \ref{fig:hierarchical_clustering}.
+
+\begin{figure}[h!]
+  \centering
+  \def\svgwidth{\columnwidth}
+  \import{graphics/}{Hierarchical_Clustering.pdf_tex}
+  \caption{Illustration of agglomerative hierarchical clustering. Clusters,
+    with objects represented as letters, are merged with nearby clusters based
+    on lexicographic order until there is only one cluster.}
+  \label{fig:hierarchical_clustering}
+\end{figure}
+
+This addresses the question of what is required for a cluster to be "close" to
+another. Besides measuring similarity between sequences with some distance
+metric, a definition for when clusters should be merged is needed. The
+following is described with respect to that merges happen based on a similarity
+threshold.
+
+In the \textit{complete-linkage} approach, all sequences from one cluster must
+be above the threshold of all sequences from the other. In the
+\textit{average-linkage}, the average distance of all sequence pairs is
+required to be above the threshold. With the \textit{single-linkage} approach,
+only a sequence from both clusters need an identity above the similarity
+threshold.
+
+The complete-linkage approach is computationally very heavy as each merge will
+take $\mathcal{O}(mn)$ time, where $m$ and $n$ are the sizes of the clusters.
+The average-linkage method is equally computationally hard. This is not viable
+for a quick clustering algorithm.
+
+However, the single-linkage approach is often used in sequence
+clustering~\cite[pp. 62-63]{dong}. It has the advantage of behaving greedily
+and stopping early if a link meets the similarity criterion instead of
+calculating all links to find the minimal distance. Though the greedy behavior
+can boost performance, it could make a very rough clustering as two sequences
+from the clusters might be very similar while other sequences could have a very
+low similarity to each other.
+
+There exists an agglomerative method using single-linkage with complexity
+$\mathcal{O}(n^2)$ known as SLINK~\cite{sibson} and another using complete-
+linkage~\cite{defays}. As the naive agglomerative method, both algorithms build
+a distance matrix and then uses row and column elimination but is optimized to
+$\mathcal{O}(n^2)$ instead of $\mathcal{O}(n^3)$. Even though $\mathcal{O}(n^2)$
+is too heavy for the scope of this project, it produces optimal results and
+builds the entire hierarchy. With a greedy single-linkage approach and without
+building the entire hierarchy, the complexity could be significantly reduced.
+The distance matrix itself takes $n^2$ time to create, which is already too
+much, so this indicates the computation of the distances and therefore the
+merges should be an ongoing process with the clustering.
+
+
+\subsubsection{Graph based clustering}
+
+The general framework of graph-based clustering consists of two steps. First
+step is to generate a weighted graph from the sequences. The second step, the
+clustering step, is to split the graph into subgraphs, which correspond to the
+clusters~\cite[pp. 64-65]{dong}.
+
+Consider a graph $G$ with a set of vertices $V$ and a set of edges $E$. In
+graph based clustering, we consider $V$ as the set of sequences and $E$ is the
+set of similarity scores. The first step is to calculate all $E_{ij}$, the
+similarity score between $V_i$ and $V_j$, based on some distance metric. If the
+clustering is based on a similarity threshold, edges that are below the
+similarity threshold can be ignored.
+
+There are many variants to the clustering step. The reference~\cite{hartuv}
+presents an algorithm that tries to minimize edges that connect two subgraphsb by
+moving vertices from one subgraph to another.
+
+The reference~\cite{kawaji} tries to maximize the density of edges in a
+subgraph. This is done by converting the tree into a simpler tree by removing
+all edges that are under the similarity threshold.
+
+Since both of these requires that all edges' weights has been computed, it is
+already too slow for efficient sequence clustering. If the subgraphs could be
+constructed while computing distances, the time complexity could be reduced.
+Both hierarchical and graph based clustering indicates that a heuristic
+clustering is needed to obtain the desired performance.
+
+
+\subsubsection{Greedy algorithm like \texttt{UCLUST}}
+
+The \texttt{UCLUST} algorithm is greedy and is developed so that all member
+sequences have similarity $\geq$ $T$ to their centroid.  It works by processing
+one sequence at a time and comparing these to the existing centroids. If a
+match is found, the sequence is assigned to the matching centroid, otherwise it
+becomes a centroid of a new cluster.
+
+It is designed to also support that each centroid has a similarity $<T$ to all
+other centroids, but this is not guaranteed to hold. The reason is that the
+algorithm only compares a sequence to a prespecified number of centroids given
+by the \texttt{-maxrejects} parameter.
+
+It uses the $k$-mer counts to locate centroid candidates for a match, though
+how it does it is not very well described.
+
+The similarity calculations are performed with global sequence alignments as
+\cite{usearch_algorithm} claims that using the word counts to calculate
+identity is not sensitive enough. Greedy clustering is illustrated in figure
+\ref{fig:greedy_clustering}.
+
+\begin{figure}[h!]
+  \def\svgwidth{\columnwidth}
+  \import{graphics/}{Greedy_Clustering.pdf_tex}
+  \caption{Illustration of greedy clustering. Sequences are processed in the
+    order they are read. They either become a centroid for a new cluster or
+    they are assigned to an existing cluster.}
+  \label{fig:greedy_clustering}
+\end{figure}
+
+%TODO: Why choose the greedy clustering
