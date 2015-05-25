@@ -19,9 +19,9 @@ For example, the two sequences
   \texttt{ACGT} \\
   \texttt{ACGGC}
 \end{center}
-would have a distance of 2 (e.g. substituting T for G and inserting a C). However,
-there are some cases where the relevance of the distance is arguable. Consider
-the sequences
+would have a distance of 2 (e.g. substituting T for G and inserting a C).
+However, there are some cases where the relevance of the distance is arguable.
+Consider the sequences
 \begin{center}
   \texttt{AACC} \\ %TODO: Reversals? Other example? Biology argument?
   \texttt{CCAA}
@@ -40,7 +40,7 @@ further, but because of the characteristics of an edit distance algorithm like
 Levenshtein and because of the performance requirements for this project, it
 was decided to not pursue further optimization and instead focus on other types
 of algorithms. Furthermore, the Levenshtein distance penalizes reversals, i.e.
-it results in an increased distance. %TODO: Data to show levenshtein is crap?
+it results in an increased distance.
 
 The Levenshtein distance can still be used for evaluation and benchmarking
 against other metrics. The algorithm is attached in appendix
@@ -74,7 +74,7 @@ manner. Besides shifting a sequence to a side, gaps can be inserted between
 characters as well. A gap is represented with '-' and it indicates an insertion
 in one sequence or a deletion from another sequence. This is called an
 \emph{indel}, which is a contraction of the first letters from insertion and
-deletion. If it is not have an indel and all characters in the column are same,
+deletion. If it is not an indel and all characters in the column are the same,
 then it is a match. Otherwise, it is a mismatch~\cite[pp.~135-136]{dong}.
 
 \begin{figure}[H]
@@ -87,8 +87,8 @@ then it is a match. Otherwise, it is a mismatch~\cite[pp.~135-136]{dong}.
 \end{figure}
 
 Figure \ref{fig:seq_alignment} displays an alignment of two sequences. In
-column 0 is an indel, in columns 1-3 are matches, in column 4 is a mismatch and
-so forth. The vertical bar characters in the middle line, indicates matches.
+column 0 is an indel, in columns 1--3 are matches, in column 4 is a mismatch
+and so forth. The vertical bar characters in the middle line, indicate matches.
 
 % TODO: describe Needleman-Wunch
 %The
@@ -106,7 +106,7 @@ parallelized version of the dynamic programming algorithm Needleman-Wunsch,
 while \texttt{UCLUST} uses a heuristic procedure by default, but can be
 instructed to use full dynamic programming with either the Needleman-Wunsch or
 Smith-Waterman algorithm. However, this will make \texttt{UCLUST} much
-slower.~\cite{vsearch} The heuristic algorithm used in \texttt{UCLUST} gives an
+slower~\cite{vsearch}. The heuristic algorithm used in \texttt{UCLUST} gives an
 approximation of the optimal alignment for the purpose of increased
 performance, but the alignment is not guaranteed to be optimal.
 
@@ -258,118 +258,3 @@ other, while the $d2$ distance without a window gives a distance of 2.
 \caption{Example of difference in distance with window.}
 \label{fig:d2_window_example}
 \end{figure}
-
-The $d2$ distance metric used in this project uses a window of length equal to
-the shortest of the two sequences being compared. The distance between the
-substrings in the initial, leftmost position of the window is calculated using
-the basic \textsc{d2} algorithm described above.
-
-The window then iterates over the longer sequence and calculates the new
-distance between the substring of the longer sequence and the shorter sequence.
-This calculation is done using a kind of forward differences method for
-reducing the calculations to a few fixed operations for calculating the
-distance in the next window from the distance in the current window. This
-concept is described in~\cite{hazelhurst}.
-
-% TODO: don't skip straight to Manhattan distance.
-
-Let $|s|$ be the length of the shortest of the two sequences. To begin with
-the, the $k$-mers in the first $|s|$ characters of each sequence are counted
-and the \emph{Manhattan distance} between these two frequency vectors is
-calculated using. The Manhattan distance is similar to the Euclidean distance
-but with squaring replaced with absolute value and the square root omitted,
-i.e.  for $u, v \in \mathbb{Z}^n$,
-
-\begin{equation}
-  d_{Manhattan} \eqdef \sum_{i=1}^{n} |u_i - v_i| \;.
-\end{equation}
-
-This distance metric was chosen for simplicity, to make the calculation of
-distance in subsequent window positions easier, which also improves
-performance, and since there is evidence in the literature that the Manhattan
-distance generally is preferable to Euclidean distance for high dimensional
-distance calculation~\cite{aggarwal}.
-
-This distance is the distance between the subsequences in the first position of
-the window. To calculate the distance in the following window, i.e. advancing
-the window through the longer of the two sequences by one character, it is
-decided which $k$-mers exit and enter the window, respectively, and then by
-looking at whether the existing $k$-mer count in the frequency vector is
-negative or positive, it can be decided whether the distance increases or
-decreased by 2 or whether it stays the same. Subsequently, the frequency vector
-is updated to reflect the change in the new window. The following illustrates
-the idea of a window and $k$-mers exiting and entering the window:
-
-%%\node at (4.3,1.5) {AUGGAGAGUAUUGGCGACUC\phantom{ACCGGU \dots}};
-%%\node at (4.3,1.0) {GGUCGCGAUGGUGCAUGGCAACCGGU \dots};
-%\begin{figure}[H]
-%\centering
-%\begin{tikzpicture}
-%  \draw [fill=blue!25,dashed] (0,0.7) rectangle (3.95,1.8);
-%  \node at (4.0,1.5) {ACTGATCGTAGCTAGCTAGTGTTG\phantom{TAGCTAAGCTTAGCTGATCG \dots}};
-%  \node at (4.0,1.0) {ACGTAGATCGTGGATGGCTGATCGTAGCTAAGCTTAGCTGATCG \dots};
-%\end{tikzpicture}
-%\caption{Illustration of the concept of a window.}
-%\label{fig:d2_forward_differences}
-%\end{figure}
-
-\begin{verbatim}
-      |---- window ----------|
-      ACTGATCGTAGCTAGCTAGTGTTG
-      ACGTAGATCGTGGATGGCTGATCGTAGCTAAGCTTAGCTGATCG.....
-      ^^^^                 ^^^^
-      k-mer exiting        k-mer entering
-\end{verbatim}
-%TODO: Change figure to be consistent
-
-The Manhattan distance can be a bad measurement for similarity, because it is very
-dependent on the length of the shortest sequence (the length of the window),
-the concept of the \emph{Jaccard index}~\cite{jaccard1901,jaccard1912}, or the
-\emph{Jaccard similarity coefficient}, is used to normalize the distance to
-a value in the interval $[0,1]$.
-
-The Jaccard index of two sets $A$ and $B$ is defined as follows:
-\begin{equation}
-  J(A, B) \eqdef \frac{|A \cup B| - |A \cap B|}{|A \cup B|}
-\end{equation}
- % TODO:  maybe actually Jaccard distance
-
-In the context of $k$-mer frequencies, the union can be interpreted as the
-total number of $k$-mers in the window in the two sequences, and the
-intersection as the Manhattan distance in the window.
-% TODO: "How is this related to distance measure", måske fint nok?
-
-An algorithm \textsc{K-Dist} for calculating the $d2$ distance, using windows
-and the Jaccard index, has been designed and implemented. This is the distance
-metric used in the \texttt{klust} program.
-
-\begin{algorithm}
-  \caption{\textsc{K-Dist} algorithm}
-  \label{alg:K-Dist}
-  \begin{algorithmic}[1]
-    \Require{$s$ and $t$ are DNA or RNA sequence, $k \in \mathbb{Z}^+$}
-    \Statex
-    \Function{d2}{$s, t, k$}
-      \State set $s$ to the shortest sequence and $t$ to the longest sequence
-      \State initialize array \texttt{kmers} of size $4^k$
-      \State $cur\_dist \gets 0$
-      \For{$i \gets 0$ to $length(s) - k$}
-        \State \texttt{kmers}[$s$.substring($i$, $k$)]\texttt{++}
-        \Comment{\parbox[t]{.3\linewidth}{$k$-mer counting}}
-        \State \texttt{kmers}[$t$.substring($i$, $k$)]\texttt{-{}-}
-      \EndFor
-      \ForAll{$c \in$ \texttt{kmers}}
-        \State $cur\_dist \gets cur\_dist + |c|$ \Comment{\parbox[t]{.3\linewidth}{Manhattan distance}}
-      \EndFor
-      \State $min\_dist \gets cur\_dist$
-      \For{$i \gets 0$ to $length(t) - length(s)$} \Comment{\parbox[t]{.3\linewidth}{No. of windows}}
-        \State \texttt{kmers}[$t$.substring($i$, $k$)]\texttt{-{}-}
-        \State \texttt{kmers}[$t$.substring($length(s)-k+i+1$, $k$)]\texttt{++}
-        \State update $cur\_dist$ to current Manhattan distance
-        \State $min\_dist \gets min(min\_dist, cur\_dist)$
-      \EndFor
-          \State $total \gets 2(length(s)-k+1)$ \Comment{\parbox[t]{.3\linewidth}{Maximal distance}}
-      \State \Return{$(total-min\_dist) / total$} \Comment{\parbox[t]{.3\linewidth}{Jaccard index}}
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
