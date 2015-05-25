@@ -184,7 +184,7 @@ The MDS of the first 400 sequences of the synthetic dataset, i.e. the first 40
 clusters, is shown in figure \ref{fig:mds_synth}.
 
 \begin{figure}[H]
-  \includegraphics[width=\textwidth]{output/MDS_t-SNE_synth_silva_400.png}
+  \includegraphics[width=\textwidth]{graphics/MDS_t-SNE_synth_silva_400.png}
   \caption{Multidimensional scaling of the first 400 sequences (40 clusters) of
     the synthetic dataset.}
   \label{fig:mds_synth}
@@ -201,11 +201,11 @@ the Levenshtein distance does not produce values between $0$ and $1$, the
 Jaccard index was used here as well. %TODO: How is it used
 
 In figure \ref{fig:Levenshtein_vs_Kmer} are three scatter plots with the
-Levenshtein distance on the $y$-axis and the distance that \textsc{K-Dist} 
+Levenshtein distance on the $y$-axis and the distance that \textsc{K-Dist}
 produces on the $x$-axis. The three plots are with $k=4, k=6$ and $k=8$ respectively.
 
 The scatter plots gives an indication about when and how sensitive our
-implemented distance metric is. 
+implemented distance metric is.
 
 When $k=4$, there is a linear relation when the identity $I>0.9$, but when
 $I<0.9$ there is too much variance to express it as a linear function.
