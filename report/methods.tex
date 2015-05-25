@@ -33,14 +33,6 @@ possible even though one is just a reversal of the other. Since reversals of
 substrings are commonly observed in sequence data~\cite{arslan}, this result
 might not be appropriate.
 
-%A naive version of the Levenshtein distance metric was implemented, but as
-%expected, this is absolutely useless in any practical setting, since it does
-%not reuse already calculated results. Therefore, this was quickly transformed
-%into a dynamic programming solution, which solves subproblems just once, stores
-%and reuses the intermediate results. This dynamic programming bottom up
-%solution was however still very slow, yielding a performance of around 70
-%comparisons per second. TODO: remove this?
-
 A bottom-up dynamic programming version of the Levenshtein distance metric was
 implemented and tested on real DNA/RNA data to evaluate its performance, and it
 was clear that this algorithm is not suitable for large data sets, because it
