@@ -6,7 +6,7 @@
 
 \subsection{Naive, greedy clustering algorithm}
 
-A very simple, naive, greedy clustering algorithm, \textsc{Naive\_Clust}, has
+A very simple, naive, greedy clustering algorithm, \textsc{Naive-Clust}, has
 been implemented and will be described briefly in this section.
 
 Given a list of sequences and an initially empty list of centroids, the
@@ -47,25 +47,26 @@ sequence or improving the ordering of the centroids.
 % algorithm based on greediness
 
 
-\subsection{\textsc{Simple\_Clust} algorithm}
+\subsection{\textsc{Simple-Clust} algorithm}
 
-Another clustering algorithm, named \textsc{Simple\_Clust}, was developed and
-implemented, and will be described in this section. \textsc{Simple\_Clust}
-tries to address some of the problems with the \textsc{Naive\_Clust} algorithm
+Another clustering algorithm, named \textsc{Simple-Clust}, was developed and
+implemented, and will be described in this section. \textsc{Simple-Clust}
+tries to address some of the problems with the \textsc{Naive-Clust} algorithm
 by imposing more structure on the collection of centroids and by giving up
 after some fixed number of comparisons of a given query sequence.
 
-\textsc{Simple\_Clust} works by iterating sequentially through the sequences to
+\textsc{Simple-Clust} works by iterating sequentially through the sequences to
 be clustered; the $max\_reject$ most frequent $k$-mers for the query sequence
 are calculated and for each of these most frequent $k$-mers, a centroid which
 has that $k$-mer as the most frequently occurring one (if one such centroid
 exists) is compared with the query sequence to check if their similarity is
-above the given threshold. The query sequence is assigned to the cluster for the
-first centroid that matches the query sequence; if no such centroid is found,
-out of the maximum possible $max\_reject$ number of tries, the query sequence
-becomes a centroid for a new cluster and is added to the collection of centroids
-along with the information about the most frequently occurring $k$-mer in the
-sequence. Pseudocode for the algorithm is attached in appendix \ref{app:simple_clust}.
+above the given threshold. The query sequence is assigned to the cluster for
+the first centroid that matches the query sequence; if no such centroid is
+found, out of the maximum possible $max\_reject$ number of tries, the query
+sequence becomes a centroid for a new cluster and is added to the collection of
+centroids along with the information about the most frequently occurring
+$k$-mer in the sequence. Pseudocode for the algorithm is attached in appendix
+\ref{app:simple-clust}.
 
 This algorithm did not perform as well as hoped, in particular for larger $k$
 the number of different possible $k$-mers increases exponentially and for e.g.
@@ -79,23 +80,22 @@ two sequences and the similarity of the sequences, is evidently not very strong.
 % TODO: Move to results?
 
 
-\subsection{\textsc{Prioritized\_Intersect\_Clust}}
+\subsection{\textsc{K-Clust}}
 
 This section describes another clustering algorithm that was developed and
-implemented, named \textsc{Prioritized\_Intersect\_Clust}, which looks at the
-set of $k$-mers occurring in the query and target sequences and bases the
-decision of whether to try comparing or not, on the cardinality of the
-intersection between these sets. This way, the search for a likely match is not
-just determined by the single most frequently occurring $k$-mer, as with
-\textsc{Simple\_Clust}, but rather all the occurring $k$-mers, regardless of
-their count. Additionally, the centroids are stored in a doubly linked list and
-whenever a centroid matches a sequence, that centroid is moved to the front of
-the list. This makes the algorithm less sensitive to the ordering of the input
-sequences. The choice of the centroids will still be made greedily though, in
-lack of well-performing alternatives, but the algorithm should nonetheless be
-less prone to bad performance caused by an unlucky ordering of the input
-sequences. Algorithm \ref{alg:intersect_clust} shows pseudocode for the
-\textsc{Prioritized\_Intersect\_Clust} algorithm.
+implemented, named \textsc{K-Clust}, which looks at the set of $k$-mers
+occurring in the query and target sequences and bases the decision of whether
+to try comparing or not, on the cardinality of the intersection between these
+sets. This way, the search for a likely match is not just determined by the
+single most frequently occurring $k$-mer, as with \textsc{Simple-Clust}, but
+rather all the occurring $k$-mers, regardless of their count. Additionally, the
+centroids are stored in a doubly linked list and whenever a centroid matches a
+sequence, that centroid is moved to the front of the list. This makes the
+algorithm less sensitive to the ordering of the input sequences. The choice of
+the centroids will still be made greedily though, in lack of well-performing
+alternatives, but the algorithm should nonetheless be less prone to bad
+performance caused by an unlucky ordering of the input sequences. Algorithm
+\ref{alg:k-clust} shows pseudocode for the \textsc{K-Clust} algorithm.
 
 %TODO: Move some of it to results? SILVA not introduced.
 The idea of moving a matching centroid to the front of the list is, among other
@@ -109,13 +109,13 @@ half of the clusters. These results are shown in figure \ref{fig:uclust_silva}
 in section \ref{sec:results}.
 
 \begin{algorithm}[H]
-  \caption{\textsc{Prioritized\_Intersect\_Clust}}
-  \label{alg:intersect_clust}
+  \caption{\textsc{K-Clust}}
+  \label{alg:k-clust}
   \begin{algorithmic}[1]
     \Require{$S$ is an array of [DR]NA sequences, $k \in \mathbb{Z}^+$,
             $max\_rejects \in \mathbb{Z}^+$ and $id \in [0,1]$}
     \Statex
-    \Function{Prioritized\_Intersect\_Clust}{$S, k, max\_rejects, id$}
+    \Function{K-Clust}{$S, k, max\_rejects, id$}
       \State $centroids \gets [~]$ \Comment{initialize empty list of centroids}
       \ForAll{$s \in S$}
         \State $match \gets false$
@@ -160,23 +160,24 @@ in section \ref{sec:results}.
   \end{algorithmic}
 \end{algorithm}
 
-An illustration of the method is seen in figure \ref{fig:prioritized_intersect_clust}
+An illustration of the method is seen in figure \ref{fig:k-clust}.
+
 \begin{figure}[h!]
   \def\svgwidth{\columnwidth}
   \import{graphics/}{Prioritized_Intersect_Clust.pdf_tex}
-  \caption{Illustration of Prioritized intersect clust. The centroid labeled
+  \caption{Illustration of \textsc{K-Clust}. The centroid labeled
     $3$ is pushed to the front of list because it was the latest match to a
     sequence. The centroids labeled $4$ and $5$ has a link to the centroids $0$
     and $1$ respectively because they have been close to matching them.}
-  \label{fig:prioritized_intersect_clust}
+  \label{fig:k-clust}
 \end{figure}
 
 
 \subsubsection{Time complexity analysis}
 
-The \textsc{Prioritized\_Intersect\_Clust} algorithm iterates over the array
-of sequences $S$, that is $|S|$ iterations, and for each of these iterations,
-the algorithms iterates over the list of centroids $centroids$.
+The \textsc{K-Clust} algorithm iterates over the array of sequences $S$, that
+is $|S|$ iterations, and for each of these iterations, the algorithms iterates
+over the list of centroids $centroids$.
 
 In the worst case, the $centroids$ list will grow with one element in each
 iteration of the outer loop, because in the worst case, every sequence will
@@ -198,10 +199,9 @@ K(c)$ calculation of the intersection between the two sets of $k$-mers $s$ and
 $c$, respectively, will also be treated as constant since it also depends on
 the lengths of $s$ and $c$ and not on the number of sequences to be clustered.
 
-Thus, the \textsc{Prioritized\_Intersect\_Clust} algorithm iterates over the
-contant amount of work in the inner loop the number of times expressed in
-(\ref{eq:triangular_number}) and so the running time is quadratic in the number
-of sequences, i.e.:
+Thus, the \textsc{K-Clust} algorithm iterates over the contant amount of work
+in the inner loop the number of times expressed in (\ref{eq:triangular_number})
+and so the running time is quadratic in the number of sequences, i.e.:
 \begin{equation}
   \mathcal{O}\left(\abs{S}^2\right)
 \end{equation}

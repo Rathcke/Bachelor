@@ -10,43 +10,44 @@
     \Require{$m$ and $n$ are DNA or RNA sequences}
     \Statex
     \Function{levenshtein}{$m, n$}
-      \State Initialize arrays \texttt{p} and \texttt{q}
+      \State Initialize arrays $p$ and $q$
       \For{$i \gets 0$ to $length(m)$}
-        \State p[i] = i
+        \State $p[i] \gets i$
       \EndFor
       \For{$i \gets 0$ to $length(n)-1$}
-        \State q[$0$] = $i+1$
+        \State $q[0] \gets i+1$
         \For{$j \gets 0$ to $length(m)-1$}
-            \If{m[$j$] = n[$i$]}
-              \State cost = 0
-            \Else
-              \State cost = 1
-            \EndIf
-            \State q[$j+1$] = min(q[$j$] + $1$, p[$j+1$] + 1,          
-            p[$j$] + cost)
+          \If{$m[j]$ \texttt{==} $n[i]$}
+            \State $cost \gets 0$
+          \Else
+            \State $cost \gets 1$
+          \EndIf
+          \State $q[j+1] \gets min(q[j] + 1, p[j+1] + 1, p[j] + cost)$
         \EndFor
         \For{$j \gets 0$ to $length(m)$}
-            \State p[$j$] = q[$j$]
+          \State $p[j] \gets q[j]$
         \EndFor
       \EndFor
-    \State \Return q[$length(m)$]
+      \State \Return $q[length(m)]$
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
 
-\subsection{\textsc{Simple\_Clust} algorithm}
-\label{app:simple_clust}
+\newpage
+
+\subsection{\textsc{Simple-Clust} algorithm}
+\label{app:simple-clust}
 
 \begin{algorithm}
-  \caption{\textsc{Simple\_Clust}}
-  \label{alg:simple_clust}
+  \caption{\textsc{Simple-Clust}}
+  \label{alg:simple-clust}
   \begin{algorithmic}[1]
     \Require{$S$ is an array of [DR]NA sequences, $k \in \mathbb{Z}^+$ and
              $max\_rejects \in \mathbb{Z}^+$, $id \in [0,1]$}
     \Statex
-    \Function{Simple\_Clust}{$S, k, max\_rejects$}
+    \Function{Simple-Clust}{$S, k, max\_rejects$}
       \State $cluster\_count \gets 0$
-      \State $centroids \gets []$ \Comment{map from $k$-mer to sequence}
+      \State $centroids \gets [~]$ \Comment{map from $k$-mer to sequence}
       \ForAll{$s \in S$}
         \State $mfk \gets$ $max\_rejects$ most frequent $k$-mers in $s$
         \ForAll{$m \in mfk$}

@@ -137,13 +137,12 @@ the count of up to $5 \cdot k$ $k$-mers, while five changes in sequence will
 only affect up to $4+k$ $k$-mers.
 
 
-\subsection{Evaluating \textsc{Prioritized\_Intersect\_Clust} on a synthetic
-  dataset} \label{sec:synth_dataset}
-  %Constructing a synthetic dataset}
+\subsection{Evaluating \textsc{K-Clust} on a synthetic dataset}
+\label{sec:synth_dataset}
 
 A synthetic dataset was constructed for evaluating the algorithm
-\textsc{Prioritized\_Intersect\_Clust}'s ability to find the right clusters in
-a dataset with a clearly correct, expected clustering output.
+\textsc{K-Clust}'s ability to find the right clusters in a dataset with a
+clearly correct, expected clustering output.
 
 A set of 380 sequences with mutual similarities of at most 0.6 was extracted
 from \texttt{SILVA}, using the \textsc{K-Dist} distance metric (algorithm
@@ -236,18 +235,16 @@ for $I>0.8$ again and when $I<0.8$ the variance is greater.
 
 \subsection{Evaluating clustering algorithm on real data}
 
-This section describes different ways of evaluating the
-\textsc{Prioritized\_Intersect\_Clust} algorithm on real \texttt{RNA} data
-(\texttt{SILVA}) using multidimensional scaling (MDS) and t-distributed
-Stochastic Neighbor Embedding (t-SNE). This was done using \texttt{Python} with
-\texttt{matplotlib} and \texttt{scikit-learn}.
+This section describes different ways of evaluating the \textsc{K-Clust}
+algorithm on real \texttt{RNA} data (\texttt{SILVA}) using multidimensional
+scaling (MDS) and t-distributed Stochastic Neighbor Embedding (t-SNE). This was
+done using \texttt{Python} with \texttt{matplotlib} and \texttt{scikit-learn}.
 
-One example of this
-multidimesional scaling on the distance matrix for the first 500 sequences of
-\texttt{SILVA} is shown in figure \ref{fig:mds_tsne}. The centroids found using
-the clustering algorithm \textsc{Prioritized\_Intersect\_Clust}, with similarity
-threshold 0.85, $max\_rejects$ 8 and $k$ 6, are pinpointed in the plot and
-labeled with the numbers of the sequences in the order they were read.
+One example of this multidimesional scaling on the distance matrix for the
+first 500 sequences of \texttt{SILVA} is shown in figure \ref{fig:mds_tsne}.
+The centroids found using the clustering algorithm \textsc{K-Clust}, with
+similarity threshold 0.85, $max\_rejects$ 8 and $k$ 6, are pinpointed in the
+plot and labeled with the numbers of the sequences in the order they were read.
 
 \begin{figure}[h!]
   \centering
@@ -290,19 +287,19 @@ So it shows that sorting by increasing length is always preferrable, so in the f
   \begin{tabular}{ p{12em} | c | c }
     Method  & Throughput/second   & \# of clusters \\
     \hline \hline
-    \textsc{Simple\_Clust}, $k=4$,
+    \textsc{Simple-Clust}, $k=4$,
     $max\_rejects=8$, $id=0.97$     & $\sim$ 11,400  & 444,654  \\
     \hline
-    \textsc{Simple\_Clust}, $k=5$,
+    \textsc{Simple-Clust}, $k=5$,
     $max\_rejects=8$, $id=0.97$     & $\sim$ 10,700  & 461,266  \\
     \hline
-    \textsc{Simple\_Clust}, $k=6$,
+    \textsc{Simple-Clust}, $k=6$,
     $max\_rejects=8$, $id=0.97$     & $\sim$ 9,575   & 470,516  \\
     \hline
-    \textsc{Simple\_Clust}, $k=7$,
+    \textsc{Simple-Clust}, $k=7$,
     $max\_rejects=8$, $id=0.97$     & $\sim$ 6,350   & 474,463  \\
     \hline
-    \textsc{Simple\_Clust}, $k=8$,
+    \textsc{Simple-Clust}, $k=8$,
     $max\_rejects=8$, $id=0.97$     & $\sim$ 2,750   & 475,465  \\
   \end{tabular}
   \caption{Performance of different clustering methods and different $k$-mer
@@ -323,64 +320,64 @@ Results of performance
   algorithm & & & & (sec.) & (seqs./sec.) & \\
   \hline \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 5 & & & & \\
-  \textsc{Intersect} & id & 0.8 & no & 623.622 & 2539.73 & 1013 MB \\
-  \textsc{Clust} & m & 8 & & & & \\
+  {\textsc{K-Clust}} & k & 5 & & & & \\
+                     & id & 0.8 & no & 623.622 & 2539.73 & 1013 MB \\
+                     & m & 8 & & & & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 5 & & & & \\
-  \textsc{Intersect} & id & 0.8 & incr. & 501.697 & 3156.94 & 1013 MB \\
-  \textsc{Clust} & m & 8 & & & & \\
+  {\textsc{K-Clust}} & k & 5 & & & & \\
+                     & id & 0.8 & incr. & 501.697 & 3156.94 & 1013 MB \\
+                     & m & 8 & & & & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 5 & & & & \\
-  \textsc{Intersect} & id & 0.85 & no & 1314.18 & 1205.18 & 1013 MB \\
-  \textsc{Clust} & m & 8 & & & & \\
+  {\textsc{K-Clust}} & k & 5 & & & & \\
+                     & id & 0.85 & no & 1314.18 & 1205.18 & 1013 MB \\
+                     & m & 8 & & & & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 5 & & & & \\
-  \textsc{Intersect} & id & 0.85 & incr & 1144.55 & 1383.81 & 1013 MB \\
-  \textsc{Clust} & m & 8 & & & & \\
+  {\textsc{K-Clust}} & k & 5 & & & & \\
+                     & id & 0.85 & incr & 1144.55 & 1383.81 & 1013 MB \\
+                     & m & 8 & & & & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 5 & & & & \\
-  \textsc{Intersect} & id & 0.90 & no & 2982.8 & 530.988 & 1030 MB \\
-  \textsc{Clust} & m & 8 & & & & \\
+  {\textsc{K-Clust}} & k & 5 & & & & \\
+                     & id & 0.90 & no & 2982.8 & 530.988 & 1030 MB \\
+                     & m & 8 & & & & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 5 & & & & \\
-  \textsc{Intersect} & id & 0.90 & incr. & 2578.88 & 614.155 & 1021 MB \\
-  \textsc{Clust} & m & 8 & & & & \\
+  {\textsc{K-Clust}} & k & 5 & & & & \\
+                     & id & 0.90 & incr. & 2578.88 & 614.155 & 1021 MB \\
+                     & m & 8 & & & & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 6 & & & & \\
-  \textsc{Intersect} & id & 0.8 & no & 1021.26 & 1550.86 & 1014 MB \\
-  \textsc{Clust} & m & 8 & & & & \\
+  {\textsc{K-Clust}} & k & 6 & & & & \\
+                     & id & 0.8 & no & 1021.26 & 1550.86 & 1014 MB \\
+                     & m & 8 & & & & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 6 & & & & \\
-  \textsc{Intersect} & id & 0.8 & incr. & 856.785 & 1848.57 & 1014 MB \\
-  \textsc{Clust} & m & 8 & & & & \\
+  {\textsc{K-Clust}} & k & 6 & & & & \\
+                     & id & 0.8 & incr. & 856.785 & 1848.57 & 1014 MB \\
+                     & m & 8 & & & & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 6 & & & & \\
-  \textsc{Intersect} & id & 0.85 & no & 2014.1 & 786.373 & 1014 MB \\
-  \textsc{Clust} & m & 8 & & & & \\
+  {\textsc{K-Clust}} & k & 6 & & & & \\
+                     & id & 0.85 & no & 2014.1 & 786.373 & 1014 MB \\
+                     & m & 8 & & & & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 6 & & & & \\
-  \textsc{Intersect} & id & 0.85 & incr. & 1812.02 & 874.066 & 1012 MB \\
-  \textsc{Clust} & m & 8 & & & & \\
+  {\textsc{K-Clust}} & k & 6 & & & & \\
+                     & id & 0.85 & incr. & 1812.02 & 874.066 & 1012 MB \\
+                     & m & 8 & & & & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 6 & & & & \\
-  \textsc{Intersect} & id & 0.9 & no & 4245.53 & 373.059 & 1045 MB \\
-  \textsc{Clust} & m & 8 & & & & \\
+  {\textsc{K-Clust}} & k & 6 & & & & \\
+                     & id & 0.9 & no & 4245.53 & 373.059 & 1045 MB \\
+                     & m & 8 & & & & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 6 & & & & \\
-  \textsc{Intersect} & id & 0.9 & incr. & 3450.59 & 459.003 & 1039 MB \\
-  \textsc{Clust} & m & 8 & & & & \\
+  {\textsc{K-Clust}} & k & 6 & & & & \\
+                     & id & 0.9 & incr. & 3450.59 & 459.003 & 1039 MB \\
+                     & m & 8 & & & & \\
   \\
   \caption{Performance results for different parameters of
     \texttt{klust} on the entire \texttt{SILVA} dataset.}
@@ -398,67 +395,67 @@ Results of the clustering.
   & & & & & \\
   \hline \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 5 & & & Max & 68542 \\
-  \textsc{Intersect} & id & 0.8 & no & 70080 & Avg & 22.6003 \\
-  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  {\textsc{K-Clust}} & k & 5 & & & Max & 68542 \\
+                     & id & 0.8 & no & 70080 & Avg & 22.6003 \\
+                     & m & 8 & & & Min & 1 \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 5 & & & Max & 57121 \\
-  \textsc{Intersect} & id & 0.8 & incr. & 60111 & Avg & 26.3484 \\
-  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  {\textsc{K-Clust}} & k & 5 & & & Max & 57121 \\
+                     & id & 0.8 & incr. & 60111 & Avg & 26.3484 \\
+                     & m & 8 & & & Min & 1 \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 5 & & & Max & 76164 \\
-  \textsc{Intersect} & id & 0.85 & no & 112063 & Avg & 14.1334 \\
-  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  {\textsc{K-Clust}} & k & 5 & & & Max & 76164 \\
+                     & id & 0.85 & no & 112063 & Avg & 14.1334 \\
+                     & m & 8 & & & Min & 1 \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 5 & & & Max & 57885 \\
-  \textsc{Intersect} & id & 0.85 & incr. & 98354 & Avg & 16.1034 \\
-  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  {\textsc{K-Clust}} & k & 5 & & & Max & 57885 \\
+                     & id & 0.85 & incr. & 98354 & Avg & 16.1034 \\
+                     & m & 8 & & & Min & 1 \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 5 & & & Max & 46915 \\
-  \textsc{Intersect} & id & 0.9 & no & 179222 & Avg & 8.83725 \\
-  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  {\textsc{K-Clust}} & k & 5 & & & Max & 46915 \\
+                     & id & 0.9 & no & 179222 & Avg & 8.83725 \\
+                     & m & 8 & & & Min & 1 \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 5 & & & Max & 71407 \\
-  \textsc{Intersect} & id & 0.9 & incr. & 159812 & Avg & 9.91058 \\
-  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  {\textsc{K-Clust}} & k & 5 & & & Max & 71407 \\
+                     & id & 0.9 & incr. & 159812 & Avg & 9.91058 \\
+                     & m & 8 & & & Min & 1 \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 6 & & & Max & 87170 \\
-  \textsc{Intersect} & id & 0.8 & no & 93055 & Avg & 17.0204 \\
-  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  {\textsc{K-Clust}} & k & 6 & & & Max & 87170 \\
+                     & id & 0.8 & no & 93055 & Avg & 17.0204 \\
+                     & m & 8 & & & Min & 1 \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 6 & & & Max & 60256 \\
-  \textsc{Intersect} & id & 0.8 & incr. & 86905 & Avg & 18.2248 \\
-  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  {\textsc{K-Clust}} & k & 6 & & & Max & 60256 \\
+                     & id & 0.8 & incr. & 86905 & Avg & 18.2248 \\
+                     & m & 8 & & & Min & 1 \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 6 & & & Max & 63452 \\
-  \textsc{Intersect} & id & 0.85 & no & 138023 & Avg & 11.4751 \\
-  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  {\textsc{K-Clust}} & k & 6 & & & Max & 63452 \\
+                     & id & 0.85 & no & 138023 & Avg & 11.4751 \\
+                     & m & 8 & & & Min & 1 \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 6 & & & Max & 79599 \\
-  \textsc{Intersect} & id & 0.85 & incr. & 127711 & Avg & 12.4017 \\
-  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  {\textsc{K-Clust}} & k & 6 & & & Max & 79599 \\
+                     & id & 0.85 & incr. & 127711 & Avg & 12.4017 \\
+                     & m & 8 & & & Min & 1 \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 6 & & & Max & 43381 \\
-  \textsc{Intersect} & id & 0.9 & no & 207890 & Avg & 7.6186 \\
-  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  {\textsc{K-Clust}} & k & 6 & & & Max & 43381 \\
+                     & id & 0.9 & no & 207890 & Avg & 7.6186 \\
+                     & m & 8 & & & Min & 1 \\
   \hline
   \multirow{3}{*}
-  {}\textsc{Prioritized} & k & 6 & & & Max & 49479 \\
-  \textsc{Intersect} & id & 0.9 & incr. & 191361 & Avg & 8.27666 \\
-  \textsc{Clust} & m & 8 & & & Min & 1 \\
+  {\textsc{K-Clust}} & k & 6 & & & Max & 49479 \\
+                     & id & 0.9 & incr. & 191361 & Avg & 8.27666 \\
+                     & m & 8 & & & Min & 1 \\
   \\
   \caption{Clustering results for different parameters of
-    \texttt{klust} on the entire \texttt{SILVA} dataset.}  
+    \texttt{klust} on the entire \texttt{SILVA} dataset.}
   \label{fig:full_silva_results_clusters}
 \end{longtable}
 \endgroup
@@ -489,7 +486,7 @@ Throughput  920.3 seqs/sec.
   \label{fig:uclust_silva}
 \end{figure}
 
-Benchmarks from \textsc{Prioritized\_Intersect\_Clust} can be seen in the previous section. 
+Benchmarks from \textsc{K-Clust} can be seen in the previous section.
 % Running our implementation of the same file but unsorted and with
 % \texttt{id=0.9, k=6} og \texttt{max\_rejects=8} produces the following
 
