@@ -33,22 +33,6 @@ The error ratio is the ratio between the number of non DNA/RNA bases, i.e. 'R',
   \label{fig:data_stats}
 \end{figure}
 
-% SILVA:
-% avg_len:       1415.46
-% min_len:       900
-% max_len:       3845
-% median:        1389
-% dirty:         350055
-% dirty/sum_len: 0.000156146
-
-% RDP:
-% avg_len:       1044.19
-% min_len:       400
-% max_len:       2922
-% median:        1132
-% dirty:         2518801
-% dirty/sum_len: 0.000798764
-
 
 \subsection{Testing the distance metric on altered sequences}
 \label{sec:altered_sequences}
@@ -140,9 +124,9 @@ only affect up to $4+k$ $k$-mers.
 \subsection{Evaluating \textsc{K-Clust} on a synthetic dataset}
 \label{sec:synth_dataset}
 
-A synthetic dataset was constructed for evaluating the algorithm
-\textsc{K-Clust}'s ability to find the right clusters in a dataset with a
-clearly correct, expected clustering output.
+A synthetic dataset was constructed for evaluating the \textsc{K-Clust}
+algorithm's ability to find the right clusters in a dataset with a clearly
+correct, expected clustering output.
 
 A set of 380 sequences with mutual similarities of at most 0.6 was extracted
 from \texttt{SILVA}, using the \textsc{K-Dist} distance metric (algorithm
@@ -157,7 +141,8 @@ $0.96$, cf. section \ref{sec:altered_sequences}.
 
 The sequences expected to be in the same cluster was given the same description
 in the \texttt{FASTA} file, i.e. the same text string after ``>'', to make it
-easy to evaluate the result from the clustering.
+easy to evaluate the result from the clustering. Furthermore, the sequences
+were placed in random order before running \texttt{klust} on the data.
 
 The synthetic dataset was made fairly large, both in number of sequences and in
 number of expected clusters, to be able to properly test the clustering
@@ -165,31 +150,48 @@ algorithm's ability to search for the correct centroid and not stop the search
 prematurely which would result in a new cluster being created and a different
 clustering result than the expected one.
 
-As hoped, running \texttt{klust} on the constructed dataset gives a clustering
-output consisting of 380 clusters with 1000 sequences in each (including the
-centroid). The terminal output from the program is shown in figure
-\ref{fig:synth_silva_output} in appendix \ref{app:synth_dataset} and an excerpt
-from the clustering ouput file created by the program is shown in figure
-\ref{fig:synth_silva_clustering} in the same appendix.
+As hoped, running \texttt{klust} on the constructed dataset, with parameters
+$k=5$, $id=0.85$ and $max\_rejects=8$ gives a clustering output consisting of
+380 clusters with 1000 sequences in each (including the centroid). The terminal
+output from the program is shown in figure \ref{fig:synth_silva_output} in
+appendix \ref{app:synth_dataset} and an excerpt from the clustering ouput file
+created by the program is shown in figure \ref{fig:synth_silva_clustering} in
+the same appendix. This shows that the sequences in each cluster have the same
+description line, i.e. they were constructed to be similar and should indeed be
+in the same cluster. The result was equally correct when running \texttt{klust}
+with $id=0.9$.
+
+This test provides some evidence that \textsc{K-Clust} is able to successfully
+cluster a dataset of a fairly realistic size. Since the similarities are known
+a priori and the cluster sequences are constructed to be of a similarity around
+$0.92$ on $k=5$, this is not a test of the \textsc{K-Dist} distance metric.
 
 
 \subsubsection{Multidimensional scaling of the synthetic dataset}
 
-Multidimensional scaling (MDS) of the distance matrix of the sequences in the
-synthetic dataset was made and the sequences in the same cluster from the above
-test were colored with the same color and the centroid with a ``+'' marker.
+\emph{Multidimensional scaling} (MDS) of the sequences in the synthetic data
+set was used to visualize and further evaluate the clustering result from the
+previous section (section \ref{sec:synth_dataset}). Multidimensional scaling
+is used to visualize the distances between all the sequences in the synthetic
+dataset in two dimensions, i.e. a scatter plot that tries to maintain the
+relative distances between the sequences as well as possible.
+
+The technique used for the dimensionality reduction is \emph{t-distributed
+Stochastic Neighbor Embedding} (t-SNE)~\cite{maaten}. This was done using
+\texttt{Python} with \texttt{matplotlib} and \texttt{scikit-learn}. Sequences
+expected to be in the same cluster was given the same color and thus the MDS is
+expected to give a visualization of separate clusters of points of the same
+color.
 
 The MDS of the first 400 sequences of the synthetic dataset, i.e. the first 40
 clusters, is shown in figure \ref{fig:mds_synth}.
 
 \begin{figure}[H]
   \includegraphics[width=\textwidth]{graphics/MDS_t-SNE_synth_silva_400.png}
-  \caption{Multidimensional scaling of the first 400 sequences (40 clusters) of
-    the synthetic dataset.}
+  \caption{Multidimensional scaling of the first 400 sequences (40 expected
+    clusters) of the synthetic dataset.}
   \label{fig:mds_synth}
 \end{figure}
-
-
 
 
 \subsection{Evaluating distance metric}
@@ -233,14 +235,10 @@ for $I>0.8$ again and when $I<0.8$ the variance is greater.
   \label{fig:Levenshtein_vs_Kmer}
 \end{figure}
 
+
 \subsection{Evaluating clustering algorithm on real data}
 
-This section describes different ways of evaluating the \textsc{K-Clust}
-algorithm on real \texttt{RNA} data (\texttt{SILVA}) using multidimensional
-scaling (MDS) and t-distributed Stochastic Neighbor Embedding (t-SNE). This was
-done using \texttt{Python} with \texttt{matplotlib} and \texttt{scikit-learn}.
-
-One example of this multidimesional scaling on the distance matrix for the
+One example of this multidimensional scaling on the distance matrix for the
 first 500 sequences of \texttt{SILVA} is shown in figure \ref{fig:mds_tsne}.
 The centroids found using the clustering algorithm \textsc{K-Clust}, with
 similarity threshold 0.85, $max\_rejects$ 8 and $k$ 6, are pinpointed in the
@@ -520,3 +518,7 @@ Benchmarks from \textsc{K-Clust} can be seen in the previous section.
 %mutual information (article: Comparing Clusterings - An Overview).
 
 %TODO: Yeah well, results not done - update tables with other algorithms etc.
+
+
+\subsection{Evaluation of centroid search in \texttt{klust}}
+
