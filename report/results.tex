@@ -110,7 +110,7 @@ figure \ref{fig:altered_seqs_similarities}.
     0.945   & 0.889                     & 0.979     & 0.958 \\
     0.946   & 0.897                     & 0.981     & 0.958
   \end{tabular}
-  \caption{Similarity measures for 1\% and 2\% single edits, respectively,
+  \caption{Similarity measures, using $k=6$, for 1\% and 2\% single edits, respectively,
     and 1\% and 2\% chunk edits, respectively, to 10 copies of a single
     sequence.}
   \label{fig:altered_seqs_similarities}
@@ -131,27 +131,29 @@ ratio similar to the one used in \textsc{K-Dist} and expressed in equation
 (\ref{eq:Manhattan_similarity}) was used. Specifically, the ratio between the
 Levenshtein distance and the maximum possible distance subtracted from the
 maximum possible distance. The maximum possible Levenshtein distance is equal
-to the length of the longer sequence.
+to the length of the longer sequence. Data in figure \ref{fig:levenshtein_vs_kdist_performance} shows how many comparisons per second the implementation of Levenshtein and the implementation of \textsc{K-Dist} can be made.
 
+\begin{figure}[H]   \centering   \begin{tabular}{ c | c }     Distance metric
+implementation              & Comparisons/second      \\     \hline \hline
+Levenshtein (DP)                      & $\sim$ 195              \\     \hline
+\textsc{K-Dist}, $k=4$                & $\sim$ 91500            \\     \hline
+\textsc{K-Dist}, $k=5$                & $\sim$ 91000            \\     \hline
+\textsc{K-Dist}, $k=6$                & $\sim$ 89000            \\     \hline
+\textsc{K-Dist}, $k=7$                & $\sim$ 72500            \\     \hline
+\textsc{K-Dist}, $k=8$                & $\sim$ 46000            \\
+\end{tabular}   \caption{Performance comparison between a dynamic programming
+(bottom up) Levenshtein implementation and \textsc{K-Dist} implementation with
+different $k$'s.}   \label{fig:levenshtein_vs_kdist_performance} \end{figure}
+The \textsc{K-Dist} implementation is a thousand factor faster, but becomes
+slower when $k$ increases. As mentioned in section \ref{sec:edit_distance},
+optimizing an implementation of distance metric to match the speed of
+\textsc{K-Dist} is unimaginable. Despite its speed, it could be more sensible
+than \textsc{K-Dist}. Figure \ref{fig:Levenshtein_vs_KDist} shows scatter
+plots of the Levenshtein distance versus the distance \textsc{K-Dist} produces
+with different $k$'s. It demonstrates how similar the distances are, and can
+be used as an indication about the sensitivity of the \textsc{K-Dist}
+algorithm.
 
-
-%In figure \ref{fig:Levenshtein_vs_Kmer} are three scatter plots with the
-%Levenshtein distance on the $y$-axis and the distance that \textsc{K-Dist}
-%produces on the $x$-axis. The three plots are with $k=4, k=6$ and $k=8$ respectively.
-%
-%The scatter plots gives an indication about when and how sensitive our
-%implemented distance metric is.
-%
-%When $k=4$, there is a linear relation when the identity $I>0.9$, but when
-%$I<0.9$ there is too much variance to express it as a linear function.
-%
-%With $k=6$, there seems to be a linear relation when $I>0.8$. When $I<0.8$ there
-%is more variance, though less than when $k=4$.
-%
-%When $k=8$, it is very similar to $k=6$. It seems there is a linear relation
-%for $I>0.8$ again and when $I<0.8$ the variance is greater.
-%%TODO: This section is shit
-%
 \begin{figure}[H]
   \begin{subfigure}[b]{0.5\textwidth}
     \includegraphics[scale=0.34]{graphics/k4.png}
@@ -164,11 +166,10 @@ to the length of the longer sequence.
   \begin{subfigure}[b]{0.5\textwidth}
     \includegraphics[scale=0.34]{graphics/k8.png}
   \end{subfigure}
-  \caption{Comparison of Levenshtein distance and our implementation of the
-  $k$-mer distance using windows and Jaccard index.}
-  \label{fig:Levenshtein_vs_Kmer}
+  \caption{Comparison of Levenshtein distance and the distance produced by the \textsc{K-Dist} algorithm at different $k$'s.}
+  \label{fig:Levenshtein_vs_KDist}
 \end{figure}
-
+%TODO Update figures and explain them.
 
 \subsection{Evaluating \textsc{K-Clust} on a synthetic dataset}
 \label{sec:synth_dataset}
@@ -246,7 +247,7 @@ color. Centroids were given a cirle marker and all other sequences were gives a
 ``+'' marker.
 
 A subset of the synthetic set described in section \ref{sec:synth_dataset} was
-used for the MDS, because the scatter plot easily becomes to densely populated
+used for the MDS, because the scatter plot easily becomes too densely populated
 and because the computation is too expensive for $380,000$ sequences. A set of
 400 sequences, consisting of 40 expected clusters with 10 sequences in each,
 was used for the visualization shown in figure \ref{fig:mds_synth}.
@@ -280,18 +281,19 @@ close to each other in the MDS.
 
 \subsection{Evaluating \texttt{klust} on real data}
 
-One example of this multidimensional scaling on the distance matrix for the
-first 500 sequences of \texttt{SILVA} is shown in figure \ref{fig:mds_tsne}.
-The centroids found using the clustering algorithm \textsc{K-Clust}, with
-similarity threshold 0.85, $max\_rejects$ 8 and $k$ 6, are pinpointed in the
-plot and labeled with the numbers of the sequences in the order they were read.
+% TODO
+% One example of this multidimensional scaling on the distance matrix for the
+% first 500 sequences of \texttt{SILVA} is shown in figure \ref{fig:mds_tsne}.
+% The centroids found using the clustering algorithm \textsc{K-Clust}, with
+% similarity threshold 0.85, $max\_rejects$ 8 and $k$ 6, are pinpointed in the
+% plot and labeled with the numbers of the sequences in the order they were read.
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=\textwidth]{graphics/MDS_t-SNE_SILVA_500.png}
-  \caption{Multidimensional scaling with annotations on centroids.}
-  \label{fig:mds_tsne}
-\end{figure}
+% \begin{figure}[h!]
+%   \centering
+%   \includegraphics[width=\textwidth]{graphics/MDS_t-SNE_SILVA_500.png}
+%   \caption{Multidimensional scaling with annotations on centroids.}
+%   \label{fig:mds_tsne}
+% \end{figure}
 
 To test the performance and quality of the program, it was run on different
 parameters and settings. The table in \ref{app:klust_data_parameters} shows
@@ -302,24 +304,8 @@ $42.63\%$ faster and never slower than sorting by decreasing length.
 Furthermore, sorting by increasing length on average has $8.77\%$ fewer
 clusters and never more clusters than not sorting. It has $25.07\%$ fewer
 clusters on average and never more clusters than when sorting by decreasing
-length. \\ So it shows that sorting by increasing length is always
-preferrable, which will be applied in future tests.
-
-\begin{figure}[H]
-  \centering
-  \begin{tabular}{ c | c }
-    Metric                                        & Comparisons/second      \\
-    \hline \hline
-    Dynamic programming (bottom up) Levenshtein   & $\sim$ 70               \\
-    \hline
-    d2-distance with window, $k=4$                & $\sim$ 73000            \\
-    \hline
-    d2-distance with window, $k=6$                & $\sim$ 63000            \\
-    \hline
-    d2-distance with window, $k=8$                & $\sim$ 24000            \\
-  \end{tabular}
-  \caption{Performance of different distance metrics.}
-\end{figure}
+length. \\ 
+The data shows that sorting by increasing length is always preferrable, and this parameter will be applied in future tests.
 
 \begin{figure}[H]
   \centering
