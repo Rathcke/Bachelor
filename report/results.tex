@@ -131,7 +131,10 @@ ratio similar to the one used in \textsc{K-Dist} and expressed in equation
 (\ref{eq:Manhattan_similarity}) was used. Specifically, the ratio between the
 Levenshtein distance and the maximum possible distance subtracted from the
 maximum possible distance. The maximum possible Levenshtein distance is equal
-to the length of the longer sequence. Data in figure \ref{fig:levenshtein_vs_kdist_performance} shows how many comparisons per second the implementation of Levenshtein and the implementation of \textsc{K-Dist} can be made.
+to the length of the longer sequence. Data in figure
+\ref{fig:levenshtein_vs_kdist_performance} shows how many comparisons per
+second the implementation of Levenshtein and the implementation of
+\textsc{K-Dist} can be made.
 
 \begin{figure}[H]   \centering   \begin{tabular}{ c | c }     Distance metric
 implementation              & Comparisons/second      \\     \hline \hline
@@ -304,8 +307,10 @@ $42.63\%$ faster and never slower than sorting by decreasing length.
 Furthermore, sorting by increasing length on average has $8.77\%$ fewer
 clusters and never more clusters than not sorting. It has $25.07\%$ fewer
 clusters on average and never more clusters than when sorting by decreasing
-length. \\ 
-The data shows that sorting by increasing length is always preferrable, and this parameter will be applied in future tests.
+length.
+
+The data shows that sorting by increasing length is always preferrable, and
+this parameter will be applied in future tests.
 
 \begin{figure}[H]
   \centering
