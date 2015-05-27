@@ -121,6 +121,54 @@ the count of up to $5 \cdot k$ $k$-mers, while five changes in sequence will
 only affect up to $4+k$ $k$-mers.
 
 
+\subsection{Comparing \textsc{K-Dist} with the Levenshtein distance metric}
+
+To evaluate the \textsc{K-Dist} algorithm, presented in section
+\ref{sec:kmer_distance}, the Levenshtein distance was used as reference. Since
+the Levenshtein distance does not produce values between 0 and 1, a similarity
+ratio similar to the one used in \textsc{K-Dist} and expressed in equation
+(\ref{eq:Manhattan_similarity}) was used. Specifically, the ratio between the
+Levenshtein distance and the maximum possible distance subtracted from the
+maximum possible distance. The maximum possible Levenshtein distance is equal
+to the length of the longer sequence.
+
+
+
+%In figure \ref{fig:Levenshtein_vs_Kmer} are three scatter plots with the
+%Levenshtein distance on the $y$-axis and the distance that \textsc{K-Dist}
+%produces on the $x$-axis. The three plots are with $k=4, k=6$ and $k=8$ respectively.
+%
+%The scatter plots gives an indication about when and how sensitive our
+%implemented distance metric is.
+%
+%When $k=4$, there is a linear relation when the identity $I>0.9$, but when
+%$I<0.9$ there is too much variance to express it as a linear function.
+%
+%With $k=6$, there seems to be a linear relation when $I>0.8$. When $I<0.8$ there
+%is more variance, though less than when $k=4$.
+%
+%When $k=8$, it is very similar to $k=6$. It seems there is a linear relation
+%for $I>0.8$ again and when $I<0.8$ the variance is greater.
+%%TODO: This section is shit
+%
+\begin{figure}[H]
+  \begin{subfigure}[b]{0.5\textwidth}
+    \includegraphics[scale=0.34]{graphics/k4.png}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.5\textwidth}
+    \includegraphics[scale=0.34]{graphics/k6.png}
+  \end{subfigure}
+
+  \centering
+  \begin{subfigure}[b]{0.5\textwidth}
+    \includegraphics[scale=0.34]{graphics/k8.png}
+  \end{subfigure}
+  \caption{Comparison of Levenshtein distance and our implementation of the
+  $k$-mer distance using windows and Jaccard index.}
+  \label{fig:Levenshtein_vs_Kmer}
+\end{figure}
+
+
 \subsection{Evaluating \textsc{K-Clust} on a synthetic dataset}
 \label{sec:synth_dataset}
 
@@ -228,58 +276,7 @@ close to each other in the MDS.
 
 % TODO: insert MDS figures and discuss
 
-
-
-
-\subsection{Comparing \textsc{K-Dist} with the Levenshtein distance metric}
-
-To evaluate the \textsc{K-Dist} algorithm, presented in section
-\ref{sec:kmer_distance}, the Levenshtein distance was used as reference. Since
-the Levenshtein distance does not produce values between 0 and 1, a similarity
-ratio similar to the one used in \textsc{K-Dist} and expressed in equation
-(\ref{eq:Manhattan_similarity}) was used. Specifically, the ratio between the
-Levenshtein distance and the maximum possible distance subtracted from the
-maximum possible distance. The maximum possible Levenshtein distance is equal
-to the length of the longer sequence.
-
-
-
-%In figure \ref{fig:Levenshtein_vs_Kmer} are three scatter plots with the
-%Levenshtein distance on the $y$-axis and the distance that \textsc{K-Dist}
-%produces on the $x$-axis. The three plots are with $k=4, k=6$ and $k=8$ respectively.
-%
-%The scatter plots gives an indication about when and how sensitive our
-%implemented distance metric is.
-%
-%When $k=4$, there is a linear relation when the identity $I>0.9$, but when
-%$I<0.9$ there is too much variance to express it as a linear function.
-%
-%With $k=6$, there seems to be a linear relation when $I>0.8$. When $I<0.8$ there
-%is more variance, though less than when $k=4$.
-%
-%When $k=8$, it is very similar to $k=6$. It seems there is a linear relation
-%for $I>0.8$ again and when $I<0.8$ the variance is greater.
-%%TODO: This section is shit
-%
-\begin{figure}[H]
-  \begin{subfigure}[b]{0.5\textwidth}
-    \includegraphics[scale=0.34]{graphics/k4.png}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.5\textwidth}
-    \includegraphics[scale=0.34]{graphics/k6.png}
-  \end{subfigure}
-
-  \centering
-  \begin{subfigure}[b]{0.5\textwidth}
-    \includegraphics[scale=0.34]{graphics/k8.png}
-  \end{subfigure}
-  \caption{Comparison of Levenshtein distance and our implementation of the
-  $k$-mer distance using windows and Jaccard index.}
-  \label{fig:Levenshtein_vs_Kmer}
-\end{figure}
-
-
-\subsection{Evaluating clustering algorithm on real data}
+\subsection{Evaluating \texttt{klust} on real data}
 
 One example of this multidimensional scaling on the distance matrix for the
 first 500 sequences of \texttt{SILVA} is shown in figure \ref{fig:mds_tsne}.
@@ -294,19 +291,18 @@ plot and labeled with the numbers of the sequences in the order they were read.
   \label{fig:mds_tsne}
 \end{figure}
 
-Another test is what parameters and settings works well for the performance of
-the program and quality of the clustering. The table in
-\ref{app:klust_data_parameters} shows output data from running the first
-$100,000$ sequences from \texttt{SILVA} with different parameters. Sorting by
-increasing length is on average $21.65\%$ faster and never slower than not
-sorting. It is also on average $42.63\%$ faster and never slower than sorting
-by decreasing length. Furthermore, sorting by increasing length on average has
-$8.77\%$ fewer clusters and never more clusters than not sorting. It has
-$25.07\%$ fewer clusters on average and never more clusters than when sorting
-by decreasing length. \\
-So it shows that sorting by increasing length is always preferrable, so in the following tests this will be used.
+To test the performance and quality of the program, it was run on different
+parameters and settings. The table in \ref{app:klust_data_parameters} shows
+output data from running the first $100,000$ sequences from \texttt{SILVA}
+with different parameters. Sorting by increasing length is on average
+$21.65\%$ faster and never slower than not sorting. It is also on average
+$42.63\%$ faster and never slower than sorting by decreasing length.
+Furthermore, sorting by increasing length on average has $8.77\%$ fewer
+clusters and never more clusters than not sorting. It has $25.07\%$ fewer
+clusters on average and never more clusters than when sorting by decreasing
+length. \\ So it shows that sorting by increasing length is always
+preferrable, which will be applied in future tests.
 
-\subsection{Results}
 \begin{figure}[H]
   \centering
   \begin{tabular}{ c | c }
