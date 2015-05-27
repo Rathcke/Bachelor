@@ -1,5 +1,48 @@
-\section{Implementation} \label{sec:implementation} % TODO
+\section{Implementation} \label{sec:implementation}
 
 \subsection{Compressing sequence data}
 
+Since the sequence data to be clustered can be very large, efficient memory
+usage is essential. The implementation of \textsc{K-Clust} reads all the
+sequences into memory, simultaneously transforming it into a lower memory
+representation which takes up a quarter of the space of a simple 8-bit
+character representation. This is done by representing each nucleotide by just
+2 bits. However, this ought to be improved so that the program would deallocate
+memory used for sequences as soon they become part of an existing cluster,
+since they will not be accessed again until writing the result to a file after
+the clustering is finished.
+
+The \texttt{klust} program has a maximum memory usage of around 1GB (cf. the
+table in figure \ref{fig:full_silva_results_performance}) when clustering the
+\texttt{SILVA} dataset of size 2.3GB (cf. section
+\ref{sec:overview_of_datasets}), so storing all data in memory is not actually
+a problem for the sizes of the datasets used for testing.
+
+
+\subsection{Speeding up centroid search}
+
+For each sequence, a \verb|bitset<4096>|, i.e. a space efficient \texttt{C++}
+bit vector of statically fixed size, of the $6$-mers occurring in that
+sequences is computed. If that sequence becomes a centroid, the bit vector is
+copied and stored in a structure representing the centroid, along with the
+centroid sequence etc., to avoid recomputing it later and if the sequence
+matches an existing cluster, the bit vector is reused for subsequent sequences.
+
+
+
 \subsection{Divide and conquer with parallelization of clustering}
+
+A simple divide and conquer approach was implemented and used with the
+\textsc{K-Clust} algorithm. This is, however, not used in the \texttt{klust}
+program.
+
+The array of sequences is divided into a given number of subarrays, using
+indexing to avoid copying, which are then each clustered in separate threads
+using the implementation of \textsc{K-Clust}.  Each of these clustering
+subtasks yields a list of centroids which are then merged in a similar way to
+how \textsc{K-Clust} searches for a centroid: two centroids representing
+different clusters are compared if the ratio between the number of $k$-mers
+they have in common and the number of $k$-mers in the target centroid is above
+or equal to the threshold parameter for the clustering. Additionally,
+$max\_rejects$ is also used to limit the number of compares that can be made
+for each centroid.

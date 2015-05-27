@@ -1,6 +1,7 @@
 \section{Results and evaluation} \label{sec:results}
 
 \subsection{Overview of datasets used for testing}
+\label{sec:overview_of_datasets}
 
 A couple of different datasets will be used for testing and evaluating the
 implementation of the distance metrics and clustering algorithms presented in
@@ -239,9 +240,10 @@ relative distances between the sequences as well as possible.
 The technique used for dimensionality reduction was \emph{t-distributed
 Stochastic Neighbor Embedding} (t-SNE)~\cite{maaten}. This was done using
 \texttt{Python} with \texttt{matplotlib} and \texttt{scikit-learn}. Sequences
-expected to be in the same cluster was given the same color and thus the MDS is
-expected to give a visualization of separate clusters of points of the same
-color.
+expected to be in the same cluster were given the same color and thus the MDS
+is expected to give a visualization of separate clusters of points of the same
+color. Centroids were given a cirle marker and all other sequences were gives a
+``+'' marker.
 
 A subset of the synthetic set described in section \ref{sec:synth_dataset} was
 used for the MDS, because the scatter plot easily becomes to densely populated
@@ -253,7 +255,7 @@ was used for the visualization shown in figure \ref{fig:mds_synth}.
   \includegraphics[width=\textwidth]{graphics/MDS_t-SNE_synth_silva_400.png}
   \caption{Multidimensional scaling using t-SNE of the 400 sequences and
     40 expected clusters from the synthetic dataset described in section
-    \ref{sec:synth_dataset}.}
+    \ref{sec:synth_dataset}. Centroids are marked with a cirle.}
   \label{fig:mds_synth}
 \end{figure}
 
