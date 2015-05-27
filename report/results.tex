@@ -158,8 +158,19 @@ appendix \ref{app:synth_dataset} and an excerpt from the clustering ouput file
 created by the program is shown in figure \ref{fig:synth_silva_clustering} in
 the same appendix. This shows that the sequences in each cluster have the same
 description line, i.e. they were constructed to be similar and should indeed be
-in the same cluster. The result was equally correct when running \texttt{klust}
-with $id=0.9$.
+in the same cluster. The result was equally correct when clustering with a
+threshold parameter of $0.89$, but the results start containing a few errors
+when clustering with a threshold of $0.9$ or above. In the specific test, and
+the specific, random order of the sequences, the clustering result yielded 386
+clusters for $id=0.9$, average cluster size of $984.456$ and a minimum cluster
+size of $33$.
+
+% TODO: maybe add something like the following:
+% This threshold is, however, close to the expected similarity of $0.92$ and
+% since the clustering algorithm does not call \textsc{K-Dist} on every
+% sequence/centroid pair, these errors can likely be contributed to
+% \textsc{K-Clusts}'s choice of whether to call \textsc{K-Dist} or not, along
+% with standard error.
 
 This test provides some evidence that \textsc{K-Clust} is able to successfully
 cluster a dataset of a fairly realistic size. Since the similarities are known
@@ -168,6 +179,7 @@ $0.92$ on $k=5$, this is not a test of the \textsc{K-Dist} distance metric.
 
 
 \subsubsection{Multidimensional scaling of the synthetic dataset}
+\label{sec:mds_synth}
 
 \emph{Multidimensional scaling} (MDS) of the sequences in the synthetic data
 set was used to visualize and further evaluate the clustering result from the
@@ -176,48 +188,79 @@ is used to visualize the distances between all the sequences in the synthetic
 dataset in two dimensions, i.e. a scatter plot that tries to maintain the
 relative distances between the sequences as well as possible.
 
-The technique used for the dimensionality reduction is \emph{t-distributed
+The technique used for dimensionality reduction was \emph{t-distributed
 Stochastic Neighbor Embedding} (t-SNE)~\cite{maaten}. This was done using
 \texttt{Python} with \texttt{matplotlib} and \texttt{scikit-learn}. Sequences
 expected to be in the same cluster was given the same color and thus the MDS is
 expected to give a visualization of separate clusters of points of the same
 color.
 
-The MDS of the first 400 sequences of the synthetic dataset, i.e. the first 40
-clusters, is shown in figure \ref{fig:mds_synth}.
+A subset of the synthetic set described in section \ref{sec:synth_dataset} was
+used for the MDS, because the scatter plot easily becomes to densely populated
+and because the computation is too expensive for $380,000$ sequences. A set of
+400 sequences, consisting of 40 expected clusters with 10 sequences in each,
+was used for the visualization shown in figure \ref{fig:mds_synth}.
 
 \begin{figure}[H]
   \includegraphics[width=\textwidth]{graphics/MDS_t-SNE_synth_silva_400.png}
-  \caption{Multidimensional scaling of the first 400 sequences (40 expected
-    clusters) of the synthetic dataset.}
+  \caption{Multidimensional scaling using t-SNE of the 400 sequences and
+    40 expected clusters from the synthetic dataset described in section
+    \ref{sec:synth_dataset}.}
   \label{fig:mds_synth}
 \end{figure}
 
+% TODO: discussion of the MDS figure
 
-\subsection{Evaluating distance metric}
+
+\subsection{Evaluating \textsc{K-Clust} on real data using MDS}
+
+The \textsc{K-Clust} was also tested on real data, specifically the
+\texttt{SILVA} dataset, using MDS to visualize the clustering result as
+described in section \ref{sec:mds_synth}.
+
+The clustering result from \texttt{klust} on \texttt{SILVA} consists of
+clusters of very different sizes and a large number of singleton clusters, i.e.
+clusters containing only the centroid sequence. This means that this data will
+be harder to visualize nicely with MDS, since the clusters wont be as clearly
+defined as with the synthetic dataset, but it should at least be possible to
+identify the sequences of large clusters and observe whether they are indeed
+close to each other in the MDS.
+
+% TODO: insert MDS figures and discuss
+
+
+
+
+\subsection{Comparing \textsc{K-Dist} with the Levenshtein distance metric}
 
 To evaluate the \textsc{K-Dist} algorithm, presented in section
 \ref{sec:kmer_distance}, the Levenshtein distance was used as reference. Since
-the Levenshtein distance does not produce values between $0$ and $1$, the
-Jaccard index was used here as well. %TODO: How is it used
+the Levenshtein distance does not produce values between 0 and 1, a similarity
+ratio similar to the one used in \textsc{K-Dist} and expressed in equation
+(\ref{eq:Manhattan_similarity}) was used. Specifically, the ratio between the
+Levenshtein distance and the maximum possible distance subtracted from the
+maximum possible distance. The maximum possible Levenshtein distance is equal
+to the length of the longer sequence.
 
-In figure \ref{fig:Levenshtein_vs_Kmer} are three scatter plots with the
-Levenshtein distance on the $y$-axis and the distance that \textsc{K-Dist}
-produces on the $x$-axis. The three plots are with $k=4, k=6$ and $k=8$ respectively.
 
-The scatter plots gives an indication about when and how sensitive our
-implemented distance metric is.
 
-When $k=4$, there is a linear relation when the identity $I>0.9$, but when
-$I<0.9$ there is too much variance to express it as a linear function.
-
-With $k=6$, there seems to be a linear relation when $I>0.8$. When $I<0.8$ there
-is more variance, though less than when $k=4$.
-
-When $k=8$, it is very similar to $k=6$. It seems there is a linear relation
-for $I>0.8$ again and when $I<0.8$ the variance is greater.
-%TODO: This section is shit
-
+%In figure \ref{fig:Levenshtein_vs_Kmer} are three scatter plots with the
+%Levenshtein distance on the $y$-axis and the distance that \textsc{K-Dist}
+%produces on the $x$-axis. The three plots are with $k=4, k=6$ and $k=8$ respectively.
+%
+%The scatter plots gives an indication about when and how sensitive our
+%implemented distance metric is.
+%
+%When $k=4$, there is a linear relation when the identity $I>0.9$, but when
+%$I<0.9$ there is too much variance to express it as a linear function.
+%
+%With $k=6$, there seems to be a linear relation when $I>0.8$. When $I<0.8$ there
+%is more variance, though less than when $k=4$.
+%
+%When $k=8$, it is very similar to $k=6$. It seems there is a linear relation
+%for $I>0.8$ again and when $I<0.8$ the variance is greater.
+%%TODO: This section is shit
+%
 \begin{figure}[H]
   \begin{subfigure}[b]{0.5\textwidth}
     \includegraphics[scale=0.34]{graphics/k4.png}
