@@ -91,8 +91,8 @@ and is used as the distance metric in the \texttt{klust} program.
       \State initialize array \texttt{kmers} of size $4^k$
       \State $cur\_dist \gets 0$
       \For{$i \gets 0$ to $length(s) - k$}
-        %\State \Call{\textsc{Update-Distance}}{($t$.substring($i$, $k$),
-        %                $s$.substring($i$, $k$), dist)}
+        \State $dist \gets $ \Call{\textsc{Update-Dist}}{($t$.substring($i$, $k$),
+                        $s$.substring($i$, $k$), dist)}
         \State \texttt{kmers}[$s$.substring($i$, $k$)]\texttt{++}
         \Comment{\parbox[t]{.3\linewidth}{$k$-mer counting}}
         \State \texttt{kmers}[$t$.substring($i$, $k$)]\texttt{-{}-}
@@ -114,7 +114,7 @@ and is used as the distance metric in the \texttt{klust} program.
       \State \Return{$(total-min\_dist) / total$}
     \EndFunction
     \Statex
-    \Function{Update-Distance}{$\mathtt{arr}, kmer\_exit, kmer\_enter, dist$}
+    \Function{Update-Dist}{$\mathtt{arr}, kmer\_exit, kmer\_enter, dist$}
       \If{$\mathtt{arr}[kmer\_exit] > 0$}
         \State $dist \gets dist - 1$
       \Else
@@ -125,6 +125,7 @@ and is used as the distance metric in the \texttt{klust} program.
       \Else
         \State $dist \gets dist + 1$
       \EndIf
+      \State \Return{$dist$}
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
