@@ -78,9 +78,11 @@ of the elements into account and therefore it might give a lower sensitivity
 than the similarity measure in (\ref{eq:Manhattan_similarity}).
 
 The \textsc{K-Dist} algorithm (algorithm \ref{alg:K-Dist}) has been implemented
-and is used as the distance metric in the \texttt{klust} program.
+and is used as the distance metric in the \texttt{klust} program. The
+$s.substring(i,k)$ method extracts $k$ characters from a string $s$ beginning
+at position $i$.
 
-\begin{algorithm}
+\begin{algorithm}[H]
   \caption{\textsc{K-Dist} algorithm}
   \label{alg:K-Dist}
   \begin{algorithmic}[1]
@@ -88,39 +90,60 @@ and is used as the distance metric in the \texttt{klust} program.
     \Statex
     \Function{K-Dist}{$s, t, k$}
       \State set $s$ to the shorter sequence and $t$ to the longer sequence
-      \State initialize array \texttt{kmers} of size $4^k$
+      \State initialize map \texttt{kmers} : \texttt{string} $\to$
+        \texttt{int} (0 initialized on first access)
       \State $cur\_dist \gets 0$
       \For{$i \gets 0$ to $length(s) - k$}
-        \State $dist \gets $ \Call{\textsc{Update-Dist}}{($t$.substring($i$, $k$),
-                        $s$.substring($i$, $k$), dist)}
-        \State \texttt{kmers}[$s$.substring($i$, $k$)]\texttt{++}
+        \State $s_i \gets s.substring(i, k)$
+        \State $t_i \gets t.substring(i, k)$
+        \State $cur\_dist \gets $ \Call{\textsc{Update-Dist}}
+          {\texttt{kmers}, $s_i$, $t_i$, $cur\_dist$}
+        \State \texttt{kmers}[$s_i$]\texttt{++}
         \Comment{\parbox[t]{.3\linewidth}{$k$-mer counting}}
-        \State \texttt{kmers}[$t$.substring($i$, $k$)]\texttt{-{}-}
+        \State \texttt{kmers}[$t_i$]\texttt{-{}-}
       \EndFor
-      \ForAll{$c \in$ \texttt{kmers}}
-        \State $cur\_dist \gets cur\_dist + |c|$
-          \Comment{\parbox[t]{.3\linewidth}{Manhattan distance}}
-      \EndFor
+      %\ForAll{$c \in$ \texttt{kmers}}
+      %  \State $cur\_dist \gets cur\_dist + |c|$
+      %    \Comment{\parbox[t]{.3\linewidth}{Manhattan distance}}
+      %\EndFor
       \State $min\_dist \gets cur\_dist$
       \For{$i \gets 0$ to $length(t) - length(s)$}
           \Comment{\parbox[t]{.3\linewidth}{No. of windows}}
-        \State \texttt{kmers}[$t$.substring($i$, $k$)]\texttt{-{}-}
-        \State \texttt{kmers}[$t$.substring($length(s)-k+i+1$, $k$)]\texttt{++}
-        \State update $cur\_dist$ to current Manhattan distance
+        \State $kmer_{out} \gets t.substring(i, k)$
+        \State $kmer_{in} \gets t.substring(length(s)-k+i+1, k)$
+        \State $cur\_dist \gets $ \Call{\textsc{Update-Dist}}
+          {\texttt{kmers}, $kmer_{in}$, $kmer_{out}$, $cur\_dist$}
+        \State $\mathtt{kmers}[kmer_{out}]$\texttt{-{}-}
+        \State $\mathtt{kmers}[kmer_{in}]$\texttt{++}
+        %\State update $cur\_dist$ to current Manhattan distance
         \State $min\_dist \gets min(min\_dist, cur\_dist)$
       \EndFor
           \State $total \gets 2(length(s)-k+1)$
             \Comment{\parbox[t]{.3\linewidth}{Maximal distance}}
       \State \Return{$(total-min\_dist) / total$}
     \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+The auxiliary function \textsc{Update-Dist} is shown in algorithm
+\ref{alg:update-dist} and is used to continuously update the $cur\_dist$
+variable based on the $k$-mer counts in the map of $k$-mers occurring in the
+sequences. The function returns the updated distance.
+
+\begin{algorithm}[H]
+  \caption{\textsc{Update-Dist} auxiliary function}
+  \label{alg:update-dist}
+  \begin{algorithmic}[1]
+    \Require{\texttt{m} is a map from \texttt{string} to \texttt{integer},
+      $kmer\_add$ and $kmer\_sub$ are strings and $dist \in \mathbb{Z}$}
     \Statex
-    \Function{Update-Dist}{$\mathtt{arr}, kmer\_exit, kmer\_enter, dist$}
-      \If{$\mathtt{arr}[kmer\_exit] > 0$}
+    \Function{Update-Dist}{$\mathtt{m},\,kmer\_add,\,kmer\_sub,\,dist$}
+      \If{$\mathtt{arr}[kmer\_add] < 0$}
         \State $dist \gets dist - 1$
       \Else
         \State $dist \gets dist + 1$
       \EndIf
-      \If{$\mathtt{arr}[kmer\_enter] < 0$}
+      \If{$\mathtt{arr}[kmer\_sub] > 0$}
         \State $dist \gets dist - 1$
       \Else
         \State $dist \gets dist + 1$
@@ -131,14 +154,35 @@ and is used as the distance metric in the \texttt{klust} program.
 \end{algorithm}
 
 
-\subsubsection{Time complexity analysis} \label{sec:k-dist_analysis}
+\subsubsection{Complexity analysis} \label{sec:k-dist_analysis}
 
-The \textsc{K-Dist} algorithm first iterates over the first $|s|-k$ characters,
-where $|s|$ denotes the length of the shorter of the two sequences. Each
-iteration contains only constant time operations. So far, a running time of
-$\Theta(\abs{s}-k)$.
+The \textsc{K-Dist} algorithm consists of two loops and a number of constant
+operations outside of the loops. In the first loop, the \textsc{K-Dist}
+algorithm iterates over the first $|s|-k$ characters, where $|s|$ denotes the
+length of the shorter of the two sequences. Each iteration contains only
+constant time operations. So far, a running time of $\Theta(\abs{s}-k)$ since
+the number of iterations is bounded both from below and from above by
+$\abs{s}-k$. This is assuming that the map lookup is $\mathcal{O}(1)$ and that
+the $substring$ method is constant time as well, which is the case when strings
+are implemented as character arrays, assuming no copying is needed.
 
-Secondly, the algorithm iterates over the \texttt{kmers} array, which is of
-size $4^k$, and performs a single addition for each position.
+In the second loop, \textsc{K-Dist} performs $|t|-|s|$ iterations which each
+contains a constant number of constant time operations. This gives a running
+time of $\Theta(\abs{t}-\abs{s})$.
 
-% TODO: fix algorithm
+This yields a total running time of
+\begin{align}
+  \Theta(\abs{s}-k) + \Theta(\abs{t}-\abs{s})
+  &= \Theta(\abs{s} - k + \abs{t} - \abs{s}) \\
+  &= \Theta(\abs{t} - k) \;.
+\end{align}
+
+More generally, given two string $s$ and $t$ and $k \in \mathbb{Z}^{+}$, the
+\textsc{K-Dist} algorithm has a worst case, average case and best case running
+time of $\Theta(\max{\left(\abs{s}, \abs{t}\right)} - k)$.
+
+The space usage of \textsc{K-Dist} depends on the value of $k$ and the $k$-mers
+occurring in the sequences, since this affects the size of the \texttt{kmers}
+map. The worst case space complexity is $\mathcal{O}\left(4^k\right)$, i.e.
+exponential in the value of $k$, however, since $k$ will generally be assumed
+to be less than or equal to 8, this is not a problem.

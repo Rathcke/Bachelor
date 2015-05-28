@@ -51,7 +51,7 @@
       \ForAll{$s \in S$}
         \State $mfk \gets$ $max\_rejects$ most frequent $k$-mers in $s$
         \ForAll{$m \in mfk$}
-          \If{$centroids[m]$ does not exists}
+          \If{$centroids[m]$ does not exists} \label{alg:line:simple_clust_lookup}
             \State continue
           \ElsIf{$distance(s, centroids[m]) \geq id$}
             \State add $s$ to cluster with centroid $centroids[m]$

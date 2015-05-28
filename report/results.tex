@@ -274,7 +274,9 @@ was used for the visualization shown in figure \ref{fig:mds_synth}.
   \includegraphics[width=\textwidth]{graphics/MDS_t-SNE_synth_silva_400.png}
   \caption{Multidimensional scaling using t-SNE of the 400 sequences and
     40 expected clusters from the synthetic dataset described in section
-    \ref{sec:synth_dataset}. Centroids are marked with a cirle.}
+    \ref{sec:synth_dataset}. Centroids are marked with a circle. The clustering
+    result from \texttt{klust} with $k=5$, $id=0.85$ and $max\_rejects=8$ is
+    used to color different clusters with different colors.}
   \label{fig:mds_synth}
 \end{figure}
 
@@ -283,7 +285,7 @@ was used for the visualization shown in figure \ref{fig:mds_synth}.
 
 \subsection{Evaluating \textsc{K-Clust} on real data using MDS}
 
-The \textsc{K-Clust} was also tested on real data, specifically the
+The \textsc{K-Clust} algorithm was also tested on real data, specifically the
 \texttt{SILVA} dataset, using MDS to visualize the clustering result as
 described in section \ref{sec:mds_synth}.
 
@@ -295,7 +297,40 @@ defined as with the synthetic dataset, but it should at least be possible to
 identify the sequences of large clusters and observe whether they are indeed
 close to each other in the MDS.
 
-% TODO: insert MDS figures and discuss
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{1.0\textwidth}
+    \includegraphics[width=1.0\textwidth]{graphics/SILVA_t-SNE_500.png}
+    \caption{Sequences not sorted.}
+    \label{fig:mds_silva_no_sort}
+  \end{subfigure}
+
+  \hfill\\
+  \hspace{2em}
+  \begin{subfigure}[b]{1.0\textwidth}
+    \includegraphics[width=1.0\textwidth]{graphics/SILVA_t-SNE_incr_sort_500.png}
+    \caption{Sorted by increasing sequence length.}
+    \label{fig:mds_silva_sort_incr}
+  \end{subfigure}
+\end{figure}
+\clearpage
+\begin{figure}[H]
+  \ContinuedFloat
+  \begin{subfigure}[b]{1.0\textwidth}
+    \includegraphics[width=1.0\textwidth]{graphics/SILVA_t-SNE_decr_sort_500.png}
+    \caption{Sorted by decreasing sequence length.}
+    \label{fig:mds_silva_sort_decr}
+  \end{subfigure}
+  \caption{MDS using t-SNE of the first 500 sequences from \texttt{SILVA} with
+    the clustering result from \texttt{klust}, using parameters $k=5$,
+    $id=0.85$ and $max\_rejects=8$, used to color different clusters with
+    different colors. Centroids are marked with a circle. Sequences were sorted
+    by length before clustering as noted under each subfigure.}
+  \label{fig:mds_silva}
+\end{figure}
+
+% TODO: discuss
+
 
 \subsection{Evaluating \texttt{klust} on real data}
 

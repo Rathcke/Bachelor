@@ -71,13 +71,14 @@ $k$-mer in the sequence. Pseudocode for the algorithm is attached in appendix
 This algorithm did not perform as well as hoped, in particular for larger $k$
 the number of different possible $k$-mers increases exponentially and for e.g.
 $k = 6$ and a four letter alphabet, there are $4^6 = 4096$ different $k$-mers
-and therefore the lookup in line 7 of the algorithm will often be unsuccessful.
-Additionally, the most frequently occurring $k$-mer did not appear to be a
-sufficiently good characteristic for choosing a centroid that is likely to
-match, as it is seen from the evaluation in section \ref{sec:results}. To
-clarify, the correspondence between the most frequently occurring $k$-mer of
-two sequences and the similarity of the sequences, is evidently not very strong.
-% TODO: Move to results?
+and therefore the lookup in line \ref{alg:line:simple_clust_lookup} of the
+algorithm will often be unsuccessful. Additionally, the most frequently
+occurring $k$-mer did not appear to be a sufficiently good characteristic for
+choosing a centroid that is likely to match, as it is seen from the evaluation
+in section \ref{sec:results}. To clarify, the correspondence between the most
+frequently occurring $k$-mer of two sequences and the similarity of the
+sequences, is evidently not very strong.
+% TODO: Maybe move to results?
 
 
 \subsection{\textsc{K-Clust} algorithm}
@@ -97,16 +98,20 @@ alternatives, but the algorithm should nonetheless be less prone to bad
 performance caused by an unlucky ordering of the input sequences. Algorithm
 \ref{alg:k-clust} shows pseudocode for the \textsc{K-Clust} algorithm.
 
-%TODO: Move some of it to results? SILVA not introduced.
+The choice of whether to compare a query sequence with a centroid is decided
+using the formula
+\begin{equation}
+  \abs{K(s) \cap K(c)} \geq \abs{K(c)} \cdot id \;
+\end{equation}
+where $s$ is the query sequence, $c$ is the centroid sequence and $id$ is the
+threshold similarity. $K(x)$ denotes the number of $k$-mers in a sequence $x$.
+In the \texttt{klust} program this value is hard coded to $k=6$ for performance
+reasons.
+
 The idea of moving a matching centroid to the front of the list is, among other
-things, inspired by the observation that the results from \texttt{UCLUST} and
+things, inspired by the observation that the results from \texttt{USEARCH} and
 \texttt{VSEARCH} often contain a large number of very small clusters and even
-singleton clusters, i.e. clusters consisting of just a single sequence. For
-example, clustering the data set \texttt{SILVA\_119\_SSURef\_tax\_silva.fasta}
-with \texttt{USEARCH} and a similarity threshold of $0.95$, gives 117,205
-clusters out of which 67,410 clusters are singleton clusters, that is more than
-half of the clusters. These results are shown in figure \ref{fig:uclust_silva}
-in section \ref{sec:results}.
+singleton clusters, i.e. clusters consisting of just a single sequence.
 
 \begin{algorithm}[H]
   \caption{\textsc{K-Clust}}
@@ -205,3 +210,5 @@ and so the running time is quadratic in the number of sequences, i.e.:
 \begin{equation}
   \mathcal{O}\left(\abs{S}^2\right)
 \end{equation}
+
+% TODO: analyze space complexity
