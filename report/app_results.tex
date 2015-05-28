@@ -136,7 +136,7 @@
   8  &  0.95  & no    & 127.323  &  785.403 &  38983  &  858   &  2.56522  &  1  & 83  MB \\
   8  &  0.95  & decr. & 152.263  &  656.76  &  43977  &  409   &  2.27392  &  1  & 86  MB \\
   8  &  0.95  & incr. & 111.632  &  895.798 &  36174  &  793   &  2.76442  &  1  & 81  MB \\
-  \caption{Clustering results and performance for different parameters for
+  \caption{Clustering results and prformance for different parameters for
     \texttt{klust} on the first $100,000$ sequences of the \texttt{SILVA} dataset.}
   \label{fig:klust_results_params}
 \end{longtable}
@@ -169,3 +169,163 @@ the clustering output file is shown in figure \ref{fig:synth_silva_clustering}.
     synthetic dataset.}
   \label{fig:synth_silva_clustering}
 \end{figure}
+
+\subsection{Performance results on entire \texttt{SILVA} set}
+\label{app:performance_results_full_SILVA}
+
+\begingroup
+\setlength{\LTleft}{-20cm plus -1fill}
+\setlength{\LTright}{\LTleft}
+\begin{longtable}{c|cc|c|c|c|c}
+  \multirow{2}{*}{}
+  Clustering & \multicolumn{2}{c|}{Parameters} & Sorting & Time & Throughput & Max memory \\
+  algorithm & & & & (sec.) & (seqs./sec.) & \\
+  \hline \hline
+  \multirow{3}{*}
+  {\textsc{Simple-Clust}} & k & 6 & & & & \\
+                     & id & 0.85 & no & 474.117 & 3340.59 & - \\
+                     & m & 32 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 5 & & & & \\
+                     & id & 0.8 & no & 623.622 & 2539.73 & 1013 MB \\
+                     & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 5 & & & & \\
+                     & id & 0.8 & incr. & 501.697 & 3156.94 & 1013 MB \\
+                     & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 5 & & & & \\
+                     & id & 0.85 & no & 1314.18 & 1205.18 & 1013 MB \\
+                     & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 5 & & & & \\
+                     & id & 0.85 & incr & 1144.55 & 1383.81 & 1013 MB \\
+                     & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 5 & & & & \\
+                     & id & 0.90 & no & 2982.8 & 530.988 & 1030 MB \\
+                     & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 5 & & & & \\
+                     & id & 0.90 & incr. & 2578.88 & 614.155 & 1021 MB \\
+                     & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 6 & & & & \\
+                     & id & 0.8 & no & 1021.26 & 1550.86 & 1014 MB \\
+                     & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 6 & & & & \\
+                     & id & 0.8 & incr. & 856.785 & 1848.57 & 1014 MB \\
+                     & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 6 & & & & \\
+                     & id & 0.85 & no & 2014.1 & 786.373 & 1014 MB \\
+                     & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 6 & & & & \\
+                     & id & 0.85 & incr. & 1812.02 & 874.066 & 1012 MB \\
+                     & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 6 & & & & \\
+                     & id & 0.9 & no & 4245.53 & 373.059 & 1045 MB \\
+                     & m & 8 & & & & \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 6 & & & & \\
+                     & id & 0.9 & incr. & 3450.59 & 459.003 & 1039 MB \\
+                     & m & 8 & & & & \\
+  \caption{Performance results for different parameters of
+    \texttt{klust} on the entire \texttt{SILVA} dataset.}
+  \label{fig:full_silva_results_performance}
+\end{longtable}
+\endgroup
+
+\subsection{Clustering results on entire \texttt{SILVA} set}
+\label{app:cluster_results_full_SILVA}
+\begingroup
+\setlength{\LTleft}{-20cm plus -1fill}
+\setlength{\LTright}{\LTleft}
+\begin{longtable}{c|cc|c|c|cc}
+  Clustering algorithm & \multicolumn{2}{c|}{Parameters} & Sorting & Clusters & \multicolumn{2}{c}{Cluster sizes} \\
+  & & & & & \\
+  \hline \hline
+  \multirow{3}{*}
+  {\textsc{Simple-Clust}} & k & 6 & & & Max & - \\
+                     & id & 0.85 & no & 1273293 & Avg. & 1.2439 \\
+                     & m & 32 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 5 & & & Max & 68542 \\
+                     & id & 0.8 & no & 70080 & Avg. & 22.6003 \\
+                     & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 5 & & & Max & 57121 \\
+                     & id & 0.8 & incr. & 60111 & Avg. & 26.3484 \\
+                     & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 5 & & & Max & 76164 \\
+                     & id & 0.85 & no & 112063 & Avg. & 14.1334 \\
+                     & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 5 & & & Max & 57885 \\
+                     & id & 0.85 & incr. & 98354 & Avg. & 16.1034 \\
+                     & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 5 & & & Max & 46915 \\
+                     & id & 0.9 & no & 179222 & Avg. & 8.83725 \\
+                     & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 5 & & & Max & 71407 \\
+                     & id & 0.9 & incr. & 159812 & Avg. & 9.91058 \\
+                     & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 6 & & & Max & 87170 \\
+                     & id & 0.8 & no & 93055 & Avg. & 17.0204 \\
+                     & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 6 & & & Max & 60256 \\
+                     & id & 0.8 & incr. & 86905 & Avg. & 18.2248 \\
+                     & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 6 & & & Max & 63452 \\
+                     & id & 0.85 & no & 138023 & Avg. & 11.4751 \\
+                     & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 6 & & & Max & 79599 \\
+                     & id & 0.85 & incr. & 127711 & Avg. & 12.4017 \\
+                     & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 6 & & & Max & 43381 \\
+                     & id & 0.9 & no & 207890 & Avg. & 7.6186 \\
+                     & m & 8 & & & Min & 1 \\
+  \hline
+  \multirow{3}{*}
+  {\textsc{K-Clust}} & k & 6 & & & Max & 49479 \\
+                     & id & 0.9 & incr. & 191361 & Avg. & 8.27666 \\
+                     & m & 8 & & & Min & 1 \\
+  \caption{Clustering results for different parameters of
+    \texttt{klust} on the entire \texttt{SILVA} dataset.}
+  \label{fig:full_silva_results_clusters}
+\end{longtable}
+\endgroup

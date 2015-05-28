@@ -18,11 +18,11 @@ section.
     and contains $3,019,928$ DNA sequences.
 \end{description}
 
-Various statistics about the datasets are shown in figure \ref{fig:data_stats}.
+Various statistics about the datasets are shown in table \ref{tab:data_stats}.
 The error ratio is the ratio between the number of non DNA/RNA bases, i.e. 'R',
 'Y', 'K' etc., and the total number of characters in the sequences.
 
-\begin{figure}[H]
+\begin{table}[H]
   \centering
   \begin{tabular}{c |  c | c | c | c | c}
     Dataset        & Avg. len. & Min. len. & Max. len. & Median len. & Error ratio \\
@@ -31,8 +31,8 @@ The error ratio is the ratio between the number of non DNA/RNA bases, i.e. 'R',
     \texttt{RDP}   & 1,044.19  & 400       & 2,922     & 1,132       & 0.000798764 \\
   \end{tabular}
   \caption{Various information about the different datasets.}
-  \label{fig:data_stats}
-\end{figure}
+  \label{tab:data_stats}
+\end{table}
 
 
 \subsection{Testing the distance metric on altered sequences}
@@ -80,9 +80,9 @@ $k$-mer distance when performing a controlled number of edits.
 
 The similarities between the original sequence from \texttt{SILVA} and the 10
 altered sequences, for the four different types of alterations, are shown in
-figure \ref{fig:altered_seqs_similarities}.
+table \ref{tab:altered_seqs_similarities}.
 
-\begin{figure}[H]
+\begin{table}[H]
   \centering
   \begin{tabular}{c|c||c|c}
     \multicolumn{2}{c||}{single edits}  & \multicolumn{2}{c}{chunk edits} \\
@@ -103,8 +103,8 @@ figure \ref{fig:altered_seqs_similarities}.
   \caption{Similarity measures, using $k=6$, for 1\% and 2\% single edits, respectively,
     and 1\% and 2\% chunk edits, respectively, to 10 copies of a single
     sequence.}
-  \label{fig:altered_seqs_similarities}
-\end{figure}
+  \label{tab:altered_seqs_similarities}
+\end{table}
 
 As expected, the single edits result in a lower similarity that the
 corresponding chunk edits. This is because five individual changes will affect
@@ -119,12 +119,12 @@ This section compares the implementation of the \textsc{K-Dist} distance metric
 programming (DP) algorithm (algorithm \ref{alg:levenshtein} in appendix
 \ref{app:levenshtein_algorithm}) for the Levenshtein distance metric.
 
-The data in figure \ref{fig:levenshtein_vs_kdist_performance} shows how many
+The data in table \ref{tab:levenshtein_vs_kdist_performance} shows how many
 comparisons per second the implementation of Levenshtein and the implementation
 of \textsc{K-Dist} can afford. This is shown for various values for the $k$
 parameter.
 
-\begin{figure}[H] % TODO: we need to state which dataset and the lengths of seqs
+\begin{table}[H] % TODO: we need to state which dataset and the lengths of seqs
   \centering
   \begin{tabular}{ c | c }
     Distance metric implementation  & Comparisons/second  \\
@@ -139,8 +139,8 @@ parameter.
   \caption{Performance comparison between a dynamic programming (bottom up)
     Levenshtein implementation and \textsc{K-Dist} implementation with
     different values for parameter $k$.}
-  \label{fig:levenshtein_vs_kdist_performance}
-\end{figure}
+  \label{tab:levenshtein_vs_kdist_performance}
+\end{table}
 
 \begin{wrapfigure}{l}{0.55\textwidth}
   \includegraphics[width=0.55\textwidth]{graphics/Levenshtein_K-Dist_k5.png}
@@ -159,7 +159,7 @@ near quadratic in running time. As analyzed in section
 % TODO: insert running time of K-Dist
 
 so it will always be faster that Levenshtein for long enough sequences and as
-shown above in figure \ref{fig:levenshtein_vs_kdist_performance}, that is indeed
+shown above in figure \ref{tab:levenshtein_vs_kdist_performance}, that is indeed
 the case for the sequences this project is concerned with.
 
 %As mentioned in section \ref{sec:edit_distance}, optimizing an implementation of
@@ -322,188 +322,71 @@ $42.63\%$ faster and never slower than sorting by decreasing length.
 Furthermore, sorting by increasing length on average has $8.77\%$ fewer
 clusters and never more clusters than not sorting. It has $25.07\%$ fewer
 clusters on average and never more clusters than when sorting by decreasing
-length.
+length. Generally higher $k$'s are also expected to produce more clusters,
+since the comparison punishes mismatches more than lower $k$'s as discussed in
+section \ref{sec:altered_sequences}.
 
-The data shows that sorting by increasing length is always preferrable, and
-this parameter will be applied in future tests.
+The data shows that sorting by increasing length is always preferrable. The
+higher $k$'s are also generally much slower and the comparisons are very
+strict, i.e. the identity should be lower for the higher $k$. Section
+\ref{sec:synth_dataset} and the multidimensional scaling plots in
+\ref{fig:mds_synth} and \ref{fig:mds_silva_sort_incr} shows that $k=5$ is a good choice in terms of sensitivity.
+Another interesting choice is $k=6$, since it does almost the same comparisons
+per second (cf. figure \ref{tab:levenshtein_vs_kdist_performance}). These
+results gives the incentive to study $k=5$ and $k=6$, when sorting by
+increasing length, further.
+%TODO: Why not k4?
 
-\begin{figure}[H]
-  \centering
-  \begin{tabular}{ p{12em} | c | c }
-    Method  & Throughput/second   & \# of clusters \\
-    \hline \hline
-    \textsc{Simple-Clust}, $k=4$,
-    $max\_rejects=8$, $id=0.97$     & $\sim$ 11,400  & 444,654  \\
-    \hline
-    \textsc{Simple-Clust}, $k=5$,
-    $max\_rejects=8$, $id=0.97$     & $\sim$ 10,700  & 461,266  \\
-    \hline
-    \textsc{Simple-Clust}, $k=6$,
-    $max\_rejects=8$, $id=0.97$     & $\sim$ 9,575   & 470,516  \\
-    \hline
-    \textsc{Simple-Clust}, $k=7$,
-    $max\_rejects=8$, $id=0.97$     & $\sim$ 6,350   & 474,463  \\
-    \hline
-    \textsc{Simple-Clust}, $k=8$,
-    $max\_rejects=8$, $id=0.97$     & $\sim$ 2,750   & 475,465  \\
-  \end{tabular}
-  \caption{Performance of different clustering methods and different $k$-mer
-  sizes. Sequence data:
-           \texttt{RDP\_Pro\_Full\_sort.fna}. Count: 500,000. Throughput
-           specifies the number of sequences clustered per second (including
-           results output to file), but excludes reading the input file.}
-\end{figure}
+In appendix \ref{app:performance_results_full_SILVA} is a table that shows
+data from \texttt{klust} using either \textsc{K-Clust} or \textsc{Simple-Clust} and
+\texttt{USEARCH}. The programs have been run with different parameters on the
+entire \texttt{SILVA} dataset. Table
+\ref{tab:full_silva_main_results} shows the most important results
+found in appendix \ref{app:performance_results_full_SILVA} and appendix \ref{app:cluster_results_full_SILVA})
 
-Results of performance
 
-\begingroup
-\setlength{\LTleft}{-20cm plus -1fill}
-\setlength{\LTright}{\LTleft}
-\begin{longtable}{c|cc|c|c|c|c}
+\begin{table}[H]
+  \begin{adjustbox}{center}
+  \begin{tabular}{c|c|c|c|cc|c}
   \multirow{2}{*}{}
-  Clustering & \multicolumn{2}{c|}{Parameters} & Sorting & Time & Throughput & Max memory \\
-  algorithm & & & & (sec.) & (seqs./sec.) & \\
+  Clustering & Time & Throughput & Clusters & \multicolumn{2}{c}{Cluster sizes}& Max \\
+  algorithm & (sec.) & (seqs./sec.) & & & & memory \\
   \hline \hline
   \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 5 & & & & \\
-                     & id & 0.8 & no & 623.622 & 2539.73 & 1013 MB \\
-                     & m & 8 & & & & \\
+  {}\textsc{Simple-Clust}, & & & & Max & - & \\
+  $k=6, id=0.85, m=32,$    & 474.117 & 3340.59 & 1273293 & Avg. & 1.2439 & - \\
+  no sort                  & & & & Min & 1 & \\
   \hline
   \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 5 & & & & \\
-                     & id & 0.8 & incr. & 501.697 & 3156.94 & 1013 MB \\
-                     & m & 8 & & & & \\
+  {}\textsc{K-Clust},  & & & & Max & 57885 & \\
+  $k=5, id=0.85, m=8,$ & 1144.55 & 1383.81 & 98354 & Avg. & 16.1034 & 1013 MB \\
+  incr. sort           & & & & Min & 1 & \\
   \hline
   \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 5 & & & & \\
-                     & id & 0.85 & no & 1314.18 & 1205.18 & 1013 MB \\
-                     & m & 8 & & & & \\
+  {}\textsc{K-Clust},  & & & & Max & 71407 & \\
+  $k=5, id=0.90, m=8,$ & 2578.88 & 614.155 & 159812 & Avg. & 9.91058 & 1021 MB\\
+  incr. sort           & & & & Min & 1 & \\
   \hline
   \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 5 & & & & \\
-                     & id & 0.85 & incr & 1144.55 & 1383.81 & 1013 MB \\
-                     & m & 8 & & & & \\
+  {}\textsc{K-Clust},  & & & & Max & 79599 & \\
+  $k=6, id=0.85, m=8,$ & 1812.02 & 874.066 & 127711 & Avg. & 12.4017 & 1012 MB\\
+  incr. sort           & & & & Min & 1 & \\
   \hline
   \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 5 & & & & \\
-                     & id & 0.90 & no & 2982.8 & 530.988 & 1030 MB \\
-                     & m & 8 & & & & \\
+  {}\textsc{K-Clust},  & & & & Max & 49479 & \\
+  $k=6, id=0.90, m=8,$ & 3450.59 & 459.003 & 191361 & Avg. & 8.27666 & 1039 MB\\
+  incr. sort           & & & & Min & 1 & \\
   \hline
   \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 5 & & & & \\
-                     & id & 0.90 & incr. & 2578.88 & 614.155 & 1021 MB \\
-                     & m & 8 & & & & \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 6 & & & & \\
-                     & id & 0.8 & no & 1021.26 & 1550.86 & 1014 MB \\
-                     & m & 8 & & & & \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 6 & & & & \\
-                     & id & 0.8 & incr. & 856.785 & 1848.57 & 1014 MB \\
-                     & m & 8 & & & & \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 6 & & & & \\
-                     & id & 0.85 & no & 2014.1 & 786.373 & 1014 MB \\
-                     & m & 8 & & & & \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 6 & & & & \\
-                     & id & 0.85 & incr. & 1812.02 & 874.066 & 1012 MB \\
-                     & m & 8 & & & & \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 6 & & & & \\
-                     & id & 0.9 & no & 4245.53 & 373.059 & 1045 MB \\
-                     & m & 8 & & & & \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 6 & & & & \\
-                     & id & 0.9 & incr. & 3450.59 & 459.003 & 1039 MB \\
-                     & m & 8 & & & & \\
-  \\
-  \caption{Performance results for different parameters of
-    \texttt{klust} on the entire \texttt{SILVA} dataset.}
-  \label{fig:full_silva_results_performance}
-\end{longtable}
-\endgroup
-
-Results of the clustering.
-
-\begingroup
-\setlength{\LTleft}{-20cm plus -1fill}
-\setlength{\LTright}{\LTleft}
-\begin{longtable}{c|cc|c|c|cc}
-  Clustering algorithm & \multicolumn{2}{c|}{Parameters} & Sorting & Clusters & \multicolumn{2}{c}{Cluster sizes} \\
-  & & & & & \\
-  \hline \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 5 & & & Max & 68542 \\
-                     & id & 0.8 & no & 70080 & Avg & 22.6003 \\
-                     & m & 8 & & & Min & 1 \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 5 & & & Max & 57121 \\
-                     & id & 0.8 & incr. & 60111 & Avg & 26.3484 \\
-                     & m & 8 & & & Min & 1 \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 5 & & & Max & 76164 \\
-                     & id & 0.85 & no & 112063 & Avg & 14.1334 \\
-                     & m & 8 & & & Min & 1 \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 5 & & & Max & 57885 \\
-                     & id & 0.85 & incr. & 98354 & Avg & 16.1034 \\
-                     & m & 8 & & & Min & 1 \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 5 & & & Max & 46915 \\
-                     & id & 0.9 & no & 179222 & Avg & 8.83725 \\
-                     & m & 8 & & & Min & 1 \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 5 & & & Max & 71407 \\
-                     & id & 0.9 & incr. & 159812 & Avg & 9.91058 \\
-                     & m & 8 & & & Min & 1 \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 6 & & & Max & 87170 \\
-                     & id & 0.8 & no & 93055 & Avg & 17.0204 \\
-                     & m & 8 & & & Min & 1 \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 6 & & & Max & 60256 \\
-                     & id & 0.8 & incr. & 86905 & Avg & 18.2248 \\
-                     & m & 8 & & & Min & 1 \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 6 & & & Max & 63452 \\
-                     & id & 0.85 & no & 138023 & Avg & 11.4751 \\
-                     & m & 8 & & & Min & 1 \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 6 & & & Max & 79599 \\
-                     & id & 0.85 & incr. & 127711 & Avg & 12.4017 \\
-                     & m & 8 & & & Min & 1 \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 6 & & & Max & 43381 \\
-                     & id & 0.9 & no & 207890 & Avg & 7.6186 \\
-                     & m & 8 & & & Min & 1 \\
-  \hline
-  \multirow{3}{*}
-  {\textsc{K-Clust}} & k & 6 & & & Max & 49479 \\
-                     & id & 0.9 & incr. & 191361 & Avg & 8.27666 \\
-                     & m & 8 & & & Min & 1 \\
-  \\
-  \caption{Clustering results for different parameters of
-    \texttt{klust} on the entire \texttt{SILVA} dataset.}
-  \label{fig:full_silva_results_clusters}
-\end{longtable}
-\endgroup
+  {}\texttt{USEARCH},        & & & & Max & 83904 & \\
+  $id=0.95,$ decr. sort      & 1719 & 920.3 & 117205 & Avg. & 13.5 & 1.1 GB \\
+  \texttt{-cluster\_smallmem} & & & & Min & 1 & \\
+  \end{tabular}
+  \end{adjustbox}
+  \caption{Performance and clusterings results of different clustering methods and different parameters on the entire \texttt{SILVA} dataset.}
+  \label{tab:full_silva_main_results}
+\end{table}
+%TODO: explain table
 
 \subsection{Comparing with UCLUST on real life data}
 % Testing USEARCH 32-bit on real data
