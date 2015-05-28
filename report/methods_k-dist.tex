@@ -86,11 +86,13 @@ and is used as the distance metric in the \texttt{klust} program.
   \begin{algorithmic}[1]
     \Require{$s$ and $t$ are DNA or RNA sequence, $k \in \mathbb{Z}^+$}
     \Statex
-    \Function{d2}{$s, t, k$}
-      \State set $s$ to the shortest sequence and $t$ to the longest sequence
+    \Function{K-Dist}{$s, t, k$}
+      \State set $s$ to the shorter sequence and $t$ to the longer sequence
       \State initialize array \texttt{kmers} of size $4^k$
       \State $cur\_dist \gets 0$
       \For{$i \gets 0$ to $length(s) - k$}
+        %\State \Call{\textsc{Update-Distance}}{($t$.substring($i$, $k$),
+        %                $s$.substring($i$, $k$), dist)}
         \State \texttt{kmers}[$s$.substring($i$, $k$)]\texttt{++}
         \Comment{\parbox[t]{.3\linewidth}{$k$-mer counting}}
         \State \texttt{kmers}[$t$.substring($i$, $k$)]\texttt{-{}-}
@@ -111,5 +113,31 @@ and is used as the distance metric in the \texttt{klust} program.
             \Comment{\parbox[t]{.3\linewidth}{Maximal distance}}
       \State \Return{$(total-min\_dist) / total$}
     \EndFunction
+    \Statex
+    \Function{Update-Distance}{$\mathtt{arr}, kmer\_exit, kmer\_enter, dist$}
+      \If{$\mathtt{arr}[kmer\_exit] > 0$}
+        \State $dist \gets dist - 1$
+      \Else
+        \State $dist \gets dist + 1$
+      \EndIf
+      \If{$\mathtt{arr}[kmer\_enter] < 0$}
+        \State $dist \gets dist - 1$
+      \Else
+        \State $dist \gets dist + 1$
+      \EndIf
+    \EndFunction
   \end{algorithmic}
 \end{algorithm}
+
+
+\subsubsection{Time complexity analysis}
+
+The \textsc{K-Dist} algorithm first iterates over the first $|s|-k$ characters,
+where $|s|$ denotes the length of the shorter of the two sequences. Each
+iteration contains only constant time operations. So far, a running time of
+$\Theta(\abs{s}-k)$.
+
+Secondly, the algorithm iterates over the \texttt{kmers} array, which is of
+size $4^k$, and performs a single addition for each position.
+
+% TODO: fix algorithm

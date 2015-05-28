@@ -157,22 +157,18 @@ with different $k$'s. It demonstrates how similar the distances are, and can
 be used as an indication about the sensitivity of the \textsc{K-Dist}
 algorithm.
 
-\begin{figure}[H]
-  \begin{subfigure}[b]{0.5\textwidth}
-    \includegraphics[scale=0.34]{graphics/k4.png}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.5\textwidth}
-    \includegraphics[scale=0.34]{graphics/k6.png}
-  \end{subfigure}
 
-  \centering
-  \begin{subfigure}[b]{0.5\textwidth}
-    \includegraphics[scale=0.34]{graphics/k8.png}
-  \end{subfigure}
-  \caption{Comparison of Levenshtein distance and the distance produced by the \textsc{K-Dist} algorithm at different $k$'s.}
+\begin{wrapfigure}{l}{0.6\textwidth}
+  \includegraphics[width=0.6\textwidth]{graphics/Levenshtein_K-Dist_k5.png}
+  \caption{Comparison of Levenshtein and \textsc{K-Dist} with $k=5$.}
+\end{wrapfigure}
+
+\begin{figure}[H]
+  \includegraphics[width=1.0\textwidth]{graphics/Levenshtein_K-Dist_k8.png}
+  \caption{Comparison of Levenshtein and \textsc{K-Dist} with $k=8$.}
   \label{fig:Levenshtein_vs_KDist}
 \end{figure}
-%TODO Update figures and explain them.
+
 
 \subsection{Evaluating \textsc{K-Clust} on a synthetic dataset}
 \label{sec:synth_dataset}
