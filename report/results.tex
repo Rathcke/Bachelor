@@ -392,8 +392,7 @@ from \texttt{klust} using either \textsc{K-Clust} or \textsc{Simple-Clust} and
 \texttt{USEARCH}. The programs have been run with different parameters on the
 entire \texttt{SILVA} dataset. Table \ref{tab:full_silva_main_results} shows
 the most important results found in appendix
-\ref{app:performance_results_full_SILVA} and appendix
-\ref{app:cluster_results_full_SILVA})
+\ref{app:performance_results_full_SILVA}.
 
 
 \begin{table}[H]
@@ -476,7 +475,7 @@ cases, but it is more strict than in \texttt{USEARCH}.
   \label{fig:id_comparison}
 \end{figure}
 
-To better evaluate the scaling in time and clusters for the methods, benchmark
+To evaluate the scaling in time and clusters for the methods, benchmark
 tests on the dataset \texttt{RDP} were also conducted. The dataset contains
 almost twice as many sequences. The reason benchmarks are performed on this
 set is to provide an indication of how well the methods perform on very large
@@ -492,85 +491,21 @@ and \texttt{klust} using \textsc{K-Clust} on the entire \texttt{RDP} dataset. Th
   algorithm & (sec.) & (seqs./sec.) & & & & memory \\
   \hline \hline
   \multirow{3}{*}
-  {}\textsc{K-Clust},  & & & & Max & 49479 & \\
-  $k=6, id=0.90, m=8,$ & 3450.59 & 459.00 & 191361 & Avg. & 8.27666 & 1039 MB\\
+  {}\textsc{K-Clust},  & & & & Max & 100832 & \\
+  $k=5, id=0.85, m=8,$ & 5420.79 & 557.101 & 220982 & Avg. & 13.6659 & 2031 MB\\
   incr. sort           & & & & Min & 1 & \\
   \hline
   \multirow{3}{*}
-  {}\texttt{USEARCH},        & & & & Max & 83904 & \\
-  $id=0.95,$ decr. sort      & 1719.00 & 920.30 & 117205 & Avg. & 13.5 & $\approx\num{1126}$ MB \\
-  \texttt{-cluster\_smallmem} & & & & Min & 1 & \\
+  {}\texttt{USEARCH},        & & & & Max & - & \\
+  $id=-,$ decr. sort      & - & - & - & Avg. & - & - MB \\
+  \texttt{-cluster\_smallmem} & & & & Min & - & \\
   \end{tabular}
   \end{adjustbox}
   \caption{Performance and clusterings results of different clustering methods and different parameters on the entire \texttt{SILVA} dataset.}
   \label{tab:full_RDP_main_results}
 \end{table}
+%TODO: Add singletons?
 
-
-
-
-
-% Chaos from here and down
-
-
-% Testing USEARCH 32-bit on real data
-% Testing clustering algorithm with d2 distance and comparing performance to
-% USEARCH.
-Running \texttt{USEARCH} on the \texttt{SILVA} dataset, after it is sorted by
-decreasing sequences length, with parameters \texttt{-clust\_smallmem} and
-\texttt{-id 0.95} produces the output shown in Figure \ref{fig:uclust_silva}.
-
-\begin{figure}[H]
-\begin{lstlisting}[style=output-style]
-28:39 1.1Gb  100.0\% 117205 clusters, max size 83904, avg 13.5
-      Seqs  1583830 (1.6M)
-  Clusters  117205 (117.2k)
-  Max size  83904 (83.9k)
-  Avg size  13.5
-  Min size  1
-Singletons  67410 (67.4k), 4.3\% of seqs, 57.5\% of clusters
-   Max mem  1.1Gb
-      Time  28:41
-Throughput  920.3 seqs/sec.
-\end{lstlisting}
-\caption{Output from \texttt{USEARCH} clustering.}
-\label{fig:uclust_silva}
-\end{figure}
-
-% Running our implementation of the same file but unsorted and with
-% \texttt{id=0.9, k=6} og \texttt{max\_rejects=8} produces the following
-
-% \begin{figure}[H]
-% \begin{lstlisting}[style=output-style]
-% Reading 1583830 sequences...
-% Finished reading:
-% Time: 24.8109 sec.
-% Seqs/sec: 63836
-% Clustering 1583830 sequences...
-% 26.4602
-% # of clusters: 1364006
-% Finished clustering:
-% Time: 187.355 sec.
-% Throughput: 8453.63seqs/sec.
-% \end{lstlisting}
-% %TODO caption and label?
-% \end{figure}
-
-% Even though the \texttt{id}'s do not represent the same threshold due to it
-% being two different distance metrics we do get a lot more clusters. Running
-% it with similar \texttt{id}'s produces almost the same amount of clusters, so
-% the problem lies in the way we choose our centroids we compare a query
-% sequence with.
-
-% Our implementation, however, is faster by a factor of $10$. This can be
-% attributed to our choice of distance metric.
-
-%TODO: This section is also chaos
-%Possibly things to look into: confusion matrix, Rand index, normalized
-%mutual information (article: Comparing Clusterings - An Overview).
-
-%TODO: Yeah well, results not done - update tables with other algorithms etc.
 
 
 \subsection{Evaluation of centroid search in \texttt{klust}}
-
