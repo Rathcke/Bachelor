@@ -436,10 +436,9 @@ found in appendix \ref{app:performance_results_full_SILVA} and appendix \ref{app
 % Testing USEARCH 32-bit on real data
 % Testing clustering algorithm with d2 distance and comparing performance to
 % USEARCH.
-Running \texttt{USEARCH} on the file
-\texttt{SILVA\_119\_SSURef\_tax\_silva.fasta} after it is sorted with
-parameters \texttt{-clust\_smallmem} and \texttt{-id 0.95} produces the
-following output
+Running \texttt{USEARCH} on the \texttt{SILVA} dataset, after it is sorted by
+decreasing sequences length, with parameters \texttt{-clust\_smallmem} and
+\texttt{-id 0.95} produces the output shown in figure \ref{fig:uclust_silva}.
 
 \begin{figure}[H]
 \begin{lstlisting}[style=output-style]
@@ -454,8 +453,8 @@ Singletons  67410 (67.4k), 4.3\% of seqs, 57.5\% of clusters
       Time  28:41
 Throughput  920.3 seqs/sec.
 \end{lstlisting}
-  \caption{Output from \texttt{USEARCH} clustering.}
-  \label{fig:uclust_silva}
+\caption{Output from \texttt{USEARCH} clustering.}
+\label{fig:uclust_silva}
 \end{figure}
 
 Benchmarks from \textsc{K-Clust} can be seen in the previous section.
