@@ -220,6 +220,11 @@ the clustering output file is shown in figure \ref{fig:synth_silva_clustering}.
   {}\textsc{K-Clust},       &               &         &         &         & Max  & 49479   \\
   $k=6, id=0.9, m=8,$       & \num{3450.59} & 459.003 & 1039 MB & 191361  & Avg. & 8.27666 \\
   incr. sort                &               &         &         &         & Min  & 1       \\
+  \hline
+  \multirow{3}{*}
+  {}\texttt{USEARCH},        &              &         &         &         & Max     & 83904 \\
+  $id=0.95,$ decr. sort      & 1719.00 & 920.30 & $\approx\num{1126}$ MB  & 117205 & Avg. & 13.5\\
+  \texttt{-cluster\_smallmem}&              &         &         &         & Min & 1 \\
   \caption{Performance and clustering results for different parameters of
     \texttt{klust} on the entire \texttt{SILVA} dataset.}
   \label{fig:full_silva_results_performance}
