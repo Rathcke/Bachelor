@@ -21,6 +21,7 @@ section.
 Various statistics about the datasets are shown in table \ref{tab:data_stats}.
 The error ratio is the ratio between the number of non DNA/RNA bases, i.e. 'R',
 'Y', 'K' etc., and the total number of characters in the sequences.
+% TODO: maybe name this 'ambiguous bases' or just mention the term
 
 \begin{table}[H]
   \centering
@@ -270,6 +271,7 @@ and because the computation is too expensive for $380,000$ sequences. A set of
 400 sequences, consisting of 40 expected clusters with 10 sequences in each,
 was used for the visualization shown in figure \ref{fig:mds_synth}.
 
+% TODO: ugly
 \begin{figure}[H]
   \includegraphics[width=\textwidth]{graphics/MDS_t-SNE_synth_silva_400.png}
   \caption{Multidimensional scaling using t-SNE of the 400 sequences and
@@ -279,6 +281,27 @@ was used for the visualization shown in figure \ref{fig:mds_synth}.
     used to color different clusters with different colors.}
   \label{fig:mds_synth}
 \end{figure}
+
+\begin{figure}[H]
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\textwidth]{graphics/MDS_t-SNE_distmat_synth_SILVA_3800_levenshtein_400.png}
+    \caption{MDS using Levenshtein distance.}
+    \label{fig:mds_synth_lev}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[b]{1.0\textwidth}
+    \centering
+    \includegraphics[width=0.6\textwidth]{graphics/MDS_t-SNE_distmat_synth_SILVA_3800_levenshtein_400_sub.png}
+    \caption{Zoomed in on dense part of MDS of Levenshtein distances.}
+    \label{fig:mds_synth_lev_zoom}
+  \end{subfigure}
+  \caption{Multidimensional scaling using t-SNE of the 400 sequences and 40
+    expected clusters from the synthetic dataset using Levenshtein distance.
+    Centroids are marked with a circle. The clustering result from
+    \texttt{klust} with $k=5$, $id=0.85$ and $max\_rejects=8$ is used to color
+    different clusters with different colors.}
+\end{figure}
+
 
 % TODO: discussion of the MDS figure
 
@@ -409,14 +432,13 @@ found in appendix \ref{app:performance_results_full_SILVA} and appendix \ref{app
 \end{table}
 %TODO: explain table
 
-\subsection{Comparing with UCLUST on real life data}
+\subsection{Comparing with \texttt{USEARCH} on real life data}
 % Testing USEARCH 32-bit on real data
 % Testing clustering algorithm with d2 distance and comparing performance to
 % USEARCH.
-Running \texttt{USEARCH} on the file
-\texttt{SILVA\_119\_SSURef\_tax\_silva.fasta} after it is sorted with
-parameters \texttt{-clust\_smallmem} and \texttt{-id 0.95} produces the
-following output
+Running \texttt{USEARCH} on the \texttt{SILVA} dataset, after it is sorted by
+decreasing sequences length, with parameters \texttt{-clust\_smallmem} and
+\texttt{-id 0.95} produces the output shown in figure \ref{fig:uclust_silva}.
 
 \begin{figure}[H]
 \begin{lstlisting}[style=output-style]
@@ -431,8 +453,8 @@ Singletons  67410 (67.4k), 4.3\% of seqs, 57.5\% of clusters
       Time  28:41
 Throughput  920.3 seqs/sec.
 \end{lstlisting}
-  \caption{Output from \texttt{USEARCH} clustering.}
-  \label{fig:uclust_silva}
+\caption{Output from \texttt{USEARCH} clustering.}
+\label{fig:uclust_silva}
 \end{figure}
 
 Benchmarks from \textsc{K-Clust} can be seen in the previous section.
