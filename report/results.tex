@@ -18,7 +18,7 @@ section.
     and contains $3,019,928$ DNA sequences.
 \end{description}
 
-Various statistics about the datasets are shown in table \ref{tab:data_stats}.
+Various statistics about the datasets are shown in Table \ref{tab:data_stats}.
 The error ratio is the ratio between the number of non DNA/RNA bases, i.e. 'R',
 'Y', 'K' etc., and the total number of characters in the sequences.
 % TODO: maybe name this 'ambiguous bases' or just mention the term
@@ -57,7 +57,7 @@ were made, but in this case they were grouped into alterations of substrings of
 length 5 (one such group being of length less than 5 if the number of
 alterations was not a multiple of 5).
 
-For illustration, figure \ref{fig:alterations} shows an original sequence in
+For illustration, Figure \ref{fig:alterations} shows an original sequence in
 the first line, the single edits alterated sequence in the second line and the
 chunk alterated sequence in the third line.
 
@@ -81,7 +81,7 @@ $k$-mer distance when performing a controlled number of edits.
 
 The similarities between the original sequence from \texttt{SILVA} and the 10
 altered sequences, for the four different types of alterations, are shown in
-table \ref{tab:altered_seqs_similarities}.
+Table \ref{tab:altered_seqs_similarities}.
 
 \begin{table}[H]
   \centering
@@ -116,11 +116,11 @@ only affect up to $4+k$ $k$-mers.
 \subsection{Comparing \textsc{K-Dist} with the Levenshtein distance metric}
 
 This section compares the implementation of the \textsc{K-Dist} distance metric
-(algorithm \ref{alg:K-Dist}) with the implementation of the bottom-up dynamic
-programming (DP) algorithm (algorithm \ref{alg:levenshtein} in appendix
+(Algorithm \ref{alg:K-Dist}) with the implementation of the bottom-up dynamic
+programming (DP) algorithm (Algorithm \ref{alg:levenshtein} in appendix
 \ref{app:levenshtein_algorithm}) for the Levenshtein distance metric.
 
-The data in table \ref{tab:levenshtein_vs_kdist_performance} shows how many
+The data in Table \ref{tab:levenshtein_vs_kdist_performance} shows how many
 comparisons per second the implementation of Levenshtein and the implementation
 of \textsc{K-Dist} can afford. This is shown for various values for the $k$
 parameter.
@@ -160,7 +160,7 @@ near quadratic in running time. As analyzed in section
 % TODO: insert running time of K-Dist
 
 so it will always be faster that Levenshtein for long enough sequences and as
-shown above in figure \ref{tab:levenshtein_vs_kdist_performance}, that is indeed
+shown above in Figure \ref{tab:levenshtein_vs_kdist_performance}, that is indeed
 the case for the sequences this project is concerned with.
 
 %As mentioned in section \ref{sec:edit_distance}, optimizing an implementation of
@@ -198,7 +198,7 @@ algorithm's ability to find the right clusters in a dataset with a clearly
 correct, expected clustering output.
 
 A set of 380 sequences with mutual similarities of at most 0.6 was extracted
-from \texttt{SILVA}, using the \textsc{K-Dist} distance metric (algorithm
+from \texttt{SILVA}, using the \textsc{K-Dist} distance metric (Algorithm
 \ref{alg:K-Dist}) with parameter $k=5$. For each of these sequences, 999 copies
 were made and chunks of changes were made to these as described above in
 section \ref{sec:altered_sequences}, corresponding to 2\% of the characters of
@@ -222,9 +222,9 @@ clustering result than the expected one.
 As hoped, running \texttt{klust} on the constructed dataset, with parameters
 $k=5$, $id=0.85$ and $max\_rejects=8$ gives a clustering output consisting of
 380 clusters with 1000 sequences in each (including the centroid). The terminal
-output from the program is shown in figure \ref{fig:synth_silva_output} in
+output from the program is shown in Figure \ref{fig:synth_silva_output} in
 appendix \ref{app:synth_dataset} and an excerpt from the clustering ouput file
-created by the program is shown in figure \ref{fig:synth_silva_clustering} in
+created by the program is shown in Figure \ref{fig:synth_silva_clustering} in
 the same appendix. This shows that the sequences in each cluster have the same
 description line, i.e. they were constructed to be similar and should indeed be
 in the same cluster. The result was equally correct when clustering with a
@@ -269,7 +269,7 @@ A subset of the synthetic set described in section \ref{sec:synth_dataset} was
 used for the MDS, because the scatter plot easily becomes too densely populated
 and because the computation is too expensive for $380,000$ sequences. A set of
 400 sequences, consisting of 40 expected clusters with 10 sequences in each,
-was used for the visualization shown in figure \ref{fig:mds_synth}.
+was used for the visualization shown in Figure \ref{fig:mds_synth}.
 
 % TODO: ugly
 \begin{figure}[H]
@@ -358,11 +358,11 @@ close to each other in the MDS.
 \subsection{Evaluating \texttt{klust} on real data}
 
 To test the performance and quality of the program, it was run on different
-parameters and settings. The table in \ref{app:klust_data_parameters} shows
-output data from running the first $100,000$ sequences from \texttt{SILVA}
-with different parameters. Sorting by increasing length is on average
-$21.65\%$ faster and never slower than not sorting. It is also on average
-$42.63\%$ faster and never slower than sorting by decreasing length.
+parameters and settings. The table in appendix \ref{app:klust_data_parameters}
+shows output data from running the first $100,000$ sequences from
+\texttt{SILVA} with different parameters. Sorting by increasing length is on
+average $21.65\%$ faster and never slower than not sorting. It is also on
+average $42.63\%$ faster and never slower than sorting by decreasing length.
 Furthermore, sorting by increasing length on average has $8.77\%$ fewer
 clusters and never more clusters than not sorting. It has $25.07\%$ fewer
 clusters on average and never more clusters than when sorting by decreasing
@@ -373,20 +373,22 @@ section \ref{sec:altered_sequences}.
 The data shows that sorting by increasing length is always preferrable. The
 higher $k$'s are also generally much slower and the comparisons are very
 strict, i.e. the identity should be lower for the higher $k$. Section
-\ref{sec:synth_dataset} and the multidimensional scaling plots in
-\ref{fig:mds_synth} and \ref{fig:mds_silva_sort_incr} shows that $k=5$ is a good choice in terms of sensitivity.
+\ref{sec:synth_dataset} and the multidimensional scaling plots in Figure
+\ref{fig:mds_synth} and Figure \ref{fig:mds_silva_sort_incr} shows that $k=5$ is a
+good choice in terms of sensitivity.
 Another interesting choice is $k=6$, since it does almost the same comparisons
-per second (cf. figure \ref{tab:levenshtein_vs_kdist_performance}). These
+per second (cf. Figure \ref{tab:levenshtein_vs_kdist_performance}). These
 results gives the incentive to study $k=5$ and $k=6$, when sorting by
 increasing length, further.
 %TODO: Why not k4?
 
-In appendix \ref{app:performance_results_full_SILVA} is a table that shows
-data from \texttt{klust} using either \textsc{K-Clust} or \textsc{Simple-Clust} and
+In appendix \ref{app:performance_results_full_SILVA} is a table that shows data
+from \texttt{klust} using either \textsc{K-Clust} or \textsc{Simple-Clust} and
 \texttt{USEARCH}. The programs have been run with different parameters on the
-entire \texttt{SILVA} dataset. Table
-\ref{tab:full_silva_main_results} shows the most important results
-found in appendix \ref{app:performance_results_full_SILVA} and appendix \ref{app:cluster_results_full_SILVA})
+entire \texttt{SILVA} dataset. Table \ref{tab:full_silva_main_results} shows
+the most important results found in appendix
+\ref{app:performance_results_full_SILVA} and appendix
+\ref{app:cluster_results_full_SILVA})
 
 
 \begin{table}[H]
@@ -438,7 +440,7 @@ found in appendix \ref{app:performance_results_full_SILVA} and appendix \ref{app
 % USEARCH.
 Running \texttt{USEARCH} on the \texttt{SILVA} dataset, after it is sorted by
 decreasing sequences length, with parameters \texttt{-clust\_smallmem} and
-\texttt{-id 0.95} produces the output shown in figure \ref{fig:uclust_silva}.
+\texttt{-id 0.95} produces the output shown in Figure \ref{fig:uclust_silva}.
 
 \begin{figure}[H]
 \begin{lstlisting}[style=output-style]
