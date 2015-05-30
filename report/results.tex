@@ -1,6 +1,6 @@
 \section{Results and evaluation} \label{sec:results}
 
-\subsection{Overview of datasets used for testing}
+\subsection{Overview of datasets and hardware used for testing}
 \label{sec:overview_of_datasets}
 
 A couple of different datasets will be used for testing and evaluating the
@@ -34,6 +34,10 @@ The error ratio is the ratio between the number of non DNA/RNA bases, i.e. 'R',
   \caption{Various information about the different datasets.}
   \label{tab:data_stats}
 \end{table}
+
+The hardware used for testing was a 64-bit Intel Core i5-2520M 2nd generation
+Sandy Bridge processor with a base frequency of 2.5 GHz and with 2 cores (4
+hardware threads), and 16 GB RAM.
 
 
 \subsection{Testing the distance metric on altered sequences}
@@ -123,9 +127,9 @@ programming (DP) algorithm (Algorithm \ref{alg:levenshtein} in appendix
 The data in Table \ref{tab:levenshtein_vs_kdist_performance} shows how many
 comparisons per second the implementation of Levenshtein and the implementation
 of \textsc{K-Dist} can afford. This is shown for various values for the $k$
-parameter.
+parameter. The tests were performed on the \texttt{SILVA} dataset.
 
-\begin{table}[H] % TODO: we need to state which dataset and the lengths of seqs
+\begin{table}[H]
   \centering
   \begin{tabular}{ c | r }
     Distance metric implementation  & Comparisons/second    \\
@@ -137,15 +141,16 @@ parameter.
     \textsc{K-Dist}, $k=7$          & $\approx \num{72500}$ \\ \hline
     \textsc{K-Dist}, $k=8$          & $\approx \num{46000}$ \\
   \end{tabular}
-  \caption{Performance comparison between a dynamic programming (bottom up)
+  \caption{Performance comparison between the dynamic programming (bottom up)
     Levenshtein implementation and \textsc{K-Dist} implementation with
-    different values for parameter $k$.}
+    different values for parameter $k$. Dataset used was \texttt{SILVA}.}
   \label{tab:levenshtein_vs_kdist_performance}
 \end{table}
 
 \begin{wrapfigure}{l}{0.55\textwidth}
   \includegraphics[width=0.55\textwidth]{graphics/Levenshtein_K-Dist_k5.png}
   \caption{Comparison of Levenshtein and \textsc{K-Dist} with $k=5$.}
+  \label{fig:k-dist_lev_similarity_k5}
 \end{wrapfigure}
 
 The \textsc{K-Dist} implementation with $k=4$ is more than 460 times faster
@@ -154,17 +159,15 @@ for $k$, with the \textsc{K-Dist} implementation being around 235 times faster
 for $k=8$.
 
 As mentioned in section \ref{sec:edit_distance}, the Levenshtein algorithm is
-near quadratic in running time. As analyzed in section
-\ref{sec:k-dist_analysis}, the \textsc{K-Dist} algorithm is
+near quadratic in running time, while the running time of the \textsc{K-Dist}
+algorithm is $\Theta(\max{(\abs{s},\abs{t})}-k)$, where $s$ and $t$ are the
+sequences being compared and $k$ is the value for the parameter $k$. This was
+analyzed in section \ref{sec:k-dist_analysis}.
 
-% TODO: insert running time of K-Dist
-
-so it will always be faster that Levenshtein for long enough sequences and as
-shown above in Figure \ref{tab:levenshtein_vs_kdist_performance}, that is indeed
-the case for the sequences this project is concerned with.
-
-%As mentioned in section \ref{sec:edit_distance}, optimizing an implementation of
-%distance metric to match the speed of \textsc{K-Dist} is unimaginable.
+So \textsc{K-Dist} will always be faster that the presented algorithm for
+Levenshtein for long enough sequences and as shown above in Figure
+\ref{tab:levenshtein_vs_kdist_performance}, that is indeed the case for the
+sequences this project is concerned with.
 
 
 Despite its speed, it could be more sensible than \textsc{K-Dist}. Figure
@@ -186,6 +189,7 @@ sequence.
 \begin{figure}[H]
   \includegraphics[width=1.0\textwidth]{graphics/Levenshtein_K-Dist_k8.png}
   \caption{Comparison of Levenshtein and \textsc{K-Dist} with $k=8$.}
+  \label{fig:k-dist_lev_similarity_k5}
   \label{fig:Levenshtein_vs_KDist}
 \end{figure}
 

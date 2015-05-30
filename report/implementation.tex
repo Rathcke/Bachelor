@@ -4,7 +4,7 @@
 
 Since the sequence data to be clustered can be very large, efficient memory
 usage is essential. The implementation of \textsc{K-Clust} reads all the
-sequences into memory, simultaneously transforming it into a lower memory
+sequences into memory, while simultaneously transforming it into a lower memory
 representation which takes up a quarter of the space of a simple 8-bit
 character representation. This is done by representing each nucleotide by just
 2 bits. However, this ought to be improved so that the program would deallocate
@@ -12,9 +12,9 @@ memory used for sequences as soon they become part of an existing cluster,
 since they will not be accessed again until writing the result to a file after
 the clustering is finished.
 
-The \texttt{klust} program has a maximum memory usage of around 1GB (cf. the
-table in Figure \ref{fig:full_silva_results_performance}) when clustering the
-\texttt{SILVA} dataset of size 2.3GB (cf. section
+The \texttt{klust} program has a maximum memory usage of less than 2 GB (cf.
+the table in Figure \ref{fig:full_RDP_main_results}) when clustering the
+\texttt{RDP} dataset of size 3.5 GB (cf. section
 \ref{sec:overview_of_datasets}), so storing all data in memory is not actually
 a problem for the sizes of the datasets used for testing.
 
@@ -28,6 +28,14 @@ copied and stored in a structure representing the centroid, along with the
 centroid sequence etc., to avoid recomputing it later and if the sequence
 matches an existing cluster, the bit vector is reused for subsequent sequences.
 
+Having bit vectors of the $k$-mers occurring in a sequence and a centroid
+sequence allows for very efficient computation of a bit vector of the $k$-mers
+occurring in both the sequence and the centroid sequence. This is done using
+the bitwise \verb|AND| operation. Additionally, computing the number of set
+bits in a \verb|bitset| is extremely efficient due to \emph{single instruction,
+multiple data} (SIMD) instructions on newer Intel Core processors (beginning
+with the Nehalem microarchitecture) which are enabled when compiling with the
+\verb|-march=native| compiler flag using the GCC \texttt{C++} compiler.
 
 
 \subsection{Divide and conquer with parallelization of clustering}
