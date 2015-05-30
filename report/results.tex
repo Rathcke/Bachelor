@@ -307,6 +307,7 @@ was used for the visualization shown in figure \ref{fig:mds_synth}.
 
 
 \subsection{Evaluating \textsc{K-Clust} on real data using MDS}
+\label{sec:mds_real_data}
 
 The \textsc{K-Clust} algorithm was also tested on real data, specifically the
 \texttt{SILVA} dataset, using MDS to visualize the clustering result as
@@ -355,7 +356,7 @@ close to each other in the MDS.
 % TODO: discuss
 
 
-\subsection{Evaluating \texttt{klust} on real data}
+\subsection{Evaluating \texttt{klust} on real data and comparing with \texttt{USEARCH}}
 
 To test the performance and quality of the program, it was run on different
 parameters and settings. The table in \ref{app:klust_data_parameters} shows
@@ -391,14 +392,14 @@ found in appendix \ref{app:performance_results_full_SILVA} and appendix \ref{app
 
 \begin{table}[H]
   \begin{adjustbox}{center}
-  \begin{tabular}{c|c|c|c|cc|c}
+  \begin{tabular}{c|r|r|r|lr|r}
   \multirow{2}{*}{}
   Clustering & Time & Throughput & Clusters & \multicolumn{2}{c}{Cluster sizes}& Max \\
   algorithm & (sec.) & (seqs./sec.) & & & & memory \\
   \hline \hline
   \multirow{3}{*}
   {}\textsc{Simple-Clust}, & & & & Max & - & \\
-  $k=6, id=0.85, m=32,$    & 474.117 & 3340.59 & 1273293 & Avg. & 1.2439 & - \\
+  $k=6, id=0.85, m=32,$    & \num{474.12} & 3340.59 & 1273293 & Avg. & 1.2439 & - \\
   no sort                  & & & & Min & 1 & \\
   \hline
   \multirow{3}{*}
@@ -408,31 +409,104 @@ found in appendix \ref{app:performance_results_full_SILVA} and appendix \ref{app
   \hline
   \multirow{3}{*}
   {}\textsc{K-Clust},  & & & & Max & 71407 & \\
-  $k=5, id=0.90, m=8,$ & 2578.88 & 614.155 & 159812 & Avg. & 9.91058 & 1021 MB\\
+  $k=5, id=0.90, m=8,$ & 2578.88 & 614.16 & 159812 & Avg. & 9.91058 & 1021 MB\\
   incr. sort           & & & & Min & 1 & \\
   \hline
   \multirow{3}{*}
   {}\textsc{K-Clust},  & & & & Max & 79599 & \\
-  $k=6, id=0.85, m=8,$ & 1812.02 & 874.066 & 127711 & Avg. & 12.4017 & 1012 MB\\
+  $k=6, id=0.85, m=8,$ & 1812.02 & 874.07 & 127711 & Avg. & 12.4017 & 1012 MB\\
   incr. sort           & & & & Min & 1 & \\
   \hline
   \multirow{3}{*}
   {}\textsc{K-Clust},  & & & & Max & 49479 & \\
-  $k=6, id=0.90, m=8,$ & 3450.59 & 459.003 & 191361 & Avg. & 8.27666 & 1039 MB\\
+  $k=6, id=0.90, m=8,$ & 3450.59 & 459.00 & 191361 & Avg. & 8.27666 & 1039 MB\\
   incr. sort           & & & & Min & 1 & \\
   \hline
   \multirow{3}{*}
   {}\texttt{USEARCH},        & & & & Max & 83904 & \\
-  $id=0.95,$ decr. sort      & 1719 & 920.3 & 117205 & Avg. & 13.5 & 1.1 GB \\
+  $id=0.95,$ decr. sort      & 1719.00 & 920.30 & 117205 & Avg. & 13.5 & $\approx\num{1126}$ MB \\
   \texttt{-cluster\_smallmem} & & & & Min & 1 & \\
   \end{tabular}
   \end{adjustbox}
   \caption{Performance and clusterings results of different clustering methods and different parameters on the entire \texttt{SILVA} dataset.}
   \label{tab:full_silva_main_results}
 \end{table}
-%TODO: explain table
 
-\subsection{Comparing with \texttt{USEARCH} on real life data}
+The benchmarks suggests that increasing $k$ also increases both the number
+of clusters and the running time of the clustering despite making as many
+comparisons per second. As discussed in section \ref{sec:mds_synth} and
+\ref{sec:mds_real_data}, setting $k$ to $5$ provides good results, so there is
+no need to increase $k$ if it is results in a much worse clustering time.
+
+Unfortunately, increasing the $id$ has a huge impact on the running time. This
+is a result of how often a sequence tries to compare to a centroid and how
+often it matches the centroid. Since the number of matches are infrequent, the
+number of centroids increases which then causes sequences to have to search in
+a larger centroid list. A possible work-around to this is to utilize the $max\_
+rejects$ parameter better without damaging the clustering quality too much.
+This is an important optimization and is discussed in
+\ref{conclusions_and_future_work}.
+
+The $id$'s are calculated differently in \texttt{klust} and \texttt{USEARCH},
+meaning they do not represent the same similarity. This makes it difficult to
+compare the number of clusters the methods produce. Figure
+\ref{fig:id_comparison} shows the number of clusters produced by
+\texttt{klust} and \texttt{USEARCH} at different $id$'s on the first
+\num{10000} sequences of \texttt{RDP}. It shows that \texttt{RDP} generally
+requires a higher $id$ to produce the same amount of clusters. Of course,
+there is no assurance that the clusters are the same. The rapid reduction in
+clusters for \texttt{USEARCH} indicates that is more forgiving when measuring
+similarity than \texttt{klust} is. This is, among other things, because the
+sequence alignment version that \texttt{USEARCH} uses does not penalize gaps
+as much as \textsc{K-Dist} does. The gaps occur due to the mutations described
+in section \ref{sec:biology} and larger gaps should not be penalized in the
+same magnitude as single errors are. As demostrated in section
+\ref{sec:altered_sequences}, \textsc{K-Dist} is also more forgiving in these
+cases, but it is more strict than in \texttt{USEARCH}.
+
+\begin{figure}[H]
+  \includegraphics[width=\textwidth]{graphics/RDP_1000_cluster_counts}
+  \caption{Comparison of the number of clusters at different $id$'s with a difference of $0.01$ on the first \num{10000} sequences of \texttt{RDP}. The red circles shows the results from \texttt{klust} and the blue plus signs is the results from \texttt{USEARCH}.}
+  \label{fig:id_comparison}
+\end{figure}
+
+To better evaluate the scaling in time and clusters for the methods, benchmark
+tests on the dataset \texttt{RDP} were also conducted. The dataset contains
+almost twice as many sequences. The reason benchmarks are performed on this
+set is to provide an indication of how well the methods perform on very large
+dataset where good running times is a must. Table
+\ref{tab:full_RDP_main_results} provides the output data from \texttt{USEARCH}
+and \texttt{klust} using \textsc{K-Clust} on the entire \texttt{RDP} dataset. The parameter $k=5$ was chosen as this showed the most promising results.
+
+\begin{table}[H]
+  \begin{adjustbox}{center}
+  \begin{tabular}{c|r|r|r|lr|r}
+  \multirow{2}{*}{}
+  Clustering & Time & Throughput & Clusters & \multicolumn{2}{c}{Cluster sizes}& Max \\
+  algorithm & (sec.) & (seqs./sec.) & & & & memory \\
+  \hline \hline
+  \multirow{3}{*}
+  {}\textsc{K-Clust},  & & & & Max & 49479 & \\
+  $k=6, id=0.90, m=8,$ & 3450.59 & 459.00 & 191361 & Avg. & 8.27666 & 1039 MB\\
+  incr. sort           & & & & Min & 1 & \\
+  \hline
+  \multirow{3}{*}
+  {}\texttt{USEARCH},        & & & & Max & 83904 & \\
+  $id=0.95,$ decr. sort      & 1719.00 & 920.30 & 117205 & Avg. & 13.5 & $\approx\num{1126}$ MB \\
+  \texttt{-cluster\_smallmem} & & & & Min & 1 & \\
+  \end{tabular}
+  \end{adjustbox}
+  \caption{Performance and clusterings results of different clustering methods and different parameters on the entire \texttt{SILVA} dataset.}
+  \label{tab:full_RDP_main_results}
+\end{table}
+
+
+
+
+
+% Chaos from here and down
+
+
 % Testing USEARCH 32-bit on real data
 % Testing clustering algorithm with d2 distance and comparing performance to
 % USEARCH.
@@ -457,7 +531,6 @@ Throughput  920.3 seqs/sec.
 \label{fig:uclust_silva}
 \end{figure}
 
-Benchmarks from \textsc{K-Clust} can be seen in the previous section.
 % Running our implementation of the same file but unsorted and with
 % \texttt{id=0.9, k=6} og \texttt{max\_rejects=8} produces the following
 
