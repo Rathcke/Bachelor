@@ -118,6 +118,7 @@ only affect up to $4+k$ $k$-mers.
 
 
 \subsection{Comparing \textsc{K-Dist} with the Levenshtein distance metric}
+\label{sec:kdist_vs_levenshtein}
 
 This section compares the implementation of the \textsc{K-Dist} distance metric
 (Algorithm \ref{alg:K-Dist}) with the implementation of the bottom-up dynamic
@@ -379,13 +380,19 @@ The data shows that sorting by increasing length is always preferrable. The
 higher $k$'s are also generally much slower and the comparisons are very
 strict, i.e. the identity should be lower for the higher $k$. Section
 \ref{sec:synth_dataset} and the multidimensional scaling plots in Figure
-\ref{fig:mds_synth} and Figure \ref{fig:mds_silva_sort_incr} shows that $k=5$ is a
-good choice in terms of sensitivity.
-Another interesting choice is $k=6$, since it does almost the same comparisons
-per second (cf. Figure \ref{tab:levenshtein_vs_kdist_performance}). These
-results gives the incentive to study $k=5$ and $k=6$, when sorting by
-increasing length, further.
-%TODO: Why not k4?
+\ref{fig:mds_synth} and Figure \ref{fig:mds_silva_sort_incr} shows that $k=5$
+is a good choice in terms of sensitivity. Another interesting choice is $k=6$,
+since it does almost the same comparisons per second (cf. Figure
+\ref{tab:levenshtein_vs_kdist_performance}). These results gives the incentive
+to study $k=5$ and $k=6$, when sorting by increasing length, further. The
+reason lower values of $k$ are not investigated is because the number of
+distinct $k$-mers is too low, so the interval the similarities will typically
+fall in will lay quite high (see section \ref{sec:kdist_vs_levenshtein}). This
+could make for ``lucky'' coincidences, where $k=5$ is better at preventing
+them. Based on the results in \ref{app:performance_results_full_SILVA},
+lowering $k$ more than $5$ does not seem to reduce the times it take to
+cluster by a lot, so risking that lucky coincedences can happen more often is
+not worth the little time that is saved.
 
 In appendix \ref{app:performance_results_full_SILVA} is a table that shows data
 from \texttt{klust} using either \textsc{K-Clust} or \textsc{Simple-Clust} and
@@ -397,7 +404,7 @@ the most important results found in appendix
 
 \begin{table}[H]
   \begin{adjustbox}{center}
-  \begin{tabular}{c|r|r|r|lr|r}
+  \begin{tabular}{c|r|r|r|lr|c}
   \multirow{2}{*}{}
   Clustering & Time & Throughput & Clusters & \multicolumn{2}{c}{Cluster sizes}& Max \\
   algorithm & (sec.) & (seqs./sec.) & & & & memory \\
@@ -436,6 +443,7 @@ the most important results found in appendix
   \caption{Performance and clusterings results of different clustering methods and different parameters on the entire \texttt{SILVA} dataset.}
   \label{tab:full_silva_main_results}
 \end{table}
+%TODO: Add more results?
 
 The benchmarks suggests that increasing $k$ also increases both the number
 of clusters and the running time of the clustering despite making as many
@@ -450,7 +458,7 @@ number of centroids increases which then causes sequences to have to search in
 a larger centroid list. A possible work-around to this is to utilize the $max\_
 rejects$ parameter better without damaging the clustering quality too much.
 This is an important optimization and is discussed in
-\ref{conclusions_and_future_work}.
+\ref{sec:future_work}.
 
 The $id$'s are calculated differently in \texttt{klust} and \texttt{USEARCH},
 meaning they do not represent the same similarity. This makes it difficult to
@@ -474,6 +482,7 @@ cases, but it is more strict than in \texttt{USEARCH}.
   \caption{Comparison of the number of clusters at different $id$'s with a difference of $0.01$ on the first \num{10000} sequences of \texttt{RDP}. The red circles shows the results from \texttt{klust} and the blue plus signs is the results from \texttt{USEARCH}.}
   \label{fig:id_comparison}
 \end{figure}
+%TODO: Update graph
 
 To evaluate the scaling in time and clusters for the methods, benchmark
 tests on the dataset \texttt{RDP} were also conducted. The dataset contains
@@ -504,7 +513,7 @@ and \texttt{klust} using \textsc{K-Clust} on the entire \texttt{RDP} dataset. Th
   \caption{Performance and clusterings results of different clustering methods and different parameters on the entire \texttt{SILVA} dataset.}
   \label{tab:full_RDP_main_results}
 \end{table}
-%TODO: Add singletons?
+%TODO: Add singletons? And add data from RDP.
 
 
 
