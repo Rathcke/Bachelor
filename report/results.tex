@@ -127,15 +127,15 @@ parameter.
 
 \begin{table}[H] % TODO: we need to state which dataset and the lengths of seqs
   \centering
-  \begin{tabular}{ c | c }
-    Distance metric implementation  & Comparisons/second  \\
+  \begin{tabular}{ c | r }
+    Distance metric implementation  & Comparisons/second    \\
     \hline \hline
-    Levenshtein (DP)                & $\sim 195$          \\ \hline
-    \textsc{K-Dist}, $k=4$          & $\sim 91,500$       \\ \hline
-    \textsc{K-Dist}, $k=5$          & $\sim 91,000$       \\ \hline
-    \textsc{K-Dist}, $k=6$          & $\sim 89,000$       \\ \hline
-    \textsc{K-Dist}, $k=7$          & $\sim 72,500$       \\ \hline
-    \textsc{K-Dist}, $k=8$          & $\sim 46,000$       \\
+    Levenshtein (DP)                & $\approx \num{195}$   \\ \hline
+    \textsc{K-Dist}, $k=4$          & $\approx \num{91500}$ \\ \hline
+    \textsc{K-Dist}, $k=5$          & $\approx \num{91000}$ \\ \hline
+    \textsc{K-Dist}, $k=6$          & $\approx \num{89000}$ \\ \hline
+    \textsc{K-Dist}, $k=7$          & $\approx \num{72500}$ \\ \hline
+    \textsc{K-Dist}, $k=8$          & $\approx \num{46000}$ \\
   \end{tabular}
   \caption{Performance comparison between a dynamic programming (bottom up)
     Levenshtein implementation and \textsc{K-Dist} implementation with
