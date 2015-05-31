@@ -13,7 +13,7 @@ since they will not be accessed again until writing the result to a file after
 the clustering is finished.
 
 The \texttt{klust} program has a maximum memory usage of less than 2 GB (cf.
-the table in Figure \ref{fig:full_RDP_main_results}) when clustering the
+the table in Figure \ref{tab:full_RDP_main_results}) when clustering the
 \texttt{RDP} dataset of size 3.5 GB (cf. section
 \ref{sec:overview_of_datasets}), so storing all data in memory is not actually
 a problem for the sizes of the datasets used for testing.
@@ -27,6 +27,8 @@ sequences is computed. If that sequence becomes a centroid, the bit vector is
 copied and stored in a structure representing the centroid, along with the
 centroid sequence etc., to avoid recomputing it later and if the sequence
 matches an existing cluster, the bit vector is reused for subsequent sequences.
+This yields a memory usage of 4096 bits times the number of centroids, in
+addition to the sequence data.
 
 Having bit vectors of the $k$-mers occurring in a sequence and a centroid
 sequence allows for very efficient computation of a bit vector of the $k$-mers

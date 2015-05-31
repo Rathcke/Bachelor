@@ -38,15 +38,16 @@ sequences to be clustered. The implementation could most likely be optimized
 further, but because of the characteristics of an edit distance algorithm like
 Levenshtein and because of the performance requirements for this project, it
 was decided to not pursue further optimization and instead focus on other types
-of algorithms. Furthermore, the Levenshtein distance penalizes reversals, i.e.
-it results in an increased distance.
+of algorithms. Furthermore, the Levenshtein distance penalizes occurrences of
+transposable elements and it also penalizes reversals, i.e. it results in an
+increased distance. % TODO: should we mention reversals at all?
 
 The Levenshtein distance can still be used for evaluation and benchmarking
 against other metrics. The algorithm is attached in appendix
 \ref{app:levenshtein_algorithm} and results from tests are shown in section
 \ref{sec:results}.
 
-As stated in \cite[pp.~1-2]{andoni}, ``The worst-case running time known for
+As stated in~\cite[pp.~1--2]{andoni}, ``The worst-case running time known for
 this problem has not improved in three decades (..)'', specifically it states
 that the running time of Levenshtein is $\mathcal{O}(d^2)$, where $d$ is the
 length of the two sequences, and $\mathcal{O}(d^2/\log_2(d))$ for a constant
@@ -74,7 +75,7 @@ characters as well. A gap is represented with '-' and it indicates an insertion
 in one sequence or a deletion from another sequence. This is called an
 \emph{indel}, which is a contraction of the first letters from insertion and
 deletion. If it is not an indel and all characters in the column are the same,
-then it is a match. Otherwise, it is a mismatch~\cite[pp.~135-136]{dong}.
+then it is a match. Otherwise, it is a mismatch~\cite[pp.~135--136]{dong}.
 
 \begin{figure}[H]
   \centering
@@ -121,33 +122,33 @@ alignment is very sensitive to the ordering of parts of sequences.
 \emph{Alignment-free} sequence comparison methods strive to provide a measure
 of sequence similarity while avoiding the costly computation that alignment
 involves. Alignment-free comparison allows one to look at each of the sequences
-independently, extracting some characteristics, or \emph{features}, of the each
-sequence and then comparing these characteristics.  This can possibly reduce
-the complexity of the comparison to linear time or better. One such
-alignment-free method, is $k$-mer counting which will be presented and analyzed
-in the following section.
+independently, extracting some characteristics, or \emph{features}, of each
+sequence and then comparing these characteristics. This can possibly reduce the
+complexity of the comparison to linear time or better. One such alignment-free
+method, is $k$-mer counting which will be presented and analyzed in the
+following section.
 
 
 \subsubsection{Feature based distance} \label{sec:kmer_distance}
 
-A $k$-mer, or $k$-gram or simply a \emph{word}, is a subsequence of length
-$k>0$ over some alphabet $\mathcal{A}$ of a sequence. An interesting feature of
-a sequence is which $k$-mers occur in that sequence and how many times they
-occur. This is called \emph{$k$-mer counting} and is a type of \emph{feature
-based distance metric}.
+A \emph{$k$-mer}, or \emph{$k$-gram} or simply a \emph{word}, is a subsequence
+of length $k>0$ over some alphabet $\mathcal{A}$ of a sequence. An interesting
+feature of a sequence is which $k$-mers occur in that sequence and how many
+times they occur. This is called \emph{$k$-mer counting} and is a type of
+\emph{feature based distance metric}.
 
 The \emph{$d2$ distance metric} is a feature based distance metric, using
 $k$-mers as the feature. The distance is calculated by counting the $k$-mers
 occurring in two sequences, representing these occurrences as two vectors and
 finally taking the Euclidean distance between these two
-vectors~\cite[pp.~53-54]{dong}.
+vectors~\cite[pp.~53--54]{dong}.
 
 Let $c_x(w)$ be the number of times that a $k$-mer $w$ occurs in the sequence
 $x$. Then the $d2$ distance between two sequences, $x$ and $y$, can be defined
-as follows~\cite[pp.~1-2]{hazelhurst}
-\begin{equation}
+as follows~\cite[pp.~1--2]{hazelhurst}
+\[
   d2_k(x,y) \eqdef \sqrt{\sum_{w \in K(x) \cup K(y)} (c_x(w) - c_y(w))^2}
-\end{equation}
+\]
 where $K(x)$ and $K(y)$ denotes the set of $k$-mers in $x$ and $y$,
 respectively.
 
@@ -178,7 +179,7 @@ The Euclidean distance would then be calculated as
 \end{align*}
 
 The first version of the $d2$ distance metric algorithm described above, is
-shown in algorithm \ref{alg:d2_basic} and it has been implemented as well. The
+shown in Algorithm \ref{alg:d2_basic} and it has been implemented as well. The
 substring method extracts up to $k$ characters beginning at index $i$ of the
 string. This algorithm maintains a single frequency vector, as a map structure
 to allow for large $k$ which results in a large number of possible different
@@ -219,7 +220,7 @@ a view of fixed length substrings of two sequences. This window can then be
 moved step by step over the two sequences, calculating the distance for each
 position of the window and then using the lowest of those distances as the
 resulting distance. In this way two sequences, where one is a prefix or postfix
-of the other, will have zero distance. This concept is illustrated in figure
+of the other, will have zero distance. This concept is illustrated in Figure
 \ref{fig:d2_window_concept} where the blue box corresponds to the window, which
 in this case has the length 10.
 
@@ -236,7 +237,7 @@ in this case has the length 10.
 
 For simplicity, the window size can be set equal to the size of the shortest of
 the two sequences. Then the window only moves step by step over the longer of
-the two sequences, while maintaining the position, and the $k$-mer counts, for
+the two sequences, while maintaining the position and the $k$-mer counts for
 the shorter sequence.
 
 Figure \ref{fig:d2_window_example} shows an example of this, where the $d2$

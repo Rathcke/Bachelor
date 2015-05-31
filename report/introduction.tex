@@ -1,5 +1,6 @@
 \section{Introduction}
 
+% TODO: emphasize "clustering"?
 Clustering is the task of partitioning a set of objects, such that each
 partition contains objects that are similar to each other and objects in
 separate partitions are dissimilar, according to some well-defined notion of
@@ -9,7 +10,7 @@ Clustering huge amounts of DNA/RNA sequences (up to 500 million strings of
 500--1500 characters each) is computationally hard, and the cost of sequencing,
 i.e. determining DNA and RNA data, has dropped so low, and consequently the
 amount of data has grown so large, that the available algorithms and hardware
-can no longer keep up.~\cite{rothberg}
+can no longer keep up~\cite{rothberg}.
 
 There are not many available algorithms and tools for efficient clustering of
 sequencing data. The one tool which is currently doing the job,
@@ -37,7 +38,7 @@ comparing the distribution of all possible substrings of a fixed length $k$ in
 each sequence, as an approximation for measuring sequence similarity.
 Furthermore, it utilizes the $k$-mers occurring in the centroids for improving
 the search for a centroid that is likely to be a good representative for a
-given sequence.
+given sequence. % TODO: emphasize "k-mer counting"?
 
 Earlier works have been very focused on techniques based on sequence alignment,
 with \texttt{UCLUST} being one such example. However, a clustering algorithm

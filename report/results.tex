@@ -11,11 +11,11 @@ section.
 \begin{description}
   \item[\texttt{SILVA}] \hfill \\
     The dataset \texttt{SILVA\_119\_SSURef\_tax\_silva.fasta} has a size of
-    around 2.3GB and contains $1,583,830$ RNA sequences.
+    around 2.3 GB and contains \num{1583830} RNA sequences.
 
   \item[\texttt{RDP}] \hfill \\
     The dataset \texttt{RDP\_Pro\_Full.sort.fna} has a size of around 3.5 GB
-    and contains $3,019,928$ DNA sequences.
+    and contains \num{3019928} DNA sequences.
 \end{description}
 
 Various statistics about the datasets are shown in Table \ref{tab:data_stats}.
@@ -25,7 +25,7 @@ The error ratio is the ratio between the number of non DNA/RNA bases, i.e. 'R',
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{c |  c | c | c | c | c}
+  \begin{tabular}{c | c | c | c | c | c}
     Dataset        & Avg. len. & Min. len. & Max. len. & Median len. & Error ratio \\
     \hline
     \texttt{SILVA} & 1,415.46  & 900       & 3,845     & 1,389       & 0.000156146 \\
@@ -105,9 +105,9 @@ Table \ref{tab:altered_seqs_similarities}.
     0.945   & 0.889                     & 0.979     & 0.958 \\
     0.946   & 0.897                     & 0.981     & 0.958
   \end{tabular}
-  \caption{Similarity measures, using $k=6$, for 1\% and 2\% single edits, respectively,
-    and 1\% and 2\% chunk edits, respectively, to 10 copies of a single
-    sequence.}
+  \caption{Similarity measures, using $k=6$, for 1\% and 2\% single edits,
+    respectively, and 1\% and 2\% chunk edits, respectively, to 10 copies of a
+    single sequence.}
   \label{tab:altered_seqs_similarities}
 \end{table}
 
@@ -158,12 +158,10 @@ presented Levenshtein algorithm is near quadratic in the lengths of the
 strings, while the running time of the \textsc{K-Dist} algorithm is
 $\Theta(\max{(\abs{s},\abs{t})}-k)$, where $s$ and $t$ are the sequences being
 compared and $k$ is the value for the parameter $k$. This was analyzed in
-section \ref{sec:k-dist_analysis}.
-
-So \textsc{K-Dist} will always be faster that the presented algorithm for
-Levenshtein for long enough sequences and as shown above in Figure
-\ref{tab:levenshtein_vs_kdist_performance}, that is indeed the case for the
-sequences this project is concerned with.
+section \ref{sec:k-dist_analysis}. So \textsc{K-Dist} will always be faster
+that the presented algorithm for Levenshtein for long enough sequences and as
+shown above in Figure \ref{tab:levenshtein_vs_kdist_performance}, that is
+indeed the case for the sequences this project is concerned with.
 
 Scatter plots of \textsc{K-Dist} similarities and the corresponding Levenshtein
 similarities for parameters $k=5$ and $k=8$ are shown in Figure
@@ -171,6 +169,13 @@ similarities for parameters $k=5$ and $k=8$ are shown in Figure
 \ref{fig:k-dist_lev_similarity_k8}, respectively. These similarity measures
 have been obtained by comparing the 500 first sequences from \texttt{SILVA}
 with each other.
+
+Since the Levenshtein distance does not produce values between 0 and 1, a
+similarity ratio similar to the one used in \textsc{K-Dist} and expressed in
+equation (\ref{eq:Manhattan_similarity}) was used. Specifically, the ratio
+between the Levenshtein distance and the maximum possible distance subtracted
+from one. The maximum possible Levenshtein distance is equal to the length of
+the longer sequence.
 
 \begin{wrapfigure}{l}{0.55\textwidth}
   \includegraphics[width=0.55\textwidth]{graphics/Levenshtein_K-Dist_k5.png}
@@ -194,28 +199,32 @@ the points in Figure \ref{fig:k-dist_lev_similarity_k5} and
 \ref{fig:k-dist_lev_similarity_k8} can likely be partly attributed to this
 difference in characteristic between the two distance metrics.
 
+The subplots, i.e. the inner boxes, in Figure
+\ref{fig:k-dist_lev_similarity_k5} and \ref{fig:k-dist_lev_similarity_k8},
+shows a zommed in view of the parts of the scatter plots that lies in the
+interval $[0.8,1.0]$ on both axes. The most interesting Levenshtein
+similarities are those above or equal to 0.95. These points lie fairly high for
+the corresponding $k$-mer similarity, for the most part, i.e. the majority of
+the comparisons that give a Levenshtein similarity of 0.95 also gives a $k$-mer
+similarity of 0.85 or above.
+
+\begin{figure}[h!]
+  \includegraphics[width=1.0\textwidth]{graphics/Levenshtein_K-Dist_k8.png}
+  \caption{Comparison of Levenshtein and \textsc{K-Dist} with $k=8$.}
+  \label{fig:k-dist_lev_similarity_k8}
+  \label{fig:Levenshtein_vs_KDist}
+\end{figure}
+
+
 
 %Despite its speed, it could be more sensible than \textsc{K-Dist}. Figure
 %\ref{fig:Levenshtein_vs_KDist} shows scatter plots of the Levenshtein distance
 %versus the distance \textsc{K-Dist} produces with different $k$'s. It
 %demonstrates how similar the distances are, and can be used as an indication
 %about the sensitivity of the \textsc{K-Dist} algorithm.
-%
-%To evaluate the \textsc{K-Dist} algorithm, presented in section
-%\ref{sec:kmer_distance}, the Levenshtein distance was used as reference. Since
-%the Levenshtein distance does not produce values between 0 and 1, a similarity
-%ratio similar to the one used in \textsc{K-Dist} and expressed in equation
-%(\ref{eq:Manhattan_similarity}) was used. Specifically, the ratio between the
-%Levenshtein distance and the maximum possible distance subtracted from one. The
-%maximum possible Levenshtein distance is equal to the length of the longer
-%sequence.
 
-\begin{figure}[H]
-  \includegraphics[width=1.0\textwidth]{graphics/Levenshtein_K-Dist_k8.png}
-  \caption{Comparison of Levenshtein and \textsc{K-Dist} with $k=8$.}
-  \label{fig:k-dist_lev_similarity_k8}
-  \label{fig:Levenshtein_vs_KDist}
-\end{figure}
+%To evaluate the \textsc{K-Dist} algorithm, presented in section
+%\ref{sec:kmer_distance}, the Levenshtein distance was used as reference.
 
 
 \subsection{Evaluating \textsc{K-Clust} on a synthetic dataset}

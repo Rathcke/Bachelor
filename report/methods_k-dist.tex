@@ -5,13 +5,14 @@ This section presents the \textsc{K-Dist} algorithm used in \texttt{klust}.
 \textsc{K-Dist} uses a window of length equal to the shortest of the two
 sequences being compared. The distance between the substrings in the initial,
 leftmost position of the window is calculated using a variant (described below)
-of the basic \textsc{d2} algorithm (algorithm \ref{alg:d2_basic}) described in
+of the basic \textsc{d2} algorithm (Algorithm \ref{alg:d2_basic}) described in
 section \ref{sec:kmer_distance}. The window then iterates over the longer
-sequence and calculates the new distance between the substring of the longer
-sequence and the shorter sequence.  This calculation is done using a kind of
-forward differences method for reducing the calculations to a few fixed
-operations for calculating the distance in the next window from the distance in
-the current window. This concept is described in~\cite{hazelhurst}.
+sequence, one nucleotide at a time, and calculates the new distance between the
+substring of the longer sequence and the shorter sequence.  This calculation is
+done using a kind of forward differences method for reducing the calculations
+to a few fixed operations for calculating the distance in the next window from
+the distance in the current window. This concept is described
+in~\cite{hazelhurst}.
 
 \textsc{K-Dist} uses the \emph{Manhattan distance} instead of the Euclidean
 distance used in the \textsc{d2} algorithm for calculating the distance between
@@ -63,8 +64,8 @@ dependent on the length of the shortest sequence (the length of the window).
 For this reason, the ratio between the Manhattan distance and the maximum
 possible distance in the window is used to normalize the distance to a value in
 the interval $[0,1]$. Let $w$ denote the size of the window. The corresponding
-similarity measure for the distance Manhattan distance in the window is given
-by the following:
+similarity measure for the Manhattan distance in the window is given by the
+following expression:
 
 \begin{equation}
   1 - \frac{d_{Manhattan}(s,t)}{2(w - k + 1)} \label{eq:Manhattan_similarity}
@@ -77,10 +78,13 @@ union of the sets.  However, the Jaccard index does not take the multiplicity
 of the elements into account and therefore it might give a lower sensitivity
 than the similarity measure in (\ref{eq:Manhattan_similarity}).
 
-The \textsc{K-Dist} algorithm (algorithm \ref{alg:K-Dist}) has been implemented
+The \textsc{K-Dist} algorithm (Algorithm \ref{alg:K-Dist}) has been implemented
 and is used as the distance metric in the \texttt{klust} program. The
 $s.substring(i,k)$ method extracts $k$ characters from a string $s$ beginning
-at position $i$.
+at position $i$. The update $cur\_dist$, $\mathtt{kmers}[x]$ and
+$\mathtt{kmers}[y]$ statements looks at the values for specific $k$-mers $x$
+and $y$ in the $k$-mer vector, increments or decrements the value and updates
+the $cur\_dist$ accordingly.
 
 \begin{algorithm}[H]
   \caption{\textsc{K-Dist} algorithm}
@@ -93,62 +97,27 @@ at position $i$.
       \State initialize map \texttt{kmers} : \texttt{string} $\to$
         \texttt{int} (0 initialized on first access)
       \State $cur\_dist \gets 0$
-      \For{$i \gets 0$ to $length(s) - k$}
+      \State
+      \For{$i \gets 0$ to $\abs{s} - k$}
+        \Comment{\parbox[t]{.3\linewidth}{$k$-mer counting}}
         \State $s_i \gets s.substring(i, k)$
         \State $t_i \gets t.substring(i, k)$
-        \State $cur\_dist \gets $ \Call{\textsc{Update-Dist}}
-          {\texttt{kmers}, $s_i$, $t_i$, $cur\_dist$}
-        \State \texttt{kmers}[$s_i$]\texttt{++}
-        \Comment{\parbox[t]{.3\linewidth}{$k$-mer counting}}
-        \State \texttt{kmers}[$t_i$]\texttt{-{}-}
+        \State update $cur\_dist$, $\mathtt{kmers}[s_i]$ and $\mathtt{kmers}[t_i]$
       \EndFor
-      %\ForAll{$c \in$ \texttt{kmers}}
-      %  \State $cur\_dist \gets cur\_dist + |c|$
-      %    \Comment{\parbox[t]{.3\linewidth}{Manhattan distance}}
-      %\EndFor
+      \State
       \State $min\_dist \gets cur\_dist$
-      \For{$i \gets 0$ to $length(t) - length(s)$}
+      \For{$i \gets 0$ to $\abs{t} - \abs{s}$}
           \Comment{\parbox[t]{.3\linewidth}{No. of windows}}
         \State $kmer_{out} \gets t.substring(i, k)$
         \State $kmer_{in} \gets t.substring(length(s)-k+i+1, k)$
-        \State $cur\_dist \gets $ \Call{\textsc{Update-Dist}}
-          {\texttt{kmers}, $kmer_{in}$, $kmer_{out}$, $cur\_dist$}
-        \State $\mathtt{kmers}[kmer_{out}]$\texttt{-{}-}
-        \State $\mathtt{kmers}[kmer_{in}]$\texttt{++}
-        %\State update $cur\_dist$ to current Manhattan distance
+        \State update $cur\_dist$, $\mathtt{kmers}[kmer_{out}]$
+               and $\mathtt{kmers}[kmer_{in}]$
         \State $min\_dist \gets min(min\_dist, cur\_dist)$
       \EndFor
-          \State $total \gets 2(length(s)-k+1)$
-            \Comment{\parbox[t]{.3\linewidth}{Maximal distance}}
+      \State
+      \State $total \gets 2(length(s)-k+1)$
+        \Comment{\parbox[t]{.3\linewidth}{Maximal distance}}
       \State \Return{$(total-min\_dist) / total$}
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-The auxiliary function \textsc{Update-Dist} is shown in algorithm
-\ref{alg:update-dist} and is used to continuously update the $cur\_dist$
-variable based on the $k$-mer counts in the map of $k$-mers occurring in the
-sequences. The function returns the updated distance.
-
-\begin{algorithm}[H]
-  \caption{\textsc{Update-Dist} auxiliary function}
-  \label{alg:update-dist}
-  \begin{algorithmic}[1]
-    \Require{\texttt{m} is a map from \texttt{string} to \texttt{integer},
-      $kmer\_add$ and $kmer\_sub$ are strings and $dist \in \mathbb{Z}$}
-    \Statex
-    \Function{Update-Dist}{$\mathtt{m},\,kmer\_add,\,kmer\_sub,\,dist$}
-      \If{$\mathtt{arr}[kmer\_add] < 0$}
-        \State $dist \gets dist - 1$
-      \Else
-        \State $dist \gets dist + 1$
-      \EndIf
-      \If{$\mathtt{arr}[kmer\_sub] > 0$}
-        \State $dist \gets dist - 1$
-      \Else
-        \State $dist \gets dist + 1$
-      \EndIf
-      \State \Return{$dist$}
     \EndFunction
   \end{algorithmic}
 \end{algorithm}

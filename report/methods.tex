@@ -182,7 +182,7 @@ An illustration of the method is seen in Figure \ref{fig:k-clust}.
 
 The \textsc{K-Clust} algorithm iterates over the array of sequences $S$, that
 is $|S|$ iterations, and for each of these iterations, the algorithms iterates
-over the list of centroids $centroids$.
+over the list of centroids.
 
 In the worst case, the $centroids$ list will grow with one element in each
 iteration of the outer loop, because in the worst case, every sequence will
@@ -200,9 +200,10 @@ The inner loop contains a constant amount of work and at most two calls to
 \textsc{K-Dist}, which will also be treates as contant time in this context,
 since the running time of the clustering algorithm will be expressed in the
 number of sequences, rather than the lengths of the sequences. The $K(s) \cap
-K(c)$ calculation of the intersection between the two sets of $k$-mers $s$ and
-$c$, respectively, will also be treated as constant since it also depends on
-the lengths of $s$ and $c$ and not on the number of sequences to be clustered.
+K(c)$ calculation of the intersection between the two sets of $k$-mers in
+sequences $s$ and $c$, respectively, will also be treated as constant since it
+also depends on the lengths of $s$ and $c$ and not on the number of sequences
+to be clustered.
 
 Thus, the \textsc{K-Clust} algorithm iterates over the contant amount of work
 in the inner loop the number of times expressed in (\ref{eq:triangular_number})
@@ -211,4 +212,8 @@ and so the running time is quadratic in the number of sequences, i.e.:
   \mathcal{O}\left(\abs{S}^2\right)
 \end{equation}
 
-% TODO: analyze space complexity
+This is, however, just the worst case running time and on average the running
+time will be much better since every sequence will rarely become a centroid of
+its own.
+
+% TODO: (maybe) analyze space complexity
