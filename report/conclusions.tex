@@ -3,18 +3,28 @@
 \subsection{Conclusions}
 \label{sec:conclusions}
 
-The implementation of the distance metric, the Manhattan distance using the
-algorithm \textsc{K-Dist} shows excellent results in terms of speed. The
-additional calculations caused by using windows does not add noticeable much
-to the overall performance of the clustering program. It does, however,
-provide more sensible results.
-%TODO: resultater af manhattan med vindue vs uden.
+This thesis has presented an efficient, greedy, heuristic clustering algorithm,
+along with an efficient algorithm using $k$-mer counting as an approximation
+for calculating sequence similarity.
 
-While the distance metric implementation can be improved we also need to keep
-it sensitive. Changing the distance metrics to improve speed could mean a
-drawback for its sensibility. We also plan to investigate alternative methods
-to locate centroid candidates as the current implementation does not provide
-good results.
+The presented clustering algorithm and distance metric has been implemented in
+the program \texttt{klust}, which is open-source and freely available, cf.
+section \ref{sec:introduction}.
+
+The program \texttt{klust} has shown to give results of high quality, a low
+number of resulting clusters and performs as well or better than
+\texttt{USEARCH} in terms of both speed and memory usage. However, the
+clustering algorithm is almost exhaustive in the search for a centroid, since
+the $max\_rejects$ parameter is not effectively used. Although the centroid
+search is exhaustive, actual sequence comparisons are almost only performed
+when they will succeed anyway and there are barely any false negatives, i.e.
+skipped comparisons which would have yielded a match.
+
+The implementation of the presented distance metric is very fast and works well
+with mutations such as chunks of changes and occurrences of transposable
+elements, although it could be less sensitive to larger chunks of changes and
+single nucleotide edits.
+
 
 \subsection{Future work}
 \label{sec:future_work}
@@ -43,19 +53,21 @@ it is hard to say if it will produce a lot fewer clusters or if it will be
 slower. But it would also improve the very poor scaling that happens when the
 threshold increases.
 
-Another improvement is in the distance metric. As of now it is only preventive
-to a few mutations. It still penalizes large chunk edits (insertions or
-deletions) a lot more than it should. It should be able to detect these
-mutations and not punish them as much as it does. While locating these segments
-can be computationally hard, calculating the distance is very cheap in the
-implementation and relatively few comparisons are made compared to the number
-of iterations over centroids. The additional computations to cover insertion
-and deletion mutations could provide a more ``biologically'' correct $id$.
+Another improvement is related to the distance metric. As of now it is only
+insensitive to a few types mutations. It still penalizes large chunk edits
+(insertions or deletions) a lot more than it should. It should be able to
+detect these mutations and not punish them as much as it does. While locating
+these segments can be computationally hard, calculating the distance is very
+cheap in the implementation and relatively few comparisons are made compared to
+the number of iterations over centroids. The additional computations to cover
+insertion and deletion mutations could provide a more correct similarity
+measure, in a biological sense, i.e. better identification of actual genomic
+mutations.
 
-% TODO: There is still room for improvement, however, for instance we plan
-%       to implement storage of $k$-mer frequency vectors together with the
-%       centroids such that these can be reused in subsequent similarity
-%       calculations.
-%
-%       Additionally, there can be made more checks for the possibility of
-%       stopping a comparison early, if it is already known that it will fail.
+With regards to the implementation, there are also some future improvements to
+be made: The $k$-mer frequency vectors could be stored together with the
+centroids and reused in subsequent similarity computations. Additionally, there
+can be made more checks for the possibility of stopping a comparison early, if
+it is already known that it will fail. Thirdly, the parallelization of the
+clustering could be developed further so that it would yield fewer clusters,
+e.g. a better merge strategy.

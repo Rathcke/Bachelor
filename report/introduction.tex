@@ -1,7 +1,7 @@
 \section{Introduction}
+\label{sec:introduction}
 
-% TODO: emphasize "clustering"?
-Clustering is the task of partitioning a set of objects, such that each
+\emph{Clustering} is the task of partitioning a set of objects, such that each
 partition contains objects that are similar to each other and objects in
 separate partitions are dissimilar, according to some well-defined notion of
 similarity. These partitions are called \emph{clusters}.
@@ -51,3 +51,38 @@ hosted on GitHub and is available at \url{https://github.com/Rathcke/klust}.
 
 The reader of this document is expected to have a basic knowledge of computer
 science, corresponding to around two or three years of undergraduate studies.
+
+
+\subsection{Defining the clustering problem}
+
+The clustering problem that this project aims to solve is a partitioning of the
+sequences such that the similarities between a given centroid and all sequences
+in the cluster represented by that sequence is greater than or equal to the
+specified threshold similarity. There is, however, no guarantee that the
+centroid sequences will have a lower mutual similarity than the similarity
+threshold.
+
+Let $C$ be a set of pairs of centroid sequences and sets of sequences belonging
+to the clusters represented by those centroids, let $sim$ denote the similarity
+measure and let $t$ be a given threshold similarity. Then a certain
+partitioning of sequences is a solution to the above clustering problem if it
+satisfies the following property:
+\[
+  \forall\, (c,S) \in C:\; \forall\, s \in S: sim(s,c) \geq t
+\]
+
+Figure \ref{fig:clustering_concept} illustrates this concept of \emph{centroid
+based} clustering.
+
+\begin{figure}[h!]
+  \centering
+  \def\svgwidth{\columnwidth}
+  \import{graphics/}{Clustering.pdf_tex}
+  \caption{Illustration of centroid based clustering. The green sequences
+    belong to the cluster represented by the leftmost, black centroid and the
+    blue sequences belong to the rightmost cluster. The middle sequence, in the
+    intersection between the circles, belong to only the left cluster although
+    it could possibly belong to the right one instead (as indicated by
+    the dotted arrow).}
+  \label{fig:clustering_concept}
+\end{figure}
