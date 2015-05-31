@@ -1,3 +1,27 @@
 \begin{abstract}
-  This will eventually contain a beautiful abstract \dots
+
+  This paper presents an efficient, greedy, heuristic algorithm for clustering
+  huge amounts of DNA/RNA sequences, along with an open-source implementation
+  of the algorithm.
+
+  This clustering algorithm utilizes $k$-mers for approximating the likelihood
+  that two sequences will be above some given similarity threshold.
+  Additionally, a $k$-mer based similarity metric is used for approximating
+  sequence similarity and thereby reducing the time complexity of the sequence
+  comparison to linear in the length of the longest of two sequences, instead
+  of the more common quadratic running time for sequence alignment, which is
+  among others used in the proprietary \texttt{USEARCH} program.
+
+  The implemented program, \texttt{klust}, has been tested and evaluated on
+  both synthetic sequence data based on real data and on real world data
+  consisting of more than 3 million sequences with an average length of over
+  1000 nucleotides each.
+
+  The program behaves as expected on the synthetic dataset and it seems to give
+  high quality clustering results on real data based on visualizations of
+  multidimensional scaling of the sequences.
+
+  The program has been shown to run faster, use less memory and produce fewer
+  clusters than \texttt{USEARCH}.
+
 \end{abstract}
