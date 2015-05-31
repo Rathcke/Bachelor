@@ -392,8 +392,58 @@ close to each other in the MDS.
 % TODO: discuss
 
 \subsection{Evaluation of centroid search in \texttt{klust}}
-%TODO
 
+A great part of the clustering lies in task of locating potential matching
+centroids to a sequence. To evaluate this, \texttt{klust} was run on a number
+of sequences from the dataset \texttt{SILVA}. Information about how many times
+an actual comparison was made and scored under the similarity threshold was
+extracted. False negatives were also extracted, i.e. how often a comparison
+was not made, but it would have scored over the similarity threshold. How
+often it performs a comparison against how often it does not and how often it
+reaches the $max\_reject$ parameter was also measured. Table
+\ref{tab:centroid_search_data} show this data represented as ratios. The
+program was run with parameters $k=5$, $id=0.85$, $max\_rejects=8$ and flag
+\texttt{-{}-sort\_incr}.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{c|c|c}
+  Count                & \num{10000} & \num{100000} \\
+  \hline\hline
+  Reject ratio         & 0.00231453  & 0.00871947 \\
+  \hline
+  False negative ratio & 0.00048433  & 0.00012806 \\
+  \hline
+  Reached max rejects  & 0           & 4 \\
+  \hline
+  Try ratio            & 0.00376512  & 0.00112404 \\
+  \end{tabular}
+  \caption{Centroid search data}
+  \label{tab:centroid_search_data}
+\end{table}
+
+There are very few rejects in both cases, which means the initial check for
+the $k$-mer intersection is actually very accurate representation of sequence
+similarity. There are more rejects as there are more sequences to be
+clustered. This should not be seen as a drawback for the clustering quality.
+On the contrary, it means it performs more compares and as a result, the
+number of false negatives fall. The only loss, besides making a couple of
+additional compares, is that it can reject the same sequence too many times
+($max\_rejects$) and make the sequence a centroid without comparing it too
+anymore centroids. This is likely because the sequence has many distinct
+$k$-mers and thus often match the intersection criteria. These will often not
+match the centroids, and while they might match a centroid, without a
+$max\_reject$ it can essentially compare to all centroid. This is good to
+avoid as it is heavily slows the clustering down.
+
+The try ratio, how often it succeeds in the initial criteria, is quite low and
+even falls when clustering more sequences. When clustering \num{100000}
+sequences it will only make a comparison every $1$ in $900$ times. This is
+quite low and is the primary slow down in the clustering algorithm. Since it
+already chooses to perform the comparisons with very little error (small
+reject and false negative ratios) the only way to make the clustering faster
+is to find the right ones faster. This is the intended optimization a link can
+introduce. (cf. section \ref{sec:k-clust_algorithm})
 
 
 \subsection{Evaluating \texttt{klust} on real data and comparing with \texttt{USEARCH}}
