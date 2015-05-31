@@ -109,13 +109,13 @@ the $cur\_dist$ accordingly.
       \For{$i \gets 0$ to $\abs{t} - \abs{s}$}
           \Comment{\parbox[t]{.3\linewidth}{No. of windows}}
         \State $kmer_{out} \gets t.substring(i, k)$
-        \State $kmer_{in} \gets t.substring(length(s)-k+i+1, k)$
+        \State $kmer_{in} \gets t.substring(\abs{s}-k+i+1, k)$
         \State update $cur\_dist$, $\mathtt{kmers}[kmer_{out}]$
                and $\mathtt{kmers}[kmer_{in}]$
         \State $min\_dist \gets min(min\_dist, cur\_dist)$
       \EndFor
       \State
-      \State $total \gets 2(length(s)-k+1)$
+      \State $total \gets 2\left(\abs{s}-k+1\right)$
         \Comment{\parbox[t]{.3\linewidth}{Maximal distance}}
       \State \Return{$(total-min\_dist) / total$}
     \EndFunction

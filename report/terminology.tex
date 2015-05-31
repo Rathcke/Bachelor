@@ -23,12 +23,8 @@ measure where 0 means no similarity and 1 means perfect similarity. A
 two sequences must have to belong in the same cluster.  When two sequences are
 above a given similarity threshold, they are said to \emph{match} one another.
 
-The terms \emph{query sequence} and \emph{target sequence} will be used to
-denote the sequence being searched for and a sequence being compared to,
-respectively.
-% TODO: The term \emph{query sequence} denotes a sequence for which a matching
-%       centroid is sought and \emph{target sequence} denotes a sequence being
-%       compared to.
+The term \emph{query sequence} denotes a sequence for which a matching centroid
+is sought and \emph{target sequence} denotes a sequence being compared to.
 
 The name \texttt{USEARCH} denotes both the piece of software developed by
 Robert C. Edgar and the algorithm used in the program for searching for
@@ -43,5 +39,5 @@ Let $s$ and $t$ be sequences.
 \begin{itemize}
   \item $d(s,t)$ denotes the distance between $s$ and $t$
   \item $|s|$ denotes the length of $s$
-  \item $s \sqsubseteq t$ denotes that $s$ is a substring of $t$
+  \item $K(s)$ denotes the set of $k$-mers in $s$
 \end{itemize}

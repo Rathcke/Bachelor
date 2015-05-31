@@ -10,24 +10,11 @@ to the overall performance of the clustering program. It does, however,
 provide more sensible results.
 %TODO: resultater af manhattan med vindue vs uden.
 
-At this point in the project, we have described and implemented a reasonably
-fast distance metric, which might be able to compete with other existing
-solutions, e.g. \texttt{UCLUST}, depending on the clustering algorithm used
-with the distance metric. There is still room for improvement, however, for
-instance we plan to implement storage of $k$-mer frequency vectors together
-with the centroids such that these can be reused in subsequent similarity
-calculations.
-
-Additionally, there can be made more checks for the possibility of stopping a
-comparison early, if it is already known that it will fail.
-
 While the distance metric implementation can be improved we also need to keep
 it sensitive. Changing the distance metrics to improve speed could mean a
 drawback for its sensibility. We also plan to investigate alternative methods
 to locate centroid candidates as the current implementation does not provide
 good results.
-
-%TODO: Conclusions
 
 \subsection{Future work}
 \label{sec:future_work}
@@ -44,7 +31,7 @@ intersection of $k$-mers as \texttt{USEARCH} does, our idea was to expand
 on the implementation of the link a centroid has. Instead of having only one
 link, it could have a $m$ number of links or at least be able to trace through
 the links to $m$ centroids that make good potential matches. The idea is to
-build a graph that connects centroids that are close to eachother. While this
+build a graph that connects centroids that are close to each other. While this
 might sound heavy, it should not add a whole lot to memory as each centroid
 only has a couple of links and the graph can be constructed while clustering.
 Each iteration would take a bit longer, but when clustering huge amounts of
@@ -53,14 +40,22 @@ are singletons, are quickly dismissed. As it uses most of the time searching
 for centroids, this is one of the most important things to optimize. However,
 due to time constraints, we have not been able to do much research on this, so
 it is hard to say if it will produce a lot fewer clusters or if it will be
-slower. But it would also prevent the extreme scaling that we have when $id$'s
-increases.
+slower. But it would also improve the very poor scaling that happens when the
+threshold increases.
 
 Another improvement is in the distance metric. As of now it is only preventive
-to a few mutations. It still penalizes chunk edits (insertions or deletions) a
-lot more than it should. It should be able to detect these mutations and not
-punish them as much as it does. While locating these segments can be
-computationally hard, calculating the distance is very cheap in the
-implementation and few comparisons are made (comparetively to centroid
-checks). The additional computations to cover insertion and deletion mutations
-could provide a more ``biologically'' correct $id$.
+to a few mutations. It still penalizes large chunk edits (insertions or
+deletions) a lot more than it should. It should be able to detect these
+mutations and not punish them as much as it does. While locating these segments
+can be computationally hard, calculating the distance is very cheap in the
+implementation and relatively few comparisons are made compared to the number
+of iterations over centroids. The additional computations to cover insertion
+and deletion mutations could provide a more ``biologically'' correct $id$.
+
+% TODO: There is still room for improvement, however, for instance we plan
+%       to implement storage of $k$-mer frequency vectors together with the
+%       centroids such that these can be reused in subsequent similarity
+%       calculations.
+%
+%       Additionally, there can be made more checks for the possibility of
+%       stopping a comparison early, if it is already known that it will fail.
