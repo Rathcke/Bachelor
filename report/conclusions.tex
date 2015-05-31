@@ -27,11 +27,40 @@ drawback for its sensibility. We also plan to investigate alternative methods
 to locate centroid candidates as the current implementation does not provide
 good results.
 
-\subsection{Future work}
-\label{sec:future_work}
-While the implementation has sped up the clustering and makes good clustering results, it does lack some key features due to time constraints.
-The most important feature is the search for good centroid matches. 
-
 %TODO: Conclusions
 
-%TODO: Future work: Sensitive distance metric and quicker centroid locate (using the links)
+\subsection{Future work}
+\label{sec:future_work}
+
+While the implementation has sped up the clustering and makes good clustering
+results, it does lack some key features.
+
+The most important feature is the search for good centroid matches. As of now,
+the implementation does not use the parameter $max\_rejects$, or $m$, in an
+effective manner. It is very rare that a sequence reaches the maximum number
+of rejects, and as such it will go through the entire centroid list if it does
+not have any matches in the centroid list. Instead of sorting by the
+intersection of $k$-mers as \texttt{USEARCH} does, our idea was to expand
+on the implementation of the link a centroid has. Instead of having only one
+link, it could have a $m$ number of links or at least be able to trace through
+the links to $m$ centroids that make good potential matches. The idea is to
+build a graph that connects centroids that are close to eachother. While this
+might sound heavy, it should not add a whole lot to memory as each centroid
+only has a couple of links and the graph can be constructed while clustering.
+Each iteration would take a bit longer, but when clustering huge amounts of
+data, the sacrifice would very quickly pay off. This way, the sequences that
+are singletons, are quickly dismissed. As it uses most of the time searching
+for centroids, this is one of the most important things to optimize. However,
+due to time constraints, we have not been able to do much research on this, so
+it is hard to say if it will produce a lot fewer clusters or if it will be
+slower. But it would also prevent the extreme scaling that we have when $id$'s
+increases.
+
+Another improvement is in the distance metric. As of now it is only preventive
+to a few mutations. It still penalizes chunk edits (insertions or deletions) a
+lot more than it should. It should be able to detect these mutations and not
+punish them as much as it does. While locating these segments can be
+computationally hard, calculating the distance is very cheap in the
+implementation and few comparisons are made (comparetively to centroid
+checks). The additional computations to cover insertion and deletion mutations
+could provide a more ``biologically'' correct $id$.
