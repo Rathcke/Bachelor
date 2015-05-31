@@ -197,10 +197,10 @@ vectors for the two sequences.
     \Statex
     \Function{d2}{$s, t, k$}
       \State initialize \texttt{freq\_map} of type \texttt{string $\to$ int} map
-      \For{$i \gets 0$ to $length(s) - k$}
+      \For{$i \gets 0$ to $\abs{s} - k$}
         \State \texttt{freq\_map}[$s$.substring($i$, $k$)]\texttt{++}
       \EndFor
-      \For{$i \gets 0$ to $length(t) - k$}
+      \For{$i \gets 0$ to $\abs{t} - k$}
         \State \texttt{freq\_map}[$t$.substring($i$, $k$)]\texttt{-{}-}
       \EndFor
       \State $total \gets 0$
