@@ -392,6 +392,10 @@ close to each other in the MDS.
 
 % TODO: discuss
 
+\subsection{Evaluation of centroid search in \texttt{klust}}
+%TODO
+
+
 
 \subsection{Evaluating \texttt{klust} on real data and comparing with \texttt{USEARCH}}
 
@@ -430,15 +434,13 @@ In appendix \ref{app:performance_results_full_SILVA} is a table that shows data
 from \texttt{klust} using either \textsc{K-Clust} or \textsc{Simple-Clust} and
 \texttt{USEARCH}. The programs have been run with different parameters on the
 entire \texttt{SILVA} dataset. Table \ref{tab:full_silva_main_results} shows
-the most important results found in appendix
-\ref{app:performance_results_full_SILVA}.
-
+the most important results found in the appendix.
 
 \begin{table}[H]
   \begin{adjustbox}{center}
   \begin{tabular}{c|r|r|r|lr|c}
   \multirow{2}{*}{}
-  Clustering & Time & Throughput & Clusters & \multicolumn{2}{c}{Cluster sizes}& Max \\
+  Clustering & Time & Throughput & Clusters & \multicolumn{2}{c|}{Cluster sizes}& Max \\
   algorithm & (sec.) & (seqs./sec.) & & & & memory \\
   \hline \hline
   \multirow{3}{*}
@@ -507,11 +509,11 @@ as much as \textsc{K-Dist} does. The gaps occur due to the mutations described
 in section \ref{sec:biology} and larger gaps should not be penalized in the
 same magnitude as single errors are. As demostrated in section
 \ref{sec:altered_sequences}, \textsc{K-Dist} is also more forgiving in these
-cases, but it is more strict than in \texttt{USEARCH}.
+cases, but it is still more strict than in \texttt{USEARCH}.
 
 \begin{figure}[H]
   \includegraphics[width=\textwidth]{graphics/RDP_1000_cluster_counts}
-  \caption{Comparison of the number of clusters at different $id$'s with a difference of $0.01$ on the first \num{10000} sequences of \texttt{RDP}. The red circles shows the results from \texttt{klust} and the blue plus signs is the results from \texttt{USEARCH}.}
+  \caption{Comparison of the number of clusters at different $id$'s with a difference of $0.01$ on the first \num{10000} sequences of \texttt{RDP}. The red circles show the results from \texttt{klust} and the blue plus signs are the results from \texttt{USEARCH}.}
   \label{fig:id_comparison}
 \end{figure}
 %TODO: Update graph
@@ -526,27 +528,61 @@ and \texttt{klust} using \textsc{K-Clust} on the entire \texttt{RDP} dataset. Th
 
 \begin{table}[H]
   \begin{adjustbox}{center}
-  \begin{tabular}{c|r|r|r|lr|r}
+  \begin{tabular}{c|r|r|r|lr|c}
   \multirow{2}{*}{}
-  Clustering & Time & Throughput & Clusters & \multicolumn{2}{c}{Cluster sizes}& Max \\
+  Clustering & Time & Throughput & Clusters & \multicolumn{2}{c|}{Cluster sizes}& Max \\
   algorithm & (sec.) & (seqs./sec.) & & & & memory \\
   \hline \hline
   \multirow{3}{*}
   {}\textsc{K-Clust},  & & & & Max & 100832 & \\
-  $k=5, id=0.85, m=8,$ & 5420.79 & 557.101 & 220982 & Avg. & 13.6659 & 2031 MB\\
+  $k=5, id=0.85, m=8,$ & 5420.79 & 557.101 & 220982 & Avg. & 13.6659 & $\approx\num{2031}$ MB\\
   incr. sort           & & & & Min & 1 & \\
   \hline
   \multirow{3}{*}
-  {}\texttt{USEARCH},        & & & & Max & - & \\
-  $id=-,$ decr. sort      & - & - & - & Avg. & - & - MB \\
-  \texttt{-cluster\_smallmem} & & & & Min & - & \\
+  {}\textsc{K-Clust},  & & & & Max & 55992 & \\
+  $k=5, id=0.9, m=8,$ & 11948.7 & 252.741 & 344122 & Avg. & 8.77575 & $\approx\num{2031}$ MB\\
+  incr. sort           & & & & Min & 1 & \\
+  \hline
+  \multirow{3}{*}
+  {}\texttt{USEARCH},        & & & & Max & 65654 & \\
+  $id=0.95,$ decr. sort      & 6874 & 439.2 & 261880 & Avg. & 11.5 & $\approx\num{1433}$  MB \\
+  \texttt{-cluster\_smallmem} & & & & Min & 1 & \\
+  \hline
+  \multirow{3}{*}
+  {}\texttt{USEARCH},        & & & & Max & 56279 & \\
+  $id=0.97,$ decr. sort      & 11980 & 252.0 & 471982 & Avg. & 6.4 & $\approx\num{2560}$  MB \\
+  \texttt{-cluster\_smallmem} & & & & Min & 1 & \\
   \end{tabular}
   \end{adjustbox}
-  \caption{Performance and clusterings results of different clustering methods and different parameters on the entire \texttt{SILVA} dataset.}
+  \caption{Performance and clusterings results of different clustering methods and different parameters on the entire \texttt{RDP} dataset.}
   \label{tab:full_RDP_main_results}
 \end{table}
-%TODO: Add singletons? And add data from RDP.
+%TODO: Add singletons?
 
+The $id$'s have been chosen based on section
+\ref{fig:k-dist_lev_similarity_k5} Figure \ref{fig:id_comparison} where
+$id=0.85$ in \texttt{klust} produces the same number of clusters as $id=0.95$
+in \texttt{USEARCH} and $id=0.9$ gives the same number of clusters as
+$id=0.97$. Note that this is an approximation and these $id$'s will not always
+be ``equal''.
 
+At identity $0.85$ in \texttt{klust}, the method is faster and produces fewer
+clusters than \texttt{USEARCH} at identity $0.95$. The fewer clusters can be
+that the $id$'s simply does not correspond to eachother, but also because
+\texttt{USEARCH} almost always assigns a sequence to a cluster or makes it a
+centroid for a new one because of the $max\_rejects$ parameter. This means it
+can overlook a centroid that would have been a match. In \texttt{klust} this
+can be an issue as well, but it does look at all centroids to see if they
+could be a potential match.
+%TODO: Use false negatives and other data from centroid search
 
-\subsection{Evaluation of centroid search in \texttt{klust}}
+The total clustering time does not scale as well for \texttt{klust} when $id$
+(and centroids) is increased as \texttt{USEARCH}. The number of clusters,
+however, are still very low compared to \texttt{USEARCH}.
+
+In \texttt{klust}, memory usage is the same despite the number of centroids
+increases. As centroids does take up some space, it should add to max memory,
+but it is not significant. The reason that it is exactly the same memory usage
+when id is $0.85$ and $0.9$ is due to some redundant allocations. In \texttt{USEARCH}, memory usage increases significantly. It seems like
+the number of clusters has a great impact. This could be a problem if even
+larger dataset are clustered.
