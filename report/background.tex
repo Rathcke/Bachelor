@@ -6,9 +6,15 @@
 DNA, deoxyribonucleic acid, is a polymeric molecule that consists of the four
 chemically distinct nucleotides adenine (A), cytosine (C), guanine (G) and
 thymine (T). RNA, ribonucleic acid, is also a polymeric molecule where the
-nucleotide thymine is replaced by uracil (U).  The nucleotides can be linked
+nucleotide thymine is replaced by uracil (U). The nucleotides can be linked
 together in any order to form chains that are up to millions of nucleotides
 long~\cite[pp.~8--9]{brown}. These chains are called sequences.
+
+Besides the four nucleotides in DNA and RNA, sequencing data can also contain
+\emph{ambiguous bases} such as 'R', 'Y', 'K'. These bases represent different
+subset of the four nucleotides and there exists one for each
+subset~\cite{tao}. These are used in sequencing data to indicate uncertainties
+about the actual nucleotides.
 
 Every organism has a genome that contains the biological information that is
 needed to construct and maintain a living example of that organism. For humans
@@ -28,5 +34,3 @@ moved from one part of the sequence to another. These segments are known as
 Clustering can serve to identify DNA or RNA sequences that has been mutated and
 group mutated sequences of the same origin into the same cluster with just a
 single representative sequence.
-
-%TODO: add more?

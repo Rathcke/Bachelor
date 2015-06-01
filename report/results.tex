@@ -19,9 +19,7 @@ section.
 \end{description}
 
 Various statistics about the datasets are shown in Table \ref{tab:data_stats}.
-The error ratio is the ratio between the number of non DNA/RNA bases, i.e. 'R',
-'Y', 'K' etc., and the total number of characters in the sequences.
-% TODO: maybe name this 'ambiguous bases' or just mention the term
+The error ratio is the ratio between the number of non DNA/RNA bases, i.e. the ambigious bases.
 
 \begin{table}[H]
   \centering
@@ -42,7 +40,6 @@ hardware threads), and 16 GB RAM.
 
 \subsection{Testing the distance metric on altered sequences}
 \label{sec:altered_sequences}
-%TODO: Misleading title?
 
 Two different sets of highly similar sequences was constructed from a real
 world sequence from \texttt{SILVA} and this was used in the evaluation of the
@@ -216,17 +213,6 @@ similarity of 0.85 or above.
 \end{figure}
 
 
-
-%Despite its speed, it could be more sensible than \textsc{K-Dist}. Figure
-%\ref{fig:Levenshtein_vs_KDist} shows scatter plots of the Levenshtein distance
-%versus the distance \textsc{K-Dist} produces with different $k$'s. It
-%demonstrates how similar the distances are, and can be used as an indication
-%about the sensitivity of the \textsc{K-Dist} algorithm.
-
-%To evaluate the \textsc{K-Dist} algorithm, presented in section
-%\ref{sec:kmer_distance}, the Levenshtein distance was used as reference.
-
-
 \subsection{Evaluating \textsc{K-Clust} on a synthetic dataset}
 \label{sec:synth_dataset}
 
@@ -270,13 +256,6 @@ when clustering with a threshold of $0.9$ or above. In the specific test, and
 the specific, random order of the sequences, the clustering result yielded 386
 clusters for $id=0.9$, average cluster size of $984.456$ and a minimum cluster
 size of $33$.
-
-% TODO: maybe add something like the following:
-% This threshold is, however, close to the expected similarity of $0.92$ and
-% since the clustering algorithm does not call \textsc{K-Dist} on every
-% sequence/centroid pair, these errors can likely be contributed to
-% \textsc{K-Clusts}'s choice of whether to call \textsc{K-Dist} or not, along
-% with standard error.
 
 This test provides some evidence that \textsc{K-Clust} is able to successfully
 cluster a dataset of a fairly realistic size. Since the similarities are known

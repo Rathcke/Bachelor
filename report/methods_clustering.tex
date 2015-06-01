@@ -6,7 +6,6 @@ weaknesses and potentials of these methods.
 
 \subsubsection{Hierarchical clustering}
 
-%TODO: Add divisive or explain why not.
 There are typically two types of hierarchical clustering algorithms, the
 agglomerative type that works in a bottom-up manner and the divisive type that
 has a top-down approach. This section describes the agglomerative version. In
@@ -28,18 +27,18 @@ Figure \ref{fig:hierarchical_clustering}.
   \label{fig:hierarchical_clustering}
 \end{figure}
 
-This addresses the question of what is required for a cluster to be "close" to
-another. Besides measuring similarity between sequences with some distance
+This addresses the question of what is required for a cluster to be ``close''
+to another. Besides measuring similarity between sequences with some distance
 metric, a definition for when clusters should be merged is needed. The
-following is described with respect to that merges happen based on a similarity
-threshold.
+following describes different approaches for merging two clusters based on a
+similarity threshold.
 
 In the \textit{complete-linkage} approach, all sequences from one cluster must
-be above the threshold of all sequences from the other. In the
-\textit{average-linkage}, the average distance of all sequence pairs is
-required to be above the threshold. With the \textit{single-linkage} approach,
-only a sequence from both clusters need an identity above the similarity
-threshold.
+have a similarity above the threshold to all sequences from the other. In the
+\textit{average-linkage}, the average similarity between all pairs of
+sequences is required to be above the threshold. With the \textit{single-
+linkage} approach, only two sequences, one from each cluster, need an identity
+above the similarity threshold.
 
 The complete-linkage approach is computationally very heavy as each merge will
 take $\mathcal{O}(mn)$ time, where $m$ and $n$ are the sizes of the clusters.
@@ -81,13 +80,14 @@ similarity score between $V_i$ and $V_j$, based on some distance metric. If the
 clustering is based on a similarity threshold, edges that are below the
 similarity threshold can be ignored.
 
-There are many variants to the clustering step. The reference~\cite{hartuv}
-presents an algorithm that tries to minimize edges that connect two subgraphsb by
-moving vertices from one subgraph to another.
+There are many variants to the clustering step. E. Hartuv and R.
+Shamir~\cite{hartuv} presents an algorithm that tries to minimize edges that
+connect two subgraphsb by moving vertices from one subgraph to another.
 
-The reference~\cite{kawaji} tries to maximize the density of edges in a
-subgraph. This is done by converting the tree into a simpler tree by removing
-all edges that are under the similarity threshold.
+H. Kawaji \textit{et al.}~\cite{kawaji} presented an algorithm that tries to
+maximize the density of edges in a subgraph. This is done by converting the
+tree into a simpler tree by removing all edges that are under the similarity
+threshold.
 
 Since both of these requires that all edges' weights has been computed, it is
 already too slow for efficient sequence clustering. If the subgraphs could be
@@ -98,26 +98,26 @@ clustering is needed to obtain the desired performance.
 
 \subsubsection{Greedy algorithm like \texttt{UCLUST}}
 
-The \texttt{UCLUST} algorithm is greedy and is developed so that all member
-sequences have similarity $\geq$ $T$ to their centroid.  It works by processing
-one sequence at a time and comparing these to the existing centroids. If a
-match is found, the sequence is assigned to the matching centroid, otherwise it
-becomes a centroid of a new cluster.
+The \texttt{UCLUST} algorithm is greedy and is designed so that all member
+sequences have similarity greater than or equal to the similarity threshold,
+to their centroid.  It works by processing one sequence at a time and
+comparing these to the existing centroids. If a match is found, the sequence
+is assigned to the cluster of the matching centroid, otherwise it becomes a
+centroid of a new cluster.
 
-It is designed to also support that each centroid has a similarity $<T$ to all
-other centroids, but this is not guaranteed to hold. The reason is that the
-algorithm only compares a sequence to a prespecified number of centroids given
-by the \texttt{-maxrejects} parameter.
+It is designed to also support that each centroid has a similarity under the
+threshold to all other centroids, but this is not guaranteed to hold. The
+reason is that the algorithm only compares a sequence to a prespecified number
+of centroids given by the $max\_reject$ parameter.
 
 It uses the $k$-mer counts to locate centroid candidates for a match, though
 how it does it is not very well described.
 
-The similarity calculations are performed with global sequence alignments as
-\cite{usearch_algorithm} claims that using the word counts to calculate
+The similarity calculations are performed with global sequence alignments as R. C. Edgar~\cite{usearch_algorithm}  claims that using the word counts to calculat
 identity is not sensitive enough. Greedy clustering is illustrated in Figure
 \ref{fig:greedy_clustering}.
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \def\svgwidth{\columnwidth}
   \import{graphics/}{Greedy_Clustering.pdf_tex}
   \caption{Illustration of greedy clustering. Sequences are processed in the
@@ -126,4 +126,10 @@ identity is not sensitive enough. Greedy clustering is illustrated in Figure
   \label{fig:greedy_clustering}
 \end{figure}
 
-%TODO: Why choose the greedy clustering
+Greedy clustering can reduce the time complexity as non-centroid sequences are
+only handled once. This can also improve space complexity. The time complexity
+is dependent on the number of centroids which is typically much lower than the
+number of sequences. An efficient search for centroids can reduce the expected
+running time to linear as opposed to the worst case $\mathcal{O}(n^2)$
+complexity, where $n$ is the number of sequences (in the case where all
+sequences become centroids).

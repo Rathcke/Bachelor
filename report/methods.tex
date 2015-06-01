@@ -11,40 +11,28 @@ been implemented and will be described briefly in this section.
 
 Given a list of sequences and an initially empty list of centroids, the
 algorithm works by iterating through the sequences and for every sequence, it
-iterates through the list of centroids until a match is found or until the end
-of the list. If a match is found, the sequences is added to the cluster
-represented by the matching centroid, and otherwise the sequences becomes a new
-centroid and is appended to the end of the list of centroids.
-
-% TODO: complexity of algorithm
-% This running time of this algorithm depends on the number of clusters in the
-% output and therefore it might be around $O(c^2)$, where $c$ denoted the
-% number of sequences, in the worst case where the number of clusters is equal
-% to the number of sequences.  %O(k*(k-1)/2)
-
-% TODO: refer to algorithm and implementation
+iterates through the list of centroids and makes a comparison until a match is
+found or until the end of the list. If a match is found, the sequence is
+added to the cluster represented by the matching centroid, and otherwise the
+sequences becomes a new centroid and is appended to the end of the list of
+centroids.
 
 This approach is not very useful in practice since it is very computationally
-expensive in the worst case. The running time of the algorithm is very dependent
-on the ordering of the sequences since the centroids will be in the same order
-as in the list of sequences (i.e. the list of centroids is a subsequence of the
-list of sequences) and if the first number of sequences happens to be good
-centroids, which will match a lot of sequences, the algorithm will perform good
-since the search for a centroid will end very early. However, if the first
-sequences happen to be very dissimilar from the rest of the data, then these
-will become centroids and will be compared against on every iteration even
-though they might potentially never match anything.
+expensive in the worst case. The worst case being quadratic in running time
+when all sequences become centroids. The running time of the algorithm is very
+dependent on the ordering of the sequences since the centroids will be in the
+same order as in the list of sequences (i.e. the list of centroids is a
+subsequence of the list of sequences) and if the first number of sequences
+happens to be good centroids, which will match a lot of sequences, the
+algorithm will perform good since the search for a centroid will end very
+early. However, if the first sequences happen to be very dissimilar from the
+rest of the data, then these will become centroids and will be compared
+against on every iteration even though they might potentially never match any
+other sequence.
 
 Thus, there is a motivation to try and create more structure in the collection
 of centroids, improve the search for a centroid to compare with the query
-sequence or improving the ordering of the centroids.
-
-% The problem with this approach is that it is potentially very computationally
-% expensive to possible traverse the entire list of centroids for each
-% iteration
-
-% TODO: maybe mention the reason for introducing max_rejects and clustering
-% algorithm based on greediness
+sequence or improve the ordering of the centroids.
 
 
 \subsection{\textsc{Simple-Clust} algorithm}
@@ -78,7 +66,6 @@ choosing a centroid that is likely to match, as it is seen from the evaluation
 in section \ref{sec:results}. To clarify, the correspondence between the most
 frequently occurring $k$-mer of two sequences and the similarity of the
 sequences, is evidently not very strong.
-% TODO: Maybe move to results?
 
 
 \subsection{\textsc{K-Clust} algorithm}
