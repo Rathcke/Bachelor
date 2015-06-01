@@ -39,8 +39,7 @@ further, but because of the characteristics of an edit distance algorithm like
 Levenshtein and because of the performance requirements for this project, it
 was decided to not pursue further optimization and instead focus on other types
 of algorithms. Furthermore, the Levenshtein distance penalizes occurrences of
-transposable elements, i.e. it results in an
-increased distance.
+transposable elements, i.e. it results in an increased distance.
 
 The Levenshtein distance can still be used for evaluation and benchmarking
 against other metrics. The algorithm is attached in appendix
@@ -48,12 +47,12 @@ against other metrics. The algorithm is attached in appendix
 \ref{sec:results}.
 
 As stated in~\cite[pp.~1--2]{andoni}, ``The worst-case running time known for
-this problem has not improved in three decades (..)'', specifically it states
-that the running time of Levenshtein is $\mathcal{O}(d^2)$, where $d$ is the
-length of the two sequences, and $\mathcal{O}(d^2/\log_2(d))$ for a constant
-size alphabet. It further supports the conclusion that the running time of the
-Levenshtein algorithm is too poor for the large data sets of the problem
-domain.
+this problem has not improved in three decades (..)''. It further supports the
+conclusion that the running time of the Levenshtein algorithm is too poor for
+the large data sets of the problem domain. Specifically the running time of
+Levenshtein is $\mathcal{O}(nm)$, where $n$ and $m$ are the lengths of the two
+sequences and $n>m$, and $\mathcal{O}(n \cdot \max{(1,m/\log_2(n))})$ for a
+constant size alphabet~\cite{masek}.
 
 This lack of improvements of the performance of edit distance is one motivation
 for the introduction of the concept of sequence alignment.
@@ -83,15 +82,15 @@ Figure \ref{fig:seq_alignment} displays an alignment of two sequences. In
 column 0 is an indel, in columns 1--3 are matches, in column 4 is a mismatch
 and so forth. The vertical bar characters in the middle line, indicate matches.
 
-% TODO: describe Needleman-Wunch, Smither-Waterman, multiple alignment, 
-% global vs local
+Indels, gaps and mismatches can be given different weights in the calculation
+of the similarity between the sequences.
 
 Both \texttt{UCLUST} and the very recent project \texttt{VSEARCH} uses some
 kind of sequence alignment for comparing sequences. \texttt{VSEARCH} uses a
 parallelized version of the dynamic programming algorithm Needleman-Wunsch,
 while \texttt{UCLUST} uses a heuristic procedure by default, but can be
 instructed to use full dynamic programming with either the Needleman-Wunsch or
-Smith-Waterman algorithm. However, this will make \texttt{UCLUST} much
+the Smith-Waterman algorithm. However, this will make \texttt{UCLUST} much
 slower~\cite{vsearch}. The heuristic algorithm used in \texttt{UCLUST} gives an
 approximation of the optimal alignment for the purpose of increased
 performance, but the alignment is not guaranteed to be optimal.
@@ -120,7 +119,7 @@ following section.
 A \emph{$k$-mer}, or \emph{$k$-gram} or simply a \emph{word}, is a subsequence
 of length $k>0$ over some alphabet $\mathcal{A}$ of a sequence. An interesting
 feature of a sequence is which $k$-mers occur in that sequence and how many
-times they occur. This is called \emph{$k$-mer counting} and is a type of
+times they occur. This is called $k$-mer counting and is a type of
 \emph{feature based distance metric}.
 
 The \emph{$d2$ distance metric} is a feature based distance metric, using

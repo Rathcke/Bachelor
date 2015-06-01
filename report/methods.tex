@@ -34,6 +34,12 @@ Thus, there is a motivation to try and create more structure in the collection
 of centroids, improve the search for a centroid to compare with the query
 sequence or improve the ordering of the centroids.
 
+With added structure or better ordering of the centroids, it should ideally not
+be necessary to traverse the whole collection of centroids for every sequence,
+since a match should occur early on if it exists. This motivates the
+introduction of a maximum allowed number of unsuccesful comparisons before
+ending the search early and creating a new centroid.
+
 
 \subsection{\textsc{Simple-Clust} algorithm}
 
@@ -53,19 +59,14 @@ the first centroid that matches the query sequence; if no such centroid is
 found, out of the maximum possible $max\_reject$ number of tries, the query
 sequence becomes a centroid for a new cluster and is added to the collection of
 centroids along with the information about the most frequently occurring
-$k$-mer in the sequence. Pseudocode for the algorithm is attached in appendix
-\ref{app:simple-clust}.
+$k$-mer in the sequence. Pseudocode for \textsc{Simple-Clust} is attached in
+appendix \ref{app:simple-clust}.
 
-This algorithm did not perform as well as hoped, in particular for larger $k$
-the number of different possible $k$-mers increases exponentially and for e.g.
-$k = 6$ and a four letter alphabet, there are $4^6 = 4096$ different $k$-mers
-and therefore the lookup in line \ref{alg:line:simple_clust_lookup} of the
-algorithm will often be unsuccessful. Additionally, the most frequently
-occurring $k$-mer did not appear to be a sufficiently good characteristic for
-choosing a centroid that is likely to match, as it is seen from the evaluation
-in section \ref{sec:results}. To clarify, the correspondence between the most
-frequently occurring $k$-mer of two sequences and the similarity of the
-sequences, is evidently not very strong.
+However, there is a problem with this algorithm: For larger $k$ the number of
+different possible $k$-mers increases exponentially and for e.g. $k = 6$ and a
+four letter alphabet, there are $4^6 = 4096$ different $k$-mers and therefore
+the lookup in line \ref{alg:line:simple_clust_lookup} of the algorithm will
+often be unsuccessful.
 
 
 \subsection{\textsc{K-Clust} algorithm}

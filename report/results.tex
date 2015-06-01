@@ -425,7 +425,9 @@ is to find the right ones faster. This is the intended optimization a link can
 introduce (cf. section \ref{sec:k-clust_algorithm}).
 
 
-\subsection{Evaluating \texttt{klust} on real data and comparing with \texttt{USEARCH}}
+\subsection{Evaluating \texttt{klust} on real data and comparing with
+            \texttt{USEARCH}}
+\label{sec:evaluating_klust_real_data}
 
 To test the performance and quality of the program, it was run on different
 parameters and settings. The table in appendix \ref{app:klust_data_parameters}
@@ -502,10 +504,19 @@ the most important results found in the appendix.
   \texttt{-cluster\_smallmem} & & & & Min & 1 & \\
   \end{tabular}
   \end{adjustbox}
-  \caption{Performance and clusterings results of different clustering methods and different parameters on the entire \texttt{SILVA} dataset.}
+  \caption{Performance and clusterings results of different clustering methods
+    and different parameters on the entire \texttt{SILVA} dataset.}
   \label{tab:full_silva_main_results}
 \end{table}
 %TODO: Add more results?
+
+This \textsc{Simple-Clust} algorithm did not perform as well as hoped, The most
+frequently occurring $k$-mer did not appear to be a sufficiently good
+characteristic for choosing a centroid that is likely to match, as it is seen
+from the evaluation in section \ref{sec:evaluating_klust_real_data}. To
+clarify, the correspondence between the most frequently occurring $k$-mer of
+two sequences and the similarity of the sequences, is evidently not very
+strong.
 
 The benchmarks suggests that increasing $k$ also increases both the number
 of clusters and the running time of the clustering despite making as many
