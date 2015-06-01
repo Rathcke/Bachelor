@@ -42,7 +42,6 @@ hardware threads), and 16 GB RAM.
 
 \subsection{Testing the distance metric on altered sequences}
 \label{sec:altered_sequences}
-%TODO: Misleading title?
 
 Two different sets of highly similar sequences was constructed from a real
 world sequence from \texttt{SILVA} and this was used in the evaluation of the
@@ -216,17 +215,6 @@ similarity of 0.85 or above.
 \end{figure}
 
 
-
-%Despite its speed, it could be more sensible than \textsc{K-Dist}. Figure
-%\ref{fig:Levenshtein_vs_KDist} shows scatter plots of the Levenshtein distance
-%versus the distance \textsc{K-Dist} produces with different $k$'s. It
-%demonstrates how similar the distances are, and can be used as an indication
-%about the sensitivity of the \textsc{K-Dist} algorithm.
-
-%To evaluate the \textsc{K-Dist} algorithm, presented in section
-%\ref{sec:kmer_distance}, the Levenshtein distance was used as reference.
-
-
 \subsection{Evaluating \textsc{K-Clust} on a synthetic dataset}
 \label{sec:synth_dataset}
 
@@ -270,13 +258,6 @@ when clustering with a threshold of $0.9$ or above. In the specific test, and
 the specific, random order of the sequences, the clustering result yielded 386
 clusters for $id=0.9$, average cluster size of $984.456$ and a minimum cluster
 size of $33$.
-
-% TODO: maybe add something like the following:
-% This threshold is, however, close to the expected similarity of $0.92$ and
-% since the clustering algorithm does not call \textsc{K-Dist} on every
-% sequence/centroid pair, these errors can likely be contributed to
-% \textsc{K-Clusts}'s choice of whether to call \textsc{K-Dist} or not, along
-% with standard error.
 
 This test provides some evidence that \textsc{K-Clust} is able to successfully
 cluster a dataset of a fairly realistic size. Since the similarities are known
@@ -446,7 +427,9 @@ is to find the right ones faster. This is the intended optimization a link can
 introduce (cf. section \ref{sec:k-clust_algorithm}).
 
 
-\subsection{Evaluating \texttt{klust} on real data and comparing with \texttt{USEARCH}}
+\subsection{Evaluating \texttt{klust} on real data and comparing with
+            \texttt{USEARCH}}
+\label{sec:evaluating_klust_real_data}
 
 To test the performance and quality of the program, it was run on different
 parameters and settings. The table in appendix \ref{app:klust_data_parameters}
@@ -523,10 +506,19 @@ the most important results found in the appendix.
   \texttt{-cluster\_smallmem} & & & & Min & 1 & \\
   \end{tabular}
   \end{adjustbox}
-  \caption{Performance and clusterings results of different clustering methods and different parameters on the entire \texttt{SILVA} dataset.}
+  \caption{Performance and clusterings results of different clustering methods
+    and different parameters on the entire \texttt{SILVA} dataset.}
   \label{tab:full_silva_main_results}
 \end{table}
 %TODO: Add more results?
+
+This \textsc{Simple-Clust} algorithm did not perform as well as hoped, The most
+frequently occurring $k$-mer did not appear to be a sufficiently good
+characteristic for choosing a centroid that is likely to match, as it is seen
+from the evaluation in section \ref{sec:evaluating_klust_real_data}. To
+clarify, the correspondence between the most frequently occurring $k$-mer of
+two sequences and the similarity of the sequences, is evidently not very
+strong.
 
 The benchmarks suggests that increasing $k$ also increases both the number
 of clusters and the running time of the clustering despite making as many

@@ -28,8 +28,8 @@ Figure \ref{fig:hierarchical_clustering}.
   \label{fig:hierarchical_clustering}
 \end{figure}
 
-This addresses the question of what is required for a cluster to be "close" to
-another. Besides measuring similarity between sequences with some distance
+This addresses the question of what is required for a cluster to be ``close''
+to another. Besides measuring similarity between sequences with some distance
 metric, a definition for when clusters should be merged is needed. The
 following is described with respect to that merges happen based on a similarity
 threshold.
@@ -55,16 +55,16 @@ from the clusters might be very similar while other sequences could have a very
 low similarity to each other.
 
 There exists an agglomerative method using single-linkage with complexity
-$\mathcal{O}(n^2)$ known as SLINK~\cite{sibson} and another using complete-
-linkage~\cite{defays}. As the naive agglomerative method, both algorithms build
-a distance matrix and then uses row and column elimination but is optimized to
-$\mathcal{O}(n^2)$ instead of $\mathcal{O}(n^3)$. Even though $\mathcal{O}(n^2)$
-is too heavy for the scope of this project, it produces optimal results and
-builds the entire hierarchy. With a greedy single-linkage approach and without
-building the entire hierarchy, the complexity could be significantly reduced.
-The distance matrix itself takes $n^2$ time to create, which is already too
-much, so this indicates the computation of the distances and therefore the
-merges should be an ongoing process with the clustering.
+$\mathcal{O}(n^2)$ known as SLINK~\cite{sibson} and another using
+complete-linkage~\cite{defays}. As the naive agglomerative method, both
+algorithms build a distance matrix and then uses row and column elimination but
+is optimized to $\mathcal{O}(n^2)$ instead of $\mathcal{O}(n^3)$. Even though
+$\mathcal{O}(n^2)$ is too heavy for the scope of this project, it produces
+optimal results and builds the entire hierarchy. With a greedy single-linkage
+approach and without building the entire hierarchy, the complexity could be
+significantly reduced.  The distance matrix itself takes $n^2$ time to create,
+which is already too much, so this indicates the computation of the distances
+and therefore the merges should be an ongoing process with the clustering.
 
 
 \subsubsection{Graph based clustering}
