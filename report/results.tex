@@ -285,26 +285,44 @@ color. Centroids were given a cirle marker and all other sequences were gives a
 
 A subset of the synthetic set described in section \ref{sec:synth_dataset} was
 used for the MDS, because the scatter plot easily becomes too densely populated
-and because the computation is too expensive for $380,000$ sequences. A set of
-400 sequences, consisting of 40 expected clusters with 10 sequences in each,
+and because the computation is too expensive for \num{380000} sequences. A set
+of 400 sequences, consisting of 40 expected clusters with 10 sequences in each,
 was used for the visualization shown in Figure \ref{fig:mds_synth}. The
 clustering indicated by the colors and markers is from \textsc{K-Clust} and the
 distances used for MDS are calculated using \textsc{K-Dist}.
 
-\begin{figure}[H]
+\begin{figure}[h!]
   \includegraphics[width=\textwidth]{graphics/MDS_t-SNE_synth_silva_400.png}
   \caption{Multidimensional scaling using t-SNE of the 400 sequences and
     40 expected clusters from the synthetic dataset described in section
     \ref{sec:synth_dataset}. The distances are calculated using
-    \textsc{K-Dist}. Centroids are marked with a circle. The clustering
-    result from \texttt{klust} with $k=5$, $id=0.85$ and $max\_rejects=8$ is
-    used to color different clusters with different colors.}
+    \textsc{K-Dist}. The clustering result from \texttt{klust} with $k=5$,
+    $id=0.85$ and $max\_rejects=8$ is used to color different clusters with
+    different colors. Centroids are marked with a circle and non-centroid
+    sequences with a ``+''.}
   \label{fig:mds_synth}
 \end{figure}
 
 The results from \texttt{klust} on the synthetic dataset was correct and
-completely as it was constructed to be.
+completely as it was constructed to be. Similarly, the MDS in figure
+\ref{fig:mds_synth} shows a very clear set of clusters of points, of distinct
+colors, marked with ``+'' symbols and a single centroid for each cluster, which
+is marked with a circle with the same color in the middle. There are only small
+errors such as single sequences lying a bit away from their respective clusters
+and very closely positioned clusters. However, this might easily have to do
+with the actual MDS visualization of the data, since MDS does not provide a
+perfect two-dimensional version of the high-dimensional distances.
 
+Figure \ref{fig:mds_synth_lev} shows the same clustering result as in Figure
+\ref{fig:mds_synth}, i.e. the same coloring and marking, but with the distances
+for the MDS calculated using Levenshtein. This provides even some more insigt
+into the relationship between \textsc{K-Dist} and Levenshtein, and helps to
+verify the suitability of \textsc{K-Dist} as an approximation for sequence
+similarity, given that Levenshtein measure the actual edit distance.
+
+Once again, the results look very clear and as hoped, but there does seem to be
+a little more overlap in the clusters, which might again be attributed to the
+imperfektion of MDS.
 
 \begin{figure}[H]
   \centering
@@ -312,14 +330,12 @@ completely as it was constructed to be.
   \import{graphics/}{MDS_Levenshtein.pdf_tex}
   \caption{Multidimensional scaling using t-SNE of the 400 sequences and 40
     expected clusters from the synthetic dataset using Levenshtein distance.
-    Centroids are marked with a circle. The clustering result from
-    \texttt{klust} with $k=5$, $id=0.85$ and $max\_rejects=8$ is used to color
-    different clusters with different colors.}
+    The clustering result from \texttt{klust} with $k=5$, $id=0.85$ and
+    $max\_rejects=8$ is used to color different clusters with different
+    colors. Centroids are marked with a circle and non-centroid sequences
+    with a ``+''.}
   \label{fig:mds_synth_lev}
 \end{figure}
-
-
-% TODO: discussion of the MDS figure
 
 
 \subsection{Evaluating \textsc{K-Clust} on real data using MDS}
