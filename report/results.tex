@@ -19,13 +19,14 @@ section.
 \end{description}
 
 Various statistics about the datasets are shown in Table \ref{tab:data_stats}.
-The error ratio is the ratio between the number of non DNA/RNA bases, i.e. the ambigious bases.
+The error ratio is the ratio between the number of non DNA/RNA bases, i.e. the
+ambigious bases.
 
 \begin{table}[H]
   \centering
   \begin{tabular}{c | c | c | c | c | c}
     Dataset        & Avg. len. & Min. len. & Max. len. & Median len. & Error ratio \\
-    \hline
+    \hline\hline
     \texttt{SILVA} & 1,415.46  & 900       & 3,845     & 1,389       & 0.000156146 \\
     \texttt{RDP}   & 1,044.19  & 400       & 2,922     & 1,132       & 0.000798764 \\
   \end{tabular}
@@ -139,9 +140,10 @@ parameter. The tests were performed on the \texttt{SILVA} dataset.
     \textsc{K-Dist}, $k=7$          & $\approx \num{72500}$ \\ \hline
     \textsc{K-Dist}, $k=8$          & $\approx \num{46000}$ \\
   \end{tabular}
-  \caption{Performance comparison between the dynamic programming (bottom up)
+  \caption{Performance comparison between the bottom-up, dynamicprogramming
     Levenshtein implementation and \textsc{K-Dist} implementation with
-    different values for parameter $k$. Dataset used was \texttt{SILVA}.}
+    different values for the $k$ parameter. Tested with the \texttt{SILVA}
+    dataset.}
   \label{tab:levenshtein_vs_kdist_performance}
 \end{table}
 
@@ -184,15 +186,15 @@ the longer sequence.
 As seen in the figures, there is a monotonically increasing relationship
 between the two similarity metrics. Additionally, the Levenshtein similarities
 barely get below 0.5, while the interval of the \textsc{K-Dist} similarities is
-around $[0,1]$ for $k=8$ and $[0.4,1.0]$ for $k=5$. This is likely because the
+around $[0.4,1.0]$ for $k=5$ and $[0,1]$ for $k=8$. This is likely because the
 number of different 8-mers is much greater than the number of different 5-mers,
-so it is less likely that two $k$-mers are the same, which will result in a
+so it is less likely that two $k$-mers are the same. That will result in a
 greater distance and hence a lower similarity.
 
 Since transposable elements will not result in much decrease in similarity for
-\textsc{K-Dist}, but will do for Levenshtein, there will be some measures which
-are relatively lower for Levenshtein than for \textsc{K-Dist}. The ``width'' of
-the points in Figure \ref{fig:k-dist_lev_similarity_k5} and
+\textsc{K-Dist}, but will do so for Levenshtein, there will be some measures
+which are relatively lower for Levenshtein than for \textsc{K-Dist}. The
+``width'' of the points in Figure \ref{fig:k-dist_lev_similarity_k5} and
 \ref{fig:k-dist_lev_similarity_k8} can likely be partly attributed to this
 difference in characteristic between the two distance metrics.
 
@@ -201,15 +203,15 @@ The subplots, i.e. the inner boxes, in Figure
 shows a zommed in view of the parts of the scatter plots that lies in the
 interval $[0.8,1.0]$ on both axes. The most interesting Levenshtein
 similarities are those above or equal to 0.95. These points lie fairly high for
-the corresponding $k$-mer similarity, for the most part, i.e. the majority of
-the comparisons that give a Levenshtein similarity of 0.95 also gives a $k$-mer
-similarity of 0.85 or above.
+the corresponding \textsc{K-Dist} similarity, for the most part, i.e. the
+majority of the comparisons that give a Levenshtein similarity of 0.95 also
+gives a \textsc{K-Dist} similarity of 0.85 or above.
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \includegraphics[width=1.0\textwidth]{graphics/Levenshtein_K-Dist_k8.png}
-  \caption{Comparison of Levenshtein and \textsc{K-Dist} with $k=8$.}
+  \caption{Scatter plot comparison of similarity measures for Levenshtein and
+    \textsc{K-Dist} with $k=8$ on the first 500 sequences of \texttt{SILVA}.}
   \label{fig:k-dist_lev_similarity_k8}
-  \label{fig:Levenshtein_vs_KDist}
 \end{figure}
 
 
@@ -218,7 +220,7 @@ similarity of 0.85 or above.
 
 A synthetic dataset was constructed for evaluating the \textsc{K-Clust}
 algorithm's ability to find the right clusters in a dataset with a clearly
-correct, expected clustering output.
+correct, expected clustering result.
 
 A set of 380 sequences with mutual similarities of at most 0.6 was extracted
 from \texttt{SILVA}, using the \textsc{K-Dist} distance metric (Algorithm
@@ -285,36 +287,35 @@ A subset of the synthetic set described in section \ref{sec:synth_dataset} was
 used for the MDS, because the scatter plot easily becomes too densely populated
 and because the computation is too expensive for $380,000$ sequences. A set of
 400 sequences, consisting of 40 expected clusters with 10 sequences in each,
-was used for the visualization shown in Figure \ref{fig:mds_synth}.
+was used for the visualization shown in Figure \ref{fig:mds_synth}. The
+clustering indicated by the colors and markers is from \textsc{K-Clust} and the
+distances used for MDS are calculated using \textsc{K-Dist}.
 
 \begin{figure}[H]
   \includegraphics[width=\textwidth]{graphics/MDS_t-SNE_synth_silva_400.png}
   \caption{Multidimensional scaling using t-SNE of the 400 sequences and
     40 expected clusters from the synthetic dataset described in section
-    \ref{sec:synth_dataset}. Centroids are marked with a circle. The clustering
+    \ref{sec:synth_dataset}. The distances are calculated using
+    \textsc{K-Dist}. Centroids are marked with a circle. The clustering
     result from \texttt{klust} with $k=5$, $id=0.85$ and $max\_rejects=8$ is
     used to color different clusters with different colors.}
   \label{fig:mds_synth}
 \end{figure}
 
+The results from \texttt{klust} on the synthetic dataset was correct and
+completely as it was constructed to be.
+
+
 \begin{figure}[H]
-  \begin{subfigure}[t]{\textwidth}
-    \includegraphics[width=\textwidth]{graphics/MDS_t-SNE_distmat_synth_SILVA_3800_levenshtein_400.png}
-    \caption{MDS using Levenshtein distance.}
-    \label{fig:mds_synth_lev}
-  \end{subfigure}
-  ~
-  \begin{subfigure}[b]{1.0\textwidth}
-    \centering
-    \includegraphics[width=0.6\textwidth]{graphics/MDS_t-SNE_distmat_synth_SILVA_3800_levenshtein_400_sub.png}
-    \caption{Zoomed in on dense part of MDS of Levenshtein distances.}
-    \label{fig:mds_synth_lev_zoom}
-  \end{subfigure}
+  \centering
+  \def\svgwidth{\columnwidth}
+  \import{graphics/}{MDS_Levenshtein.pdf_tex}
   \caption{Multidimensional scaling using t-SNE of the 400 sequences and 40
     expected clusters from the synthetic dataset using Levenshtein distance.
     Centroids are marked with a circle. The clustering result from
     \texttt{klust} with $k=5$, $id=0.85$ and $max\_rejects=8$ is used to color
     different clusters with different colors.}
+  \label{fig:mds_synth_lev}
 \end{figure}
 
 
