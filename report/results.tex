@@ -594,11 +594,12 @@ same magnitude as single errors are. As demostrated in section
 cases, but it is still more strict than in \texttt{USEARCH}.
 
 \begin{figure}[H]
-  \includegraphics[width=\textwidth]{graphics/RDP_1000_cluster_counts}
-  \caption{Comparison of the number of clusters at different $id$'s with a difference of $0.01$ on the first \num{10000} sequences of \texttt{RDP}. The red circles show the results from \texttt{klust} and the blue plus signs are the results from \texttt{USEARCH}.}
+  \centering
+  \def\svgwidth{\columnwidth}
+  \import{graphics/}{Cluster_Count_RDP.pdf_tex}
+  \caption{Comparison of the number of clusters at different $id$'s with a difference of $0.01$ on the first \num{10000} sequences of \texttt{RDP}.}
   \label{fig:id_comparison}
 \end{figure}
-%TODO: Update graph
 
 To evaluate the scaling in time and clusters for the methods, benchmark
 tests on the dataset \texttt{RDP} were also conducted. The dataset contains
