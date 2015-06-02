@@ -315,16 +315,12 @@ perfect two-dimensional version of the high-dimensional distances.
 
 Figure \ref{fig:mds_synth_lev} shows the same clustering result as in Figure
 \ref{fig:mds_synth}, i.e. the same coloring and marking, but with the distances
-for the MDS calculated using Levenshtein. This provides even some more insigt
+for the MDS calculated using Levenshtein. This provides even some more insight
 into the relationship between \textsc{K-Dist} and Levenshtein, and helps to
 verify the suitability of \textsc{K-Dist} as an approximation for sequence
 similarity, given that Levenshtein measure the actual edit distance.
 
-Once again, the results look very clear and as hoped, but there does seem to be
-a little more overlap in the clusters, which might again be attributed to the
-imperfektion of MDS.
-
-\begin{figure}[H]
+\begin{figure}[h!]
   \centering
   \def\svgwidth{\columnwidth}
   \import{graphics/}{MDS_Levenshtein.pdf_tex}
@@ -337,21 +333,23 @@ imperfektion of MDS.
   \label{fig:mds_synth_lev}
 \end{figure}
 
+Once again, the results look very clear and as hoped, but there does seem to be
+a little more overlap in the clusters, although this might again be partly
+attributed to the imperfection of MDS. In any case, the clusters are also very
+apparent when using the Levenshtein distance measure and this indicates that
+the $k$-mer based \textsc{K-Dist} functions properly as an approximation of
+distance. Specifically, the colors are not mixed up so it is not the case that
+one similarity metric gives a very low similarity while the other gives a very
+high similarity, and vice versa, for some sequences.
+
 
 \subsection{Evaluating \textsc{K-Clust} on real data using MDS}
 \label{sec:mds_real_data}
 
 The \textsc{K-Clust} algorithm was also tested on real data, specifically the
-\texttt{SILVA} dataset, using MDS to visualize the clustering result as
-described in section \ref{sec:mds_synth}.
-
-The clustering result from \texttt{klust} on \texttt{SILVA} consists of
-clusters of very different sizes and a large number of singleton clusters, i.e.
-clusters containing only the centroid sequence. This means that this data will
-be harder to visualize nicely with MDS, since the clusters wont be as clearly
-defined as with the synthetic dataset, but it should at least be possible to
-identify the sequences of large clusters and observe whether they are indeed
-close to each other in the MDS.
+first 500 sequences of the \texttt{SILVA} dataset, using MDS to visualize the
+sequence similarities and the clustering result, as described in section
+\ref{sec:mds_synth}.
 
 \begin{figure}[H]
   \centering
@@ -385,7 +383,35 @@ close to each other in the MDS.
   \label{fig:mds_silva}
 \end{figure}
 
-% TODO: discuss
+The clustering result from \texttt{klust} on \texttt{SILVA} consists of
+clusters of very different sizes and a large number of singleton clusters, i.e.
+clusters containing only the centroid sequence. This means that this data will
+be harder to visualize nicely with MDS, since the sequences will not be as
+clearly partitioned into a few clusters of the same size. However, it should at
+least be possible to identify the sequences of large clusters and observe
+whether they are indeed close to each other in the MDS.
+
+Figure \ref{fig:mds_silva} (\subref{fig:mds_silva_no_sort}),
+(\subref{fig:mds_silva_sort_incr}) and (\subref{fig:mds_silva_sort_decr}) shows
+MDS of the first 500 sequences from \texttt{SILVA}, with the sequences not
+sorted, sorted by increasing length and sorted by decreasing length,
+respectively, before clustering with \texttt{klust}.
+
+Both respectively, shows a few apparent clusters, but as expected they also
+show a large number of smaller clusters and singleton clusters. In this
+particular example, when running \texttt{klust} with parameters $k=5$,
+$id=0.85$ and $max\_rejects=8$, the number of resulting clusters were 159 with
+a maximum cluster size of 38, average size approximately 3.145. Furthermore,
+the result contained 87 singleton clusters.
+
+The large number of singleton clusters and small clusters are especially
+apparent in the center of the figures and in the lower left part of the
+figures. Since the number of clusters is so high, it is likely that the MDS
+causes the sequences to be more crammed togetether and apear more dense than
+if the number of clusters had been lower.
+
+% TODO: more discussion
+
 
 \subsection{Evaluation of centroid search in \texttt{klust}}
 
