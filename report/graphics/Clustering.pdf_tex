@@ -36,7 +36,7 @@
   }%
   \providecommand\rotatebox[2]{#2}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{1099.07546637bp}%
+    \setlength{\unitlength}{1095.51304134bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,14 +48,14 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.32380463)%
+  \begin{picture}(1,0.32485759)%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{Clustering.pdf}}%
-    \put(0.14559419,0.06760466){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{t}}}%
+    \put(0.14606764,0.06782451){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{t}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{Clustering.pdf}}%
-    \put(0.40762328,0.06760466){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{t}}}%
+    \put(0.40894878,0.06782451){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{t}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{Clustering.pdf}}%
-    \put(0.7288204,0.00605621){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{member sequence}}}%
-    \put(0.72985821,0.05491542){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{centroid}}}%
-    \put(0.6441778,0.10941852){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{t: threshold similarity}}}%
+    \put(0.73119036,0.00607593){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Member sequence}}}%
+    \put(0.73223154,0.05509401){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Centroid}}}%
+    \put(0.64627252,0.10977435){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{t: Threshold similarity}}}%
   \end{picture}%
 \endgroup%
