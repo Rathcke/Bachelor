@@ -7,12 +7,12 @@ that is, methods for measuring the distance between sequences.
 
 One type of \emph{edit distance} is the \emph{Levenshtein
 distance}~\cite{levenshtein}, which is a string metric for determining the
-similarity between two sequences. It is defined to be the minimum number of
+distance between two sequences. It is defined to be the minimum number of
 edits to transform the first sequence into the other~\cite[p.~52]{dong}.
 
 The edit operations consists of \emph{insertions}, \emph{deletions} and
-\emph{substitutions}. These operations are, respectively, inserting a letter,
-removing a letter and changing one letter into another.
+\emph{substitutions}. These operations are, respectively, inserting a character,
+removing a character and changing one character into another.
 
 For example, the two sequences
 \begin{center}
@@ -23,39 +23,40 @@ would have a distance of \num{2} (e.g. substituting T for G and inserting a C).
 However, there are some cases where the relevance of the distance is arguable.
 Consider the sequences
 \begin{center}
-  \texttt{AACCGG} \\
-  \texttt{CCAAGG}
+  \texttt{AATC\textcolor{blue}{CCGG}ATA} \\
+  \texttt{\textcolor{blue}{CCGG}AATCATA}
 \end{center}
-with a distance of \num{4}. It could be seen as a mutation where the substring
-\texttt{CC} is acting as a transposable element, which one might want to
+with a distance of \num{8}. This could be seen as a mutation where the substring
+\texttt{CCGG} is acting as a transposable element, which one might want to
 result in a low distance.
 
-A bottom-up dynamic programming version of the Levenshtein distance metric was
-implemented and tested on real DNA/RNA data to evaluate its performance, and it
-was clear that this algorithm is not suitable for large data sets, because it
-would be infeasible to complete even a linear time clustering, in the number of
-sequences to be clustered. The implementation could most likely be optimized
-further, but because of the characteristics of an edit distance algorithm like
-Levenshtein and because of the performance requirements for this project, it
-was decided to not pursue further optimization and instead focus on other types
-of algorithms. Furthermore, the Levenshtein distance penalizes occurrences of
-transposable elements, i.e. it results in an increased distance.
+A bottom-up dynamic programming (DP) version of the Levenshtein distance
+metric was implemented and tested on real DNA/RNA data to evaluate its
+performance, and it was clear that this algorithm is not suitable for large
+data sets, because it would be infeasible to complete even a linear time
+clustering, in the number of sequences to be clustered. The implementation
+could most likely be optimized further, but because of the characteristics of
+an edit distance algorithm like Levenshtein and because of the performance
+requirements for this project, it was decided to not pursue further
+optimization and instead focus on other types of algorithms. Furthermore, the
+Levenshtein distance penalizes occurrences of transposable elements, i.e. it
+results in an increased distance.
 
 The Levenshtein distance can still be used for evaluation and benchmarking
 against other metrics. The algorithm is attached in appendix
 \ref{app:levenshtein_algorithm} and results from tests are shown in section
-\ref{sec:results}.
+\ref{sec:kdist_vs_levenshtein}.
 
-A. Andoni and R. Krauthgamer ~\cite[pp.~1--2]{andoni} states, ``The worst-case
+A. Andoni and R. Krauthgamer ~\cite[pp.~1--2]{andoni} states: ``The worst-case
 running time known for this problem has not improved in three decades (..)''.
 It further supports the conclusion that the running time of the Levenshtein
 algorithm is too poor for the large data sets of the problem domain.
 Specifically the running time of Levenshtein is $\mathcal{O}(nm)$, where $n$
-and $m$ are the lengths of the two sequences and $n>m$, and $\mathcal{O}(n
+and $m$ are the lengths of the two sequences and $n\geq m$, and $\mathcal{O}(n
 \cdot \max{(1,m/\log_2(n))})$ for a constant size alphabet~\cite{masek}.
 
-This lack of improvements of the performance of edit distance is one motivation
-for the introduction of the concept of sequence alignment.
+The lack of improvements in performance for edit distance is one motivation
+for the introduction of sequence alignment.
 
 
 \subsubsection{Sequence alignment}
@@ -69,19 +70,19 @@ in one sequence or a deletion from another sequence. This is called an
 deletion. If it is not an indel and all characters in the column are the same,
 then it is a match. Otherwise, it is a mismatch~\cite[pp.~135--136]{dong}.
 
+Figure \ref{fig:seq_alignment} displays an alignment of two sequences. In
+column 0 is an indel, in columns 1--3 are matches, in column
+4 is a mismatch and so forth. The vertical bars in the middle
+line indicate matches.
+
 \begin{figure}[H]
   \centering
   \verb+ATGCAACGA+ \\
   \verb+ |||  |||+ \\
   \verb+-TGCG-CGA+
-  \caption{Sequence alignment of `ATGCAACGA' and `TGCGCGA'}
+  \caption{Sequence alignment of ``ATGCAACGA'' and ``TGCGCGA''.}
   \label{fig:seq_alignment}
 \end{figure}
-
-Figure \ref{fig:seq_alignment} displays an alignment of two sequences. In
-column 0 is an indel, in columns 1--3 are matches, in column
-4 is a mismatch and so forth. The vertical bar characters in the middle
-line, indicate matches.
 
 Indels, gaps and mismatches can be given different weights in the calculation
 of the similarity between the sequences.
@@ -94,7 +95,7 @@ instructed to use full dynamic programming with either the Needleman-Wunsch or
 the Smith-Waterman algorithm. However, this will make \texttt{UCLUST} much
 slower~\cite{vsearch}. The heuristic algorithm used in \texttt{UCLUST} gives an
 approximation of the optimal alignment for the purpose of increased
-performance, but the alignment is not guaranteed to be optimal.
+performance.
 
 As opposed to \texttt{USEARCH}, \texttt{VSEARCH} is free and open-source
 software and is designed for 64-bit processors, so it does not have the
@@ -103,21 +104,21 @@ has.
 
 Sequence alignment is still a computationally expensive operation and for
 comparison of sequences with low similarity, the results of sequence alignment
-are often poor. Additionally, as with the Levenshtein distance metric, sequence
-alignment is very sensitive to the ordering of parts of sequences.
-\emph{Alignment-free} sequence comparison methods strive to provide a measure
-of sequence similarity while avoiding the costly computation that alignment
-involves. Alignment-free comparison allows one to look at each of the sequences
-independently, extracting some characteristics, or \emph{features}, of each
-sequence and then comparing these characteristics. This can possibly reduce the
-complexity of the comparison to linear time or better. One such alignment-free
-method, is $k$-mer counting which will be presented and analyzed in the
-following section.
+are often poor. Additionally, as with the Levenshtein distance metric,
+sequence alignment is very sensitive to the ordering of parts of sequences.
+\emph{Alignment-free} sequence comparison methods~\cite{vinga} strive to
+provide a measure of sequence similarity while avoiding the costly computation
+that alignment involves. Alignment-free comparison allows one to look at each
+of the sequences independently, extracting some characteristics, or
+\emph{features}, of each sequence and then comparing these characteristics.
+This can possibly reduce the complexity of the comparison to linear time or
+better. One such alignment-free method, is $k$-mer counting which will be
+presented and analyzed in the following section.
 
 
 \subsubsection{Feature based distance} \label{sec:kmer_distance}
 
-A \emph{$k$-mer}, or \emph{$k$-gram} or simply a \emph{word}, is a subsequence
+A \emph{$k$-mer}, \emph{$k$-gram} or simply a \emph{word}, is a subsequence
 of length $k>0$ over some alphabet $\mathcal{A}$ of a sequence. An interesting
 feature of a sequence is which $k$-mers occur in that sequence and how many
 times they occur. This is called $k$-mer counting and is a type of
@@ -149,7 +150,7 @@ over the alphabet $\mathcal{A} = \{A,C,T,G\}$, can be illustrated as follows:
 \centering
 \scalebox{0.75}{
 \begin{tabular}{c | c c c c c c c c c c c c c c c c}
-        & AA & AC & AG & AT & CA & CC & CG & CT & GA & GC & GG & GT & TA & TC & TG & TT \\
+        & $AA$ & $AC$ & $AG$ & $AT$ & $CA$ & $CC$ & $CG$ & $CT$ & $GA$ & $GC$ & $GG$ & $GT$ & $TA$ & $TC$ & $TG$ & $TT$ \\
   \hline
   $S_1$ &    &  3 &    &    &  1 &    &    &  1 &    &    &    &    &  1 &    &    &    \\
   \hline
@@ -165,17 +166,17 @@ The Euclidean distance would then be calculated as
 \end{align*}
 
 The first version of the $d2$ distance metric algorithm described above, is
-shown in Algorithm \ref{alg:d2_basic} and it has been implemented as well. The
-substring method extracts up to $k$ characters beginning at index $i$ of the
-string. This algorithm maintains a single frequency vector, as a map structure
-to allow for large $k$ which results in a large number of possible different
-$k$-mers. When iterating through the first sequence, $k$-mer counts are
-incremented and when iterating through the second sequence, they are
-decremented. Finally all the frequencies are squared and the square root of the
-sum is returned, corresponding to the Euclidean distance between frequency
+shown in Algorithm \ref{alg:d2_basic} and has been implemented as well. The
+$substring(i,k)$ method extracts $k$ characters from a string beginning
+at position $i$. This algorithm maintains a single frequency vector, as a map
+structure to allow for large $k$ which results in a large number of possible
+different $k$-mers. When iterating through the first sequence, $k$-mer counts
+are incremented and when iterating through the second sequence, they are
+decremented. Finally all the frequencies are squared and the square root of
+the sum is returned, corresponding to the Euclidean distance between frequency
 vectors for the two sequences.
 
-\begin{algorithm}
+\begin{algorithm}[H]
   \caption{Basic \textsc{d2} distance metric}
   \label{alg:d2_basic}
   \begin{algorithmic}[1]
@@ -184,10 +185,10 @@ vectors for the two sequences.
     \Function{d2}{$s, t, k$}
       \State initialize \texttt{freq\_map} of type \texttt{string $\to$ int} map
       \For{$i \gets 0$ to $\abs{s} - k$}
-        \State \texttt{freq\_map}[$s$.substring($i$, $k$)]\texttt{++}
+        \State \texttt{freq\_map}[$s.substring(i, k)$]\texttt{++}
       \EndFor
       \For{$i \gets 0$ to $\abs{t} - k$}
-        \State \texttt{freq\_map}[$t$.substring($i$, $k$)]\texttt{-{}-}
+        \State \texttt{freq\_map}[$t.substring(i, k)$]\texttt{-{}-}
       \EndFor
       \State $total \gets 0$
       \ForAll{$e \in$ \texttt{freq\_map}}
@@ -200,15 +201,14 @@ vectors for the two sequences.
 \end{algorithm}
 
 To better support the measurement of distance between two sequences of
-different length, but similar substrings, the concept of a \emph{window} can be
-introduced. In this context, a window is a conceptual construction which gives
-a view of fixed length substrings of two sequences. This window can then be
-moved step by step over the two sequences, calculating the distance for each
-position of the window and then using the lowest of those distances as the
-resulting distance. In this way two sequences, where one is a prefix or postfix
-of the other, will have zero distance. This concept is illustrated in Figure
-\ref{fig:d2_window_concept} where the blue box corresponds to the window, which
-in this case has the length 10.
+different length, but similar substrings, the concept of a \emph{window} can
+be introduced. In this context, a window is a conceptual construction which
+gives a view of fixed length substrings of two sequences. This window can then
+be moved character by character over the two sequences, calculating the
+distance for each position of the window and then using the lowest of those
+distances as the resulting distance. This concept is illustrated in Figure
+\ref{fig:d2_window_concept} where the blue box corresponds to the window,
+which in this case has the length 10.
 
 \begin{figure}[H]
 \centering
@@ -221,10 +221,11 @@ in this case has the length 10.
 \label{fig:d2_window_concept}
 \end{figure}
 
-For simplicity, the window size can be set equal to the size of the shortest of
-the two sequences. Then the window only moves step by step over the longer of
-the two sequences, while maintaining the position and the $k$-mer counts for
-the shorter sequence.
+For simplicity, the window size can be set equal to the length of the shortest
+of the two sequences. In this way two sequences, where one is a substring of
+the other, will have zero distance. Then the window only moves step by step
+over the longer of the two sequences, while maintaining the position and the
+$k$-mer counts for the shorter sequence.
 
 Figure \ref{fig:d2_window_example} shows an example of this, where the $d2$
 distance with the window is 0, since the first sequence is a prefix of the

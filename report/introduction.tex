@@ -14,25 +14,25 @@ can no longer keep up~\cite{rothberg}.
 
 There are not many available algorithms and tools for efficient clustering of
 sequencing data. The one tool which is currently doing the job,
-\texttt{USEARCH}~\cite{edgar,usearch}, is closed-source and although the \num{32}-bit
+\texttt{USEARCH} \\ 
+\cite{edgar,usearch}, is closed-source and although the \num{32}-bit
 version is available for free, the usable memory is limited to \num{4} GB and the
 \num{64}-bit version is costly.
 
-As the amount of sequencing data grows, clusterings becomes increasingly more
+As the amount of sequencing data grows, clustering becomes increasingly more
 relevant as it can be used to reduce a large set of sequences to a much smaller
 set of representative sequences, called \emph{centroids}, which each represents
 a single cluster.
 
 This project is concerned with the clustering of DNA and RNA sequences. The
-clustering method described in this document strives to assign each sequence to
+clustering method described in this thesis strives to assign each sequence to
 a cluster based on the similarity between the sequence and the centroid. The
-clustering method does not guarantee a minimal number of clusters, as the
-search for a centroid is not exhaustive, nor does it guarantee to find the most
-similar centroid for each sequence. The clustering algorithm tries to minimize
-the number of clusters.
+clustering method does not guarantee a minimal number of clusters, although it
+tries to minimize it, as the search for a centroid is not exhaustive, nor does
+it guarantee to find the most similar centroid for each sequence.
 
 This project researches the possibilities for creating an open-source tool that
-can match the performance of \texttt{UCLUST}. We present a solution and
+can match the performance of \texttt{USEARCH}. We present a solution and
 implementation that uses the concept of \emph{k-mer counting}, i.e. essentially
 comparing the distribution of all possible substrings of a fixed length $k$ in
 each sequence, as an approximation for measuring sequence similarity.
@@ -41,7 +41,7 @@ the search for a centroid that is likely to be a good representative for a
 given sequence.
 
 Earlier works have been very focused on techniques based on sequence alignment,
-with \texttt{UCLUST} being one such example. However, a clustering algorithm
+with \texttt{USEARCH} being one such example. However, a clustering algorithm
 with a similarity measure based on $k$-mers, can possible give an improved
 performance in terms of speed, while still being a sufficiently good
 approximation.
@@ -49,30 +49,20 @@ approximation.
 Our program, named \texttt{klust}, has been implemented in \texttt{C++}, is
 hosted on GitHub and is available at \url{https://github.com/Rathcke/klust}.
 
-The reader of this document is expected to have a basic knowledge of computer
+The reader of this text is expected to have a basic knowledge of computer
 science, corresponding to around two or three years of undergraduate studies.
 
 
 \subsection{Defining the clustering problem}
 
-The clustering problem that this project aims to solve is a partitioning of the
-sequences such that the similarities between a given centroid and all sequences
-in the cluster represented by that sequence is greater than or equal to the
-specified threshold similarity. There is, however, no guarantee that the
-centroid sequences will have a lower mutual similarity than the similarity
-threshold even though it is uncommon they do not.
-
-Let $C$ be a set of pairs of centroid sequences and sets of sequences belonging
-to the clusters represented by those centroids, let $sim$ denote the similarity
-measure and let $t$ be a given threshold similarity. Then a certain
-partitioning of sequences is a solution to the above clustering problem if it
-satisfies the following property:
-\[
-  \forall\, (c,S) \in C:\; \forall\, s \in S: sim(s,c) \geq t
-\]
-
-Figure \ref{fig:clustering_concept} illustrates this concept of \emph{centroid
-based} clustering.
+The clustering problem that this project aims to solve is a partitioning of
+the sequences such that the similarities between a given centroid and all
+sequences in the cluster represented by that sequence is greater than or equal
+to the specified threshold similarity. There is, however, no guarantee that
+the centroid sequences will have a lower mutual similarity than the similarity
+threshold although this should preferably be the case. Figure
+\ref{fig:clustering_concept} illustrates this concept of \emph{centroid based}
+clustering.
 
 \begin{figure}[h!]
   \centering
@@ -86,3 +76,10 @@ based} clustering.
     the dotted arrow).}
   \label{fig:clustering_concept}
 \end{figure}
+
+Let $C$ be a set of pairs containing a centroid and the set of sequences
+belonging to the cluster represented by that centroid. Let $sim$ denote the
+similarity measure and let $t$ be a given threshold similarity. Then a certain
+partitioning of sequences is a solution to the above clustering problem if it
+satisfies the following property: \[   \forall\, (c,S) \in C:\; \forall\, s
+\in S: sim(s,c) \geq t \]

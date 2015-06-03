@@ -1,18 +1,17 @@
 \subsection{\textsc{K-Dist} algorithm}
 
 This section presents the \textsc{K-Dist} algorithm used in \texttt{klust}.
-
 \textsc{K-Dist} uses a window of length equal to the shortest of the two
 sequences being compared. The distance between the substrings in the initial,
-leftmost position of the window is calculated using a variant (described
-below) of the basic \textsc{d2} algorithm (Algorithm \ref{alg:d2_basic})
-described in section \ref{sec:kmer_distance}. The window then iterates over
-the longer sequence, one nucleotide at a time, and calculates the new distance
-between the substring of the longer sequence and the shorter sequence.  This
-calculation is done using a kind of forward differences method for reducing
-the calculations to a few fixed operations for calculating the distance in the
-next window from the distance in the current window. This concept is described
-in an implementation of a variant of $d2$ by S. Hazelhurst~\cite{hazelhurst}.
+leftmost position of the window is calculated using a variant of the basic
+\textsc{d2} algorithm (Algorithm \ref{alg:d2_basic}). The window then iterates
+over the longer sequence, one nucleotide at a time, and calculates the new
+distance between the substring of the longer sequence and the shorter
+sequence.  This calculation is done using a kind of forward differences method
+for reducing the calculations to a few fixed operations for calculating the
+distance in the next window from the distance in the current window. This
+concept is described in a variant of the $d2$ algorithm by S.
+Hazelhurst~\cite{hazelhurst}.
 
 \textsc{K-Dist} uses the \emph{Manhattan distance} instead of the Euclidean
 distance used in the \textsc{d2} algorithm for calculating the distance between
@@ -20,9 +19,9 @@ the two $k$-mer frequency vectors. The Manhattan distance is similar to the
 Euclidean distance but with squaring replaced with absolute value and the
 square root omitted, i.e.  for $u, v \in \mathbb{Z}^n$,
 
-\begin{equation}
+\begin{equation*}
   d_{Manhattan} \eqdef \sum_{i=1}^{n} |u_i - v_i| \;.
-\end{equation}
+\end{equation*}
 
 This distance metric was chosen for simplicity, to make the calculation of
 distance in subsequent window positions easier, which also improves
@@ -35,7 +34,7 @@ current window, i.e. advancing the window through the longer of the two
 sequences by one character, it is decided which $k$-mers exit and enter the
 window, respectively, and then by looking at whether the existing $k$-mer count
 in the frequency vector is negative or positive, it can be decided whether the
-distance increases or decreased by 2 or whether it stays the same.
+distance increases or decreases by 2 or if it stays the same.
 Subsequently, the frequency vector is updated to reflect the change in the new
 window. Figure \ref{fig:d2_forward_differences} illustrates the idea of a
 window and $k$-mers exiting and entering the window:
@@ -57,9 +56,10 @@ window and $k$-mers exiting and entering the window:
 \label{fig:d2_forward_differences}
 \end{figure}
 
-A distance measure, i.e. not a relative similarity measure, can be difficult to
-use for determining sequence similarity since the distance metric is very
-dependent on the length of the shortest sequence (the length of the window).
+A distance measure, i.e. not a relative similarity measure, can be difficult
+to use directly for determining sequence similarity, since the distance metric
+is very dependent on the length of the shortest sequence (the length of the
+window).
 
 For this reason, the ratio between the Manhattan distance and the maximum
 possible distance in the window is used to normalize the distance to a value in
@@ -78,19 +78,17 @@ union of the sets.  However, the Jaccard index does not take the multiplicity
 of the elements into account and therefore it might give a lower sensitivity
 than the similarity measure in equation (\ref{eq:Manhattan_similarity}).
 
-The \textsc{K-Dist} algorithm (Algorithm \ref{alg:K-Dist}) has been implemented
-and is used as the distance metric in the \texttt{klust} program. The
-$s.substring(i,k)$ method extracts $k$ characters from a string $s$ beginning
-at position $i$. The update $cur\_dist$, $\mathtt{kmers}[x]$ and
-$\mathtt{kmers}[y]$ statements looks at the values for specific $k$-mers $x$
-and $y$ in the $k$-mer vector, increments or decrements the value and updates
-the $cur\_dist$ accordingly.
+The \textsc{K-Dist} algorithm (Algorithm \ref{alg:K-Dist}) has been
+implemented and is used as the distance metric in the \texttt{klust} program.
+The update $cur\_dist$, $\mathtt{kmers}[x]$ and $\mathtt{kmers}[y]$ statements
+look at the values for specific $k$-mers $x$ and $y$ in the $k$-mer vector,
+increments or decrements the value and updates the $cur\_dist$ accordingly.
 
 \begin{algorithm}[H]
   \caption{\textsc{K-Dist} algorithm}
   \label{alg:K-Dist}
   \begin{algorithmic}[1]
-    \Require{$s$ and $t$ are DNA or RNA sequence, $k \in \mathbb{Z}^+$}
+    \Require{$s$ and $t$ are DNA or RNA sequences, $k \in \mathbb{Z}^+$}
     \Statex
     \Function{K-Dist}{$s, t, k$}
       \State set $s$ to the shorter sequence and $t$ to the longer sequence
@@ -115,9 +113,8 @@ the $cur\_dist$ accordingly.
         \State $min\_dist \gets min(min\_dist, cur\_dist)$
       \EndFor
       \State
-      \State $total \gets 2\left(\abs{s}-k+1\right)$
-        \Comment{\parbox[t]{.3\linewidth}{Maximal distance}}
-      \State \Return{$(total-min\_dist) / total$}
+      \State $max\_dist \gets 2\left(\abs{s}-k+1\right)$
+      \State \Return{$(max\_dist-min\_dist) / max\_dist$}
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
@@ -126,25 +123,25 @@ the $cur\_dist$ accordingly.
 \subsubsection{Complexity analysis} \label{sec:k-dist_analysis}
 
 The \textsc{K-Dist} algorithm consists of two loops and a number of constant
-operations outside of the loops. In the first loop, the \textsc{K-Dist}
+time operations outside of the loops. In the first loop, the \textsc{K-Dist}
 algorithm iterates over the first $|s|-k$ characters, where $|s|$ denotes the
 length of the shorter of the two sequences. Each iteration contains only
-constant time operations. So far, a running time of $\Theta(\abs{s}-k)$ since
+constant time operations. This gives a running time of $\Theta(\abs{s}-k)$ since
 the number of iterations is bounded both from below and from above by
 $\abs{s}-k$. This is assuming that the map lookup is $\mathcal{O}(1)$ and that
-the $substring$ method is constant time as well, which is the case when strings
-are implemented as character arrays, assuming no copying is needed.
+the $substring$ method is constant time as well, which is the case when
+strings are implemented as character arrays, assuming no copying is needed.
 
 In the second loop, \textsc{K-Dist} performs $|t|-|s|$ iterations which each
 contains a constant number of constant time operations. This gives a running
 time of $\Theta(\abs{t}-\abs{s})$.
 
 This yields a total running time of
-\begin{align}
+\begin{align*}
   \Theta(\abs{s}-k) + \Theta(\abs{t}-\abs{s})
   &= \Theta(\abs{s} - k + \abs{t} - \abs{s}) \\
   &= \Theta(\abs{t} - k) \;.
-\end{align}
+\end{align*}
 
 More generally, given two string $s$ and $t$ and $k \in \mathbb{Z}^{+}$, the
 \textsc{K-Dist} algorithm has a worst case, average case and best case running
