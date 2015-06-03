@@ -6,17 +6,17 @@ partition contains objects that are similar to each other and objects in
 separate partitions are dissimilar, according to some well-defined notion of
 similarity. These partitions are called \emph{clusters}.
 
-Clustering huge amounts of DNA/RNA sequences (up to 500 million strings of
-500--1500 characters each) is computationally hard, and the cost of sequencing,
+Clustering huge amounts of DNA/RNA sequences (up to \num{500} million strings of
+\num{500}--\num{1500} characters each) is computationally hard, and the cost of sequencing,
 i.e. determining DNA and RNA data, has dropped so low, and consequently the
 amount of data has grown so large, that the available algorithms and hardware
 can no longer keep up~\cite{rothberg}.
 
 There are not many available algorithms and tools for efficient clustering of
 sequencing data. The one tool which is currently doing the job,
-\texttt{USEARCH}~\cite{edgar,usearch}, is closed-source and although the 32-bit
-version is available for free, the usable memory is limited to 4 GB and the
-64-bit version is costly.
+\texttt{USEARCH}~\cite{edgar,usearch}, is closed-source and although the \num{32}-bit
+version is available for free, the usable memory is limited to \num{4} GB and the
+\num{64}-bit version is costly.
 
 As the amount of sequencing data grows, clusterings becomes increasingly more
 relevant as it can be used to reduce a large set of sequences to a much smaller
@@ -60,7 +60,7 @@ sequences such that the similarities between a given centroid and all sequences
 in the cluster represented by that sequence is greater than or equal to the
 specified threshold similarity. There is, however, no guarantee that the
 centroid sequences will have a lower mutual similarity than the similarity
-threshold.
+threshold even though it is uncommon they do not.
 
 Let $C$ be a set of pairs of centroid sequences and sets of sequences belonging
 to the clusters represented by those centroids, let $sim$ denote the similarity
@@ -80,8 +80,8 @@ based} clustering.
   \import{graphics/}{Clustering.pdf_tex}
   \caption{Illustration of centroid based clustering. The green sequences
     belong to the cluster represented by the leftmost, black centroid and the
-    blue sequences belong to the rightmost cluster. The middle sequence, in the
-    intersection between the circles, belong to only the left cluster although
+    blue sequences belong to the rightmost cluster. The sequence in the
+    intersection between the circles belong to only the left cluster although
     it could possibly belong to the right one instead (as indicated by
     the dotted arrow).}
   \label{fig:clustering_concept}

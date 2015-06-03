@@ -27,8 +27,8 @@ ambigious bases.
   \begin{tabular}{c | c | c | c | c | c}
     Dataset        & Avg. len. & Min. len. & Max. len. & Median len. & Error ratio \\
     \hline\hline
-    \texttt{SILVA} & 1,415.46  & 900       & 3,845     & 1,389       & 0.000156146 \\
-    \texttt{RDP}   & 1,044.19  & 400       & 2,922     & 1,132       & 0.000798764 \\
+    \texttt{SILVA} & \num{1415.46}  & \num{900} & \num{3845} & \num{1389}       & 0.000156146 \\
+    \texttt{RDP}   & \num{1044.19}  & \num{400} & \num{2922} & \num{1132}       & 0.000798764 \\
   \end{tabular}
   \caption{Various information about the different datasets.}
   \label{tab:data_stats}
@@ -202,10 +202,10 @@ The subplots, i.e. the inner boxes, in Figure
 \ref{fig:k-dist_lev_similarity_k5} and \ref{fig:k-dist_lev_similarity_k8},
 shows a zommed in view of the parts of the scatter plots that lies in the
 interval $[0.8,1.0]$ on both axes. The most interesting Levenshtein
-similarities are those above or equal to 0.95. These points lie fairly high for
-the corresponding \textsc{K-Dist} similarity, for the most part, i.e. the
-majority of the comparisons that give a Levenshtein similarity of 0.95 also
-gives a \textsc{K-Dist} similarity of 0.85 or above.
+similarities are those above or equal to $0.95$. These points lie fairly high
+for the corresponding \textsc{K-Dist} similarity, for the most part, i.e. the
+majority of the comparisons that give a Levenshtein similarity of $0.95$ also
+gives a \textsc{K-Dist} similarity of $0.85$ or above.
 
 \begin{figure}[H]
   \includegraphics[width=1.0\textwidth]{graphics/Levenshtein_K-Dist_k8.png}
@@ -222,16 +222,16 @@ A synthetic dataset was constructed for evaluating the \textsc{K-Clust}
 algorithm's ability to find the right clusters in a dataset with a clearly
 correct, expected clustering result.
 
-A set of 380 sequences with mutual similarities of at most 0.6 was extracted
-from \texttt{SILVA}, using the \textsc{K-Dist} distance metric (Algorithm
-\ref{alg:K-Dist}) with parameter $k=5$. For each of these sequences, 999 copies
-were made and chunks of changes were made to these as described above in
-section \ref{sec:altered_sequences}, corresponding to 2\% of the characters of
-each sequence. This yields a set of $380,000$ sequences with 380 expected
-clusters, which each should contain sequences with similarities of
-approximately $0.92$ since all sequences are changed and a 2\% change to a
-sequence gives an average similarity from the original sequence of around
-$0.96$, cf. section \ref{sec:altered_sequences}.
+A set of $380$ sequences with mutual similarities of at most $0.6$ was
+extracted from \texttt{SILVA}, using the \textsc{K-Dist} distance metric
+(Algorithm \ref{alg:K-Dist}) with parameter $k=5$. For each of these
+sequences, $999$ copies were made and chunks of changes were made to these as
+described above in section \ref{sec:altered_sequences}, corresponding to $2$\%
+of the characters of each sequence. This yields a set of \num{380000}
+sequences with $380$ expected clusters, which each should contain sequences
+with similarities of approximately $0.92$ since all sequences are changed and
+a $2$\% change to a sequence gives an average similarity from the original
+sequence of around $0.96$, cf. section \ref{sec:altered_sequences}.
 
 The sequences expected to be in the same cluster was given the same description
 in the \texttt{FASTA} file, i.e. the same text string after ``>'', to make it
@@ -246,18 +246,18 @@ clustering result than the expected one.
 
 As hoped, running \texttt{klust} on the constructed dataset, with parameters
 $k=5$, $id=0.85$ and $max\_rejects=8$ gives a clustering output consisting of
-380 clusters with 1000 sequences in each (including the centroid). The terminal
-output from the program is shown in Figure \ref{fig:synth_silva_output} in
-appendix \ref{app:synth_dataset} and an excerpt from the clustering ouput file
-created by the program is shown in Figure \ref{fig:synth_silva_clustering} in
-the same appendix. This shows that the sequences in each cluster have the same
-description line, i.e. they were constructed to be similar and should indeed be
-in the same cluster. The result was equally correct when clustering with a
-threshold parameter of $0.89$, but the results start containing a few errors
-when clustering with a threshold of $0.9$ or above. In the specific test, and
-the specific, random order of the sequences, the clustering result yielded 386
-clusters for $id=0.9$, average cluster size of $984.456$ and a minimum cluster
-size of $33$.
+$380$ clusters with 1000 sequences in each (including the centroid). The
+terminal output from the program is shown in Figure
+\ref{fig:synth_silva_output} in appendix \ref{app:synth_dataset} and an
+excerpt from the clustering ouput file created by the program is shown in
+Figure \ref{fig:synth_silva_clustering} in the same appendix. This shows that
+the sequences in each cluster have the same description line, i.e. they were
+constructed to be similar and should indeed be in the same cluster. The result
+was equally correct when clustering with a threshold parameter of $0.89$, but
+the results start containing a few errors when clustering with a threshold of
+$0.9$ or above. In the specific test, and the specific, random order of the
+sequences, the clustering result yielded $386$ clusters for $id=0.9$, average
+cluster size of $984.456$ and a minimum cluster size of $33$.
 
 This test provides some evidence that \textsc{K-Clust} is able to successfully
 cluster a dataset of a fairly realistic size. Since the similarities are known
@@ -284,12 +284,13 @@ color. Centroids were given a cirle marker and all other sequences were gives a
 ``+'' marker.
 
 A subset of the synthetic set described in section \ref{sec:synth_dataset} was
-used for the MDS, because the scatter plot easily becomes too densely populated
-and because the computation is too expensive for \num{380000} sequences. A set
-of 400 sequences, consisting of 40 expected clusters with 10 sequences in each,
-was used for the visualization shown in Figure \ref{fig:mds_synth}. The
-clustering indicated by the colors and markers is from \textsc{K-Clust} and the
-distances used for MDS are calculated using \textsc{K-Dist}.
+used for the MDS, because the scatter plot easily becomes too densely
+populated and because the computation is too expensive for \num{380000}
+sequences. A set of $400$ sequences, consisting of $40$ expected clusters with
+$10$ sequences in each, was used for the visualization shown in Figure
+\ref{fig:mds_synth}. The clustering indicated by the colors and markers is
+from \textsc{K-Clust} and the distances used for MDS are calculated using
+\textsc{K-Dist}.
 
 \begin{figure}[h!]
   \includegraphics[width=\textwidth]{graphics/MDS_t-SNE_synth_silva_400.png}
@@ -400,9 +401,9 @@ respectively, before clustering with \texttt{klust}.
 Both respectively, shows a few apparent clusters, but as expected they also
 show a large number of smaller clusters and singleton clusters. In this
 particular example, when running \texttt{klust} with parameters $k=5$,
-$id=0.85$ and $max\_rejects=8$, the number of resulting clusters were 159 with
-a maximum cluster size of 38, average size approximately 3.145. Furthermore,
-the result contained 87 singleton clusters.
+$id=0.85$ and $max\_rejects=8$, the number of resulting clusters were $159$ with
+a maximum cluster size of $38$, average size approximately \num{3.145}.
+Furthermore, the result contained $87$ singleton clusters.
 
 The large number of singleton clusters and small clusters are especially
 apparent in the center of the figures and in the lower left part of the
@@ -414,6 +415,7 @@ if the number of clusters had been lower.
 
 
 \subsection{Evaluation of centroid search in \texttt{klust}}
+\label{sec:evaluation_centroid_search}
 
 A great part of the clustering lies in task of locating potential matching
 centroids to a sequence. To evaluate this, \texttt{klust} was run on a number
@@ -432,15 +434,21 @@ program was run with parameters $k=5$, $id=0.85$, $max\_rejects=8$ and flag
   \begin{tabular}{c|c|c}
   Count                & \num{10000} & \num{100000} \\
   \hline\hline
-  Reject ratio         & 0.00231453  & 0.00871947 \\
+  Reject ratio         & 0.00231  & 0.00872 \\
   \hline
-  False negative ratio & 0.00048433  & 0.00012806 \\
+  False negative ratio & 0.00048  & 0.00013 \\
+  \hline
+  Try ratio            & 0.00377  & 0.00112 \\
   \hline
   Reached max rejects  & 0           & 4 \\
-  \hline
-  Try ratio            & 0.00376512  & 0.00112404 \\
   \end{tabular}
-  \caption{Centroid search data}
+  \caption{Data on the first \num{10000} and \num{100000} sequences of 
+  \texttt{SILVA} showing reject ratio, how many times a query sequence was 
+  compared to a target sequence and falled under the similarity threshold, and 
+  a false negative ratio which is how often a sequence was not compared to a 
+  target sequence but would have matched it. It also shows a try ratio, how 
+  often a query sequence was tried compared to a target sequence, and how many 
+  times a query sequence was dismissed because it was rejected too many times.}
   \label{tab:centroid_search_data}
 \end{table}
 
@@ -474,7 +482,7 @@ introduce (cf. section \ref{sec:k-clust_algorithm}).
 
 To test the performance and quality of the program, it was run on different
 parameters and settings. The table in appendix \ref{app:klust_data_parameters}
-shows output data from running the first $100,000$ sequences from
+shows output data from running the first \num{100000} sequences from
 \texttt{SILVA} with different parameters. Sorting by increasing length is on
 average $21.65\%$ faster and never slower than not sorting. It is also on
 average $42.63\%$ faster and never slower than sorting by decreasing length.
@@ -500,8 +508,8 @@ fall in will lay quite high (see section \ref{sec:kdist_vs_levenshtein}). This
 could make for ``lucky'' coincidences, where $k=5$ is better at preventing
 them. Based on the results in \ref{app:performance_results_full_SILVA},
 lowering $k$ more than $5$ does not seem to reduce the times it take to
-cluster by a lot, so risking that lucky coincedences can happen more often is
-not worth the little time that is saved.
+cluster by a lot, so risking that lucky coincedences happen more frequently is
+not worth the minor boost in speed that is gained.
 
 In appendix \ref{app:performance_results_full_SILVA} is a table that shows data
 from \texttt{klust} using either \textsc{K-Clust} or \textsc{Simple-Clust} and
@@ -511,47 +519,51 @@ the most important results found in the appendix.
 
 \begin{table}[H]
   \begin{adjustbox}{center}
-  \begin{tabular}{c|r|r|r|lr|c}
-  \multirow{2}{*}{}
-  Clustering & Time & Throughput & Clusters & \multicolumn{2}{c|}{Cluster sizes}& Max \\
-  algorithm & (sec.) & (seqs./sec.) & & & & memory \\
+  \begin{tabular}{c|r|r|r|lr|l}
+  \multirow{2}{*}{} 
+  Clustering & \multicolumn{1}{c|}{Time} & \multicolumn{1}{c|}{Throughput} & \multicolumn{1}{c|}{Clusters} & \multicolumn{2}{c|}{Cluster sizes}& \multicolumn{1}{c}{Max} \\
+  algorithm & \multicolumn{1}{c|}{(sec.)} & \multicolumn{1}{c|}{(seqs./sec.)} & & & & \multicolumn{1}{c}{memory} \\
   \hline \hline
   \multirow{3}{*}
-  {}\textsc{Simple-Clust}, & & & & Max & - & \\
-  $k=6, id=0.85, m=32,$    & \num{931.477} & 1700.34 & 108550 & Avg. & 1.55561 & - \\
-  no sort                  & & & & Min & 1 & \\
+  {}\textsc{Simple-Clust}, & & & & Max. & - & \\
+  $k=6, id=0.85, m=32,$    & \num{931.5} & \num{1700.34} & \num{108550} & Avg. & $1.56$ & - \\
+  no sort                  & & & & Min. & \num{1} & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{K-Clust},  & & & & Max & 57885 & \\
-  $k=5, id=0.85, m=8,$ & 1144.55 & 1383.81 & 98354 & Avg. & 16.1034 & 1013 MB \\
-  incr. sort           & & & & Min & 1 & \\
+  {}\textsc{K-Clust},  & & & & Max. & \num{57885} & \\
+  $k=5, id=0.85, m=8,$ & \num{1144.6} & \num{1383.81} & \num{98354} & Avg. & $16.10$ & $\approx\num{1013}$ MB \\
+  incr. sort           & & & & Min. & \num{1} & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{K-Clust},  & & & & Max & 71407 & \\
-  $k=5, id=0.90, m=8,$ & 2578.88 & 614.16 & 159812 & Avg. & 9.91058 & 1021 MB\\
-  incr. sort           & & & & Min & 1 & \\
+  {}\textsc{K-Clust},  & & & & Max. & \num{71407} & \\
+  $k=5, id=0.90, m=8,$ & \num{2578.9} & \num{614.16} & \num{159812} & Avg. & $9.91$ & $\approx\num{1021}$ MB\\
+  incr. sort           & & & & Min. & \num{1} & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{K-Clust},  & & & & Max & 79599 & \\
-  $k=6, id=0.85, m=8,$ & 1812.02 & 874.07 & 127711 & Avg. & 12.4017 & 1012 MB\\
-  incr. sort           & & & & Min & 1 & \\
+  {}\textsc{K-Clust},  & & & & Max. & \num{79599} & \\
+  $k=6, id=0.85, m=8,$ & \num{1812.0} & \num{874.07} & \num{127711} & Avg. & $12.40$ & $\approx\num{1012}$ MB\\
+  incr. sort           & & & & Min. & \num{1} & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{K-Clust},  & & & & Max & 49479 & \\
-  $k=6, id=0.90, m=8,$ & 3450.59 & 459.00 & 191361 & Avg. & 8.27666 & 1039 MB\\
-  incr. sort           & & & & Min & 1 & \\
+  {}\textsc{K-Clust},  & & & & Max. & \num{49479} & \\
+  $k=6, id=0.90, m=8,$ & \num{3450.6} & \num{459.00} & \num{191361} & Avg. & $8.28$ & $\approx\num{1039}$ MB\\
+  incr. sort           & & & & Min. & \num{1} & \\
   \hline
   \multirow{3}{*}
-  {}\texttt{USEARCH},        & & & & Max & 83904 & \\
-  $id=0.95,$ decr. sort      & 1719.00 & 920.30 & 117205 & Avg. & 13.5 & $\approx\num{1126}$ MB \\
-  \texttt{-cluster\_smallmem} & & & & Min & 1 & \\
+  {}\texttt{USEARCH},        & & & & Max. & \num{83904} & \\
+  $id=0.95,$ decr. sort      & \num{1719.0} & \num{920.30} & \num{117205} & Avg. & $13.50$ & $\approx\num{1126}$ MB \\
+  \texttt{-cluster\_smallmem} & & & & Min. & \num{1} & \\
+  \hline
+  \multirow{3}{*}
+  {}\texttt{USEARCH},        & & & & Max. & \num{59820} & \\
+  $id=0.97,$ decr. sort      & \num{3850.0} & \num{411.10} & \num{221040} & Avg. & $7.20$ & $\approx\num{2048}$ MB \\
+  \texttt{-cluster\_smallmem} & & & & Min. & \num{1} & \\
   \end{tabular}
   \end{adjustbox}
   \caption{Performance and clusterings results of different clustering methods
     and different parameters on the entire \texttt{SILVA} dataset.}
   \label{tab:full_silva_main_results}
 \end{table}
-%TODO: Add more results?
 
 This \textsc{Simple-Clust} algorithm did not perform as well as hoped, The most
 frequently occurring $k$-mer did not appear to be a sufficiently good
@@ -611,30 +623,30 @@ and \texttt{klust} using \textsc{K-Clust} on the entire \texttt{RDP} dataset. Th
 
 \begin{table}[H]
   \begin{adjustbox}{center}
-  \begin{tabular}{c|r|r|r|lr|c}
-  \multirow{2}{*}{}
-  Clustering & Time & Throughput & Clusters & \multicolumn{2}{c|}{Cluster sizes}& Max \\
-  algorithm & (sec.) & (seqs./sec.) & & & & memory \\
+  \begin{tabular}{c|r|r|r|lr|l}
+  \multirow{2}{*}{} 
+  Clustering & \multicolumn{1}{c|}{Time} & \multicolumn{1}{c|}{Throughput} & \multicolumn{1}{c|}{Clusters} & \multicolumn{2}{c|}{Cluster sizes}& \multicolumn{1}{c}{Max} \\
+  algorithm & \multicolumn{1}{c|}{(sec.)} & \multicolumn{1}{c|}{(seqs./sec.)} & & & & \multicolumn{1}{c}{memory} \\
   \hline \hline
   \multirow{3}{*}
-  {}\textsc{K-Clust},  & & & & Max & 100832 & \\
-  $k=5, id=0.85, m=8,$ & 5420.79 & 557.101 & 220982 & Avg. & 13.6659 & $\approx\num{2031}$ MB\\
-  incr. sort           & & & & Min & 1 & \\
+  {}\textsc{K-Clust},  & & & & Max. & \num{100832} & \\
+  $k=5, id=0.85, m=8,$ & \num{5420.8} & \num{557.10} & \num{220982} & Avg. & $13.67$ & $\approx\num{2031}$ MB\\
+  incr. sort           & & & & Min. & $1$ & \\
   \hline
   \multirow{3}{*}
-  {}\textsc{K-Clust},  & & & & Max & 55992 & \\
-  $k=5, id=0.9, m=8,$ & 11948.7 & 252.741 & 344122 & Avg. & 8.77575 & $\approx\num{2031}$ MB\\
-  incr. sort           & & & & Min & 1 & \\
+  {}\textsc{K-Clust},  & & & & Max. & \num{55992} & \\
+  $k=5, id=0.9, m=8,$ & \num{11948.7} & \num{252.74} & \num{344122} & Avg. & $8.78$ & $\approx\num{2031}$ MB\\
+  incr. sort           & & & & Min. & $1$ & \\
   \hline
   \multirow{3}{*}
-  {}\texttt{USEARCH},        & & & & Max & 65654 & \\
-  $id=0.95,$ decr. sort      & 6874 & 439.2 & 261880 & Avg. & 11.5 & $\approx\num{1433}$  MB \\
-  \texttt{-cluster\_smallmem} & & & & Min & 1 & \\
+  {}\texttt{USEARCH},        & & & & Max. & \num{65654} & \\
+  $id=0.95,$ decr. sort      & \num{6874.0} & \num{439.20} & \num{261880} & Avg. & $11.50$ & $\approx\num{1433}$  MB \\
+  \texttt{-cluster\_smallmem} & & & & Min. & $1$ & \\
   \hline
   \multirow{3}{*}
-  {}\texttt{USEARCH},        & & & & Max & 56279 & \\
-  $id=0.97,$ decr. sort      & 11980 & 252.0 & 471982 & Avg. & 6.4 & $\approx\num{2560}$  MB \\
-  \texttt{-cluster\_smallmem} & & & & Min & 1 & \\
+  {}\texttt{USEARCH},        & & & & Max. & \num{56279} & \\
+  $id=0.97,$ decr. sort      & \num{11980.0} & \num{252.00} & \num{471982} & Avg. & $6.40$ & $\approx\num{2560}$  MB \\
+  \texttt{-cluster\_smallmem} & & & & Min. & $1$ & \\
   \end{tabular}
   \end{adjustbox}
   \caption{Performance and clusterings results of different clustering methods and different parameters on the entire \texttt{RDP} dataset.}
@@ -656,8 +668,9 @@ that the $id$'s simply does not correspond to eachother, but also because
 centroid for a new one because of the $max\_rejects$ parameter. This means it
 can overlook a centroid that would have been a match. In \texttt{klust} this
 can be an issue as well, but it does look at all centroids to see if they
-could be a potential match.
-%TODO: Use false negatives and other data from centroid search
+could be a potential match. As seen in section
+\ref{sec:evaluation_centroid_search}, the number of false negatives is quite
+low in \texttt{klust}.
 
 The total clustering time does not scale as well for \texttt{klust} when $id$
 (and centroids) is increased as \texttt{USEARCH}. The number of clusters,

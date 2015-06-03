@@ -19,16 +19,16 @@ For example, the two sequences
   \texttt{ACGT} \\
   \texttt{ACGGC}
 \end{center}
-would have a distance of 2 (e.g. substituting T for G and inserting a C).
+would have a distance of \num{2} (e.g. substituting T for G and inserting a C).
 However, there are some cases where the relevance of the distance is arguable.
 Consider the sequences
 \begin{center}
   \texttt{AACCGG} \\
   \texttt{CCAAGG}
 \end{center}
-with a distance of 4. The mutation could be seen as the substring \texttt{CC}
-acting as a transposable element, which one might want to result in a low
-distance.
+with a distance of \num{4}. It could be seen as a mutation where the substring
+\texttt{CC} is acting as a transposable element, which one might want to
+result in a low distance.
 
 A bottom-up dynamic programming version of the Levenshtein distance metric was
 implemented and tested on real DNA/RNA data to evaluate its performance, and it
@@ -46,13 +46,13 @@ against other metrics. The algorithm is attached in appendix
 \ref{app:levenshtein_algorithm} and results from tests are shown in section
 \ref{sec:results}.
 
-As stated in~\cite[pp.~1--2]{andoni}, ``The worst-case running time known for
-this problem has not improved in three decades (..)''. It further supports the
-conclusion that the running time of the Levenshtein algorithm is too poor for
-the large data sets of the problem domain. Specifically the running time of
-Levenshtein is $\mathcal{O}(nm)$, where $n$ and $m$ are the lengths of the two
-sequences and $n>m$, and $\mathcal{O}(n \cdot \max{(1,m/\log_2(n))})$ for a
-constant size alphabet~\cite{masek}.
+A. Andoni and R. Krauthgamer ~\cite[pp.~1--2]{andoni} states, ``The worst-case
+running time known for this problem has not improved in three decades (..)''.
+It further supports the conclusion that the running time of the Levenshtein
+algorithm is too poor for the large data sets of the problem domain.
+Specifically the running time of Levenshtein is $\mathcal{O}(nm)$, where $n$
+and $m$ are the lengths of the two sequences and $n>m$, and $\mathcal{O}(n
+\cdot \max{(1,m/\log_2(n))})$ for a constant size alphabet~\cite{masek}.
 
 This lack of improvements of the performance of edit distance is one motivation
 for the introduction of the concept of sequence alignment.
@@ -79,8 +79,9 @@ then it is a match. Otherwise, it is a mismatch~\cite[pp.~135--136]{dong}.
 \end{figure}
 
 Figure \ref{fig:seq_alignment} displays an alignment of two sequences. In
-column 0 is an indel, in columns 1--3 are matches, in column 4 is a mismatch
-and so forth. The vertical bar characters in the middle line, indicate matches.
+column 0 is an indel, in columns 1--3 are matches, in column
+4 is a mismatch and so forth. The vertical bar characters in the middle
+line, indicate matches.
 
 Indels, gaps and mismatches can be given different weights in the calculation
 of the similarity between the sequences.

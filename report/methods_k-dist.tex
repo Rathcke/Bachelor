@@ -4,15 +4,15 @@ This section presents the \textsc{K-Dist} algorithm used in \texttt{klust}.
 
 \textsc{K-Dist} uses a window of length equal to the shortest of the two
 sequences being compared. The distance between the substrings in the initial,
-leftmost position of the window is calculated using a variant (described below)
-of the basic \textsc{d2} algorithm (Algorithm \ref{alg:d2_basic}) described in
-section \ref{sec:kmer_distance}. The window then iterates over the longer
-sequence, one nucleotide at a time, and calculates the new distance between the
-substring of the longer sequence and the shorter sequence.  This calculation is
-done using a kind of forward differences method for reducing the calculations
-to a few fixed operations for calculating the distance in the next window from
-the distance in the current window. This concept is described
-in~\cite{hazelhurst}.
+leftmost position of the window is calculated using a variant (described
+below) of the basic \textsc{d2} algorithm (Algorithm \ref{alg:d2_basic})
+described in section \ref{sec:kmer_distance}. The window then iterates over
+the longer sequence, one nucleotide at a time, and calculates the new distance
+between the substring of the longer sequence and the shorter sequence.  This
+calculation is done using a kind of forward differences method for reducing
+the calculations to a few fixed operations for calculating the distance in the
+next window from the distance in the current window. This concept is described
+in an implementation of a variant of $d2$ by S. Hazelhurst~\cite{hazelhurst}.
 
 \textsc{K-Dist} uses the \emph{Manhattan distance} instead of the Euclidean
 distance used in the \textsc{d2} algorithm for calculating the distance between
@@ -76,7 +76,7 @@ similarity measure, is the \emph{Jaccard index}~\cite{jaccard1912}, which is
 defined as the size of the intersection of two sets divided by the size of the
 union of the sets.  However, the Jaccard index does not take the multiplicity
 of the elements into account and therefore it might give a lower sensitivity
-than the similarity measure in (\ref{eq:Manhattan_similarity}).
+than the similarity measure in equation (\ref{eq:Manhattan_similarity}).
 
 The \textsc{K-Dist} algorithm (Algorithm \ref{alg:K-Dist}) has been implemented
 and is used as the distance metric in the \texttt{klust} program. The
@@ -154,4 +154,4 @@ The space usage of \textsc{K-Dist} depends on the value of $k$ and the $k$-mers
 occurring in the sequences, since this affects the size of the \texttt{kmers}
 map. The worst case space complexity is $\mathcal{O}\left(4^k\right)$, i.e.
 exponential in the value of $k$, however, since $k$ will generally be assumed
-to be less than or equal to 8, this is not a problem.
+to be less than or equal to 8, the space usage should not become a problem.
