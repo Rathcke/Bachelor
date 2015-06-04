@@ -1,5 +1,8 @@
 \section{Results and evaluation} \label{sec:results}
 
+This section describes tests and benchmarks performed on different datasets,
+along with evaluation and discussion of the results.
+
 \subsection{Overview of datasets and hardware used for testing}
 \label{sec:overview_of_datasets}
 
@@ -19,22 +22,22 @@ section.
 \end{description}
 
 Various statistics about the datasets are shown in Table \ref{tab:data_stats}.
-The error ratio is the ratio between the number of non DNA/RNA bases, i.e. the
-ambigious bases.
+The error ratio is the ratio between the number of ambiguous bases and the
+number of regular DNA/RNA bases.
 
 \begin{table}[H]
   \centering
   \begin{tabular}{c | c | c | c | c | c}
     Dataset        & Avg. len. & Min. len. & Max. len. & Median len. & Error ratio \\
     \hline\hline
-    \texttt{SILVA} & \num{1415.46}  & \num{900} & \num{3845} & \num{1389}       & 0.000156146 \\
-    \texttt{RDP}   & \num{1044.19}  & \num{400} & \num{2922} & \num{1132}       & 0.000798764 \\
+    \texttt{SILVA} & \num{1415.46}  & \num{900} & \num{3845} & \num{1389} & 0.000156146 \\
+    \texttt{RDP}   & \num{1044.19}  & \num{400} & \num{2922} & \num{1132} & 0.000798764 \\
   \end{tabular}
   \caption{Various information about the different datasets.}
   \label{tab:data_stats}
 \end{table}
 
-The hardware used for testing was a 64-bit Intel Core i5-2520M 2nd generation
+The hardware used for testing was a 64-bit Intel Core i5-2520M 2nd generation,
 Sandy Bridge processor with a base frequency of 2.5 GHz and with 2 cores (4
 hardware threads), and 16 GB RAM.
 
@@ -42,22 +45,21 @@ hardware threads), and 16 GB RAM.
 \subsection{Testing the distance metric on altered sequences}
 \label{sec:altered_sequences}
 
-Two different sets of highly similar sequences was constructed from a real
-world sequence from \texttt{SILVA} and this was used in the evaluation of the
+Four different sets of highly similar sequences were constructed from an RNA
+sequence from \texttt{SILVA} and this was used in the evaluation of the
 distance metric.
 
 One sequence was chosen, 10 copies of this sequences were made and to each of
-these copies, a few alterations were made. In the first set, a list of random
-indices in the sequence were generated and in each of these indices in the
-sequence, a substitution for a different, randomly chosen nucleotide was made.
-This was done twice, for different degrees of alteration, and the number of
-alterations was equal to respectively 1\% and 2\% of the length of the
-sequence.
+these copies, a few alterations were made. A list of random indices in the
+sequence was generated and in each of these indices in the sequence, a
+substitution for a different, randomly chosen nucleotide was made.  This was
+done twice, for different degrees of alteration, and the number of alterations
+was equal to respectively 1\% and 2\% of the length of the sequence.
 
-In the second set, the same number of alterations to individual nucleotides
-were made, but in this case they were grouped into alterations of substrings of
-length 5 (one such group being of length less than 5 if the number of
-alterations was not a multiple of 5).
+For the two other sets, the same number of alterations to individual
+nucleotides were made, but in this case they were grouped into alterations of
+substrings of length 5 (one such group being of length less than 5 if the
+number of alterations was not a multiple of 5).
 
 For illustration, Figure \ref{fig:alterations} shows an original sequence in
 the first line, the single edits alterated sequence in the second line and the
@@ -66,9 +68,9 @@ chunk alterated sequence in the third line.
 \newcommand{\tc}[1]{\textcolor{red}{#1}}
 \begin{figure}[H]
   \centering
-  \texttt{AAAAAAAAAAAAAAAAAAAAAA} \\
-  \texttt{AAAAA\tc{T}AA\tc{C}AAAA\tc{G}AAAA\tc{T}AAA} \\
-  \texttt{AAA\tc{TC}AAAAAAAAAA\tc{GG}AAAAA}
+  \texttt{AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA} \\
+  \texttt{AA\tc{G}AAAA\tc{T}AA\tc{C}AA\tc{T}A\tc{C}A\tc{G}AAA\tc{C}AA\tc{T}AAAAA} \\
+  \texttt{AAAAA\tc{TCGT}AAAAAAAAAA\tc{TTGG}AAAAAAA}
   \caption{Two types of alterations to sequences: the original sequence in the
     first line, single edit alterations in the second line and chunks of edits
     in the third line.}
@@ -109,7 +111,7 @@ Table \ref{tab:altered_seqs_similarities}.
   \label{tab:altered_seqs_similarities}
 \end{table}
 
-As expected, the single edits result in a lower similarity that the
+As expected, the single edits result in a lower similarity than the
 corresponding chunk edits. This is because five individual changes will affect
 the count of up to $5 \cdot k$ $k$-mers, while five changes in sequence will
 only affect up to $4+k$ $k$-mers.
@@ -120,8 +122,8 @@ only affect up to $4+k$ $k$-mers.
 
 This section compares the implementation of the \textsc{K-Dist} distance metric
 (Algorithm \ref{alg:K-Dist}) with the implementation of the bottom-up dynamic
-programming (DP) algorithm (Algorithm \ref{alg:levenshtein} in appendix
-\ref{app:levenshtein_algorithm}) for the Levenshtein distance metric.
+programming algorithm  for the Levenshtein distance metric (Algorithm
+\ref{alg:levenshtein} in appendix \ref{app:levenshtein_algorithm}).
 
 The data in Table \ref{tab:levenshtein_vs_kdist_performance} shows how many
 comparisons per second the implementation of Levenshtein and the implementation
@@ -166,8 +168,8 @@ Scatter plots of \textsc{K-Dist} similarities and the corresponding Levenshtein
 similarities for parameters $k=5$ and $k=8$ are shown in Figure
 \ref{fig:k-dist_lev_similarity_k5} and Figure
 \ref{fig:k-dist_lev_similarity_k8}, respectively. These similarity measures
-have been obtained by comparing the 500 first sequences from \texttt{SILVA}
-with each other.
+were obtained by comparing the 500 first sequences from \texttt{SILVA} with
+each other.
 
 Since the Levenshtein distance does not produce values between 0 and 1, a
 similarity ratio similar to the one used in \textsc{K-Dist} and expressed in
@@ -191,21 +193,21 @@ number of different 8-mers is much greater than the number of different 5-mers,
 so it is less likely that two $k$-mers are the same. That will result in a
 greater distance and hence a lower similarity.
 
-Since transposable elements will not result in much decrease in similarity for
-\textsc{K-Dist}, but will do so for Levenshtein, there will be some measures
-which are relatively lower for Levenshtein than for \textsc{K-Dist}. The
-``width'' of the points in Figure \ref{fig:k-dist_lev_similarity_k5} and
-\ref{fig:k-dist_lev_similarity_k8} can likely be partly attributed to this
-difference in characteristic between the two distance metrics.
+Since \textsc{K-Dist} is not very sensitive to transposable elements, but
+Levenshtein is, there will be some measures which are relatively lower for
+Levenshtein than for \textsc{K-Dist}. The ``width'' of the points in Figure
+\ref{fig:k-dist_lev_similarity_k5} and \ref{fig:k-dist_lev_similarity_k8} can
+partly be attributed to the difference in characteristic between the two
+distance metrics.
 
 The subplots, i.e. the inner boxes, in Figure
 \ref{fig:k-dist_lev_similarity_k5} and \ref{fig:k-dist_lev_similarity_k8},
-shows a zommed in view of the parts of the scatter plots that lies in the
-interval $[0.8,1.0]$ on both axes. The most interesting Levenshtein
-similarities are those above or equal to $0.95$. These points lie fairly high
-for the corresponding \textsc{K-Dist} similarity, for the most part, i.e. the
-majority of the comparisons that give a Levenshtein similarity of $0.95$ also
-gives a \textsc{K-Dist} similarity of $0.85$ or above.
+shows a zoomed in view of the scatter plots in the interval $[0.8,1.0]$ on both
+axes. The most interesting Levenshtein similarities are those above or equal to
+$0.95$. These points lie fairly high for the corresponding \textsc{K-Dist}
+similarity, for the most part, i.e. the majority of the comparisons that give a
+Levenshtein similarity of $0.95$ also gives a \textsc{K-Dist} similarity of
+$0.85$ or above.
 
 \begin{figure}[H]
   \includegraphics[width=1.0\textwidth]{graphics/Levenshtein_K-Dist_k8.png}
@@ -442,12 +444,12 @@ program was run with parameters $k=5$, $id=0.85$, $max\_rejects=8$ and flag
   \hline
   Reached max rejects  & 0           & 4 \\
   \end{tabular}
-  \caption{Data on the first \num{10000} and \num{100000} sequences of 
-  \texttt{SILVA} showing reject ratio, how many times a query sequence was 
-  compared to a target sequence and falled under the similarity threshold, and 
-  a false negative ratio which is how often a sequence was not compared to a 
-  target sequence but would have matched it. It also shows a try ratio, how 
-  often a query sequence was tried compared to a target sequence, and how many 
+  \caption{Data on the first \num{10000} and \num{100000} sequences of
+  \texttt{SILVA} showing reject ratio, how many times a query sequence was
+  compared to a target sequence and falled under the similarity threshold, and
+  a false negative ratio which is how often a sequence was not compared to a
+  target sequence but would have matched it. It also shows a try ratio, how
+  often a query sequence was tried compared to a target sequence, and how many
   times a query sequence was dismissed because it was rejected too many times.}
   \label{tab:centroid_search_data}
 \end{table}
@@ -520,7 +522,7 @@ the most important results found in the appendix.
 \begin{table}[H]
   \begin{adjustbox}{center}
   \begin{tabular}{c|r|r|r|lr|l}
-  \multirow{2}{*}{} 
+  \multirow{2}{*}{}
   Clustering & \multicolumn{1}{c|}{Time} & \multicolumn{1}{c|}{Throughput} & \multicolumn{1}{c|}{Clusters} & \multicolumn{2}{c|}{Cluster sizes}& \multicolumn{1}{c}{Max} \\
   algorithm & \multicolumn{1}{c|}{(sec.)} & \multicolumn{1}{c|}{(seqs./sec.)} & & & & \multicolumn{1}{c}{memory} \\
   \hline \hline
@@ -624,7 +626,7 @@ and \texttt{klust} using \textsc{K-Clust} on the entire \texttt{RDP} dataset. Th
 \begin{table}[H]
   \begin{adjustbox}{center}
   \begin{tabular}{c|r|r|r|lr|l}
-  \multirow{2}{*}{} 
+  \multirow{2}{*}{}
   Clustering & \multicolumn{1}{c|}{Time} & \multicolumn{1}{c|}{Throughput} & \multicolumn{1}{c|}{Clusters} & \multicolumn{2}{c|}{Cluster sizes}& \multicolumn{1}{c}{Max} \\
   algorithm & \multicolumn{1}{c|}{(sec.)} & \multicolumn{1}{c|}{(seqs./sec.)} & & & & \multicolumn{1}{c}{memory} \\
   \hline \hline

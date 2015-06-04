@@ -12,10 +12,10 @@ been implemented and will be described briefly in this section.
 Given a list of sequences and an initially empty list of centroids, the
 algorithm works by iterating through the sequences and for every sequence, it
 iterates through the list of centroids and makes a comparison until a match is
-found or until the end of the list. If a match is found, the sequence is
-added to the cluster represented by the matching centroid, and otherwise the
-sequences becomes a new centroid and is appended to the end of the list of
-centroids.
+found or until the end of the list is reached. If a match is found, the
+sequence is added to the cluster represented by the matching centroid, and
+otherwise the sequences becomes a new centroid and is appended to the end of
+the list of centroids.
 
 This approach is not very useful in practice since it is very computationally
 expensive in the worst case. The worst case being quadratic in running time
@@ -31,23 +31,23 @@ against on every iteration even though they might potentially never match any
 other sequence.
 
 Thus, there is a motivation to try and create more structure in the collection
-of centroids, improve the search for a centroid to compare with the query
-sequence or improve the ordering of the centroids.
+of centroids, improve the search for a centroid or improve the ordering of the
+centroids.
 
 With added structure or better ordering of the centroids, it should ideally not
 be necessary to traverse the whole collection of centroids for every sequence,
 since a match should occur early on if it exists. This motivates the
-introduction of a maximum allowed number of unsuccesful comparisons before
+introduction of a maximum allowed number of unsuccessful comparisons before
 ending the search early and creating a new centroid.
 
 
 \subsection{\textsc{Simple-Clust} algorithm}
 
-Another clustering algorithm, named \textsc{Simple-Clust}, was developed and
-implemented, and will be described in this section. \textsc{Simple-Clust}
-tries to address some of the problems with the \textsc{Naive-Clust} algorithm
-by imposing more structure on the collection of centroids and by giving up
-after some fixed number of comparisons of a given query sequence.
+Another clustering algorithm, named \textsc{Simple-Clust}, was designed and
+implemented, and will be described in this section. \textsc{Simple-Clust} tries
+to address some of the problems with the \textsc{Naive-Clust} algorithm by
+imposing more structure on the collection of centroids and by giving up after
+some fixed number of comparisons of a given query sequence.
 
 \textsc{Simple-Clust} works by iterating sequentially through the sequences to
 be clustered; the $max\_reject$ most frequent $k$-mers for the query sequence
@@ -73,9 +73,9 @@ often be unsuccessful.
 \label{sec:k-clust_algorithm}
 
 This section describes another clustering algorithm that was developed and
-implemented, named \textsc{K-Clust}, which looks at the set of $k$-mers
-occurring in the query and target sequences and bases the decision of whether
-to try comparing or not, on the cardinality of the intersection between these
+implemented, named \textsc{K-Clust}, which looks at the sets of $k$-mers
+occurring in the query and target sequences and decides whether to try
+comparing or not based on the cardinality of the intersection between the two
 sets. This way, the search for a likely match is not just determined by the
 single most frequently occurring $k$-mer, as with \textsc{Simple-Clust}, but
 rather all the occurring $k$-mers, regardless of their count. Additionally, the
@@ -87,13 +87,13 @@ alternatives, but the algorithm should nonetheless be less prone to bad
 performance caused by an unlucky ordering of the input sequences. Algorithm
 \ref{alg:k-clust} shows pseudocode for the \textsc{K-Clust} algorithm.
 
-The choice of whether to compare a query sequence with a centroid is decided
-using the formula
-\begin{equation}
+The choice of whether to compare a query sequence with a centroid, referred to
+as the \emph{intersection criteria}, is decided using the formula
+\[
   \abs{K(s) \cap K(c)} \geq \abs{K(c)} \cdot id \;
-\end{equation}
+\]
 where $s$ is the query sequence, $c$ is the centroid sequence and $id$ is the
-threshold similarity. $K(x)$ denotes the number of $k$-mers in a sequence $x$.
+similarity threshold. $K(x)$ denotes the number of $k$-mers in a sequence $x$.
 In the \texttt{klust} program this value is hard coded to $k=6$ for performance
 reasons.
 
@@ -102,39 +102,68 @@ things, inspired by the observation that the results from \texttt{USEARCH} and
 \texttt{VSEARCH} often contain a large number of very small clusters and even
 singleton clusters, i.e. clusters consisting of just a single sequence.
 
-\begin{algorithm}[H]
+To further improve the search for a centroid and add more structure to the
+collection of centroids, the concept of a \emph{link} is introduced. A link is
+a pointer from one centroid to another centroid which passed the intersection
+criteria at an earlier point in clustering process. For each sequence, this is
+managed by maintaining a link to the most recent centroids that have been
+compared to. If a sequence becomes a centroid, this link will be saved along
+with the sequence. Not every centroid will have a link, since it depends on a
+passed intersection criteria which did not give a match.
+
+When searching for a centroid, the link is used only when the intersection
+criteria is passed for some centroid, but the comparison with that centroid was
+unsuccessful and if that centroid happens to have a link to another centroid.
+Comparisons with linked centroids does not increment the $rejects$ variable.
+The \textsc{Has-Link} function in the pseudocode performs the check for whether
+a centroid has a link or not.
+
+An illustration of the \textsc{K-Clust} algorithm is seen in Figure
+\ref{fig:k-clust}.
+
+\begin{figure}[h!]
+  \centering
+  \def\svgwidth{0.9\columnwidth}
+  \import{graphics/}{Prioritized_Intersect_Clust.pdf_tex}
+  \caption{Illustration of \textsc{K-Clust}. The centroid labeled
+    $3$ is pushed to the front of the list because it was the latest match to a
+    sequence. The centroids labeled $4$ and $5$ has a link to the centroids $0$
+    and $1$ respectively because they have been close to matching them.}
+  \label{fig:k-clust}
+\end{figure}
+
+
+\begin{algorithm}[h!]
   \caption{\textsc{K-Clust}}
   \label{alg:k-clust}
   \begin{algorithmic}[1]
     \Require{$S$ is an array of [DR]NA sequences, $k \in \mathbb{Z}^+$,
-            $max\_rejects \in \mathbb{Z}^+$ and $id \in [0,1]$}
+             $id \in [0,1]$ and $max\_rejects \in \mathbb{Z}^+$}
     \Statex
-    \Function{K-Clust}{$S, k, max\_rejects, id$}
+    \Function{K-Clust}{$S, k, id, max\_rejects$}
       \State $centroids \gets [~]$ \Comment{initialize empty list of centroids}
       \ForAll{$s \in S$}
         \State $match \gets false$
         \State $rejects \gets 0$
         \State $close\_match \gets \mathtt{NULL}$
-
         \ForAll{$c \in centroids$}
           \If{$rejects$ \texttt{==} $max\_rejects$}
             \State $break$
           \EndIf
-
           \State
           \LineComment{$K(x)$: set of $k$-mers in $x$}
           \If{$|K(s) \cap K(c)| \geq |K(c)| \cdot id$}
             \If{\Call{\textsc{K-Dist}}{s, c, k} $ \geq id$}
-              \State Add $s$ to cluster represented by $c$.
-              \State Move $c$ to the front of $centroids$.
+              \State add $s$ to cluster represented by $c$
+              \State move $c$ to the front of $centroids$
               \State $match \gets true$
               \State $break$
             \EndIf
             \State
-            \If{\Call{has\_link}{c} \texttt{AND}
+            \If{\Call{Has-Link}{c} \texttt{AND}
                   \Call{\textsc{K-Dist}}{s, c.link, k} $ \geq id$}
-              \State Add $s$ to cluster represented by $c.link$.
-              \State Move $c.link$ to the front of $centroids$.
+              \State add $s$ to cluster represented by $c.link$
+              \State move $c.link$ to the front of $centroids$
               \State $match \gets true$
               \State $break$
             \EndIf
@@ -147,36 +176,22 @@ singleton clusters, i.e. clusters consisting of just a single sequence.
           \If{$close\_match$ \texttt{!= NULL}}
             \State $s.link \gets close\_match$
           \EndIf
-          \State Prepend $s$ to $centroids$.
+          \State prepend $s$ to $centroids$
         \EndIf
       \EndFor
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
 
-An illustration of the method is seen in Figure \ref{fig:k-clust}.
-
-\begin{figure}[h!]
-  \def\svgwidth{\columnwidth}
-  \import{graphics/}{Prioritized_Intersect_Clust.pdf_tex}
-  \caption{Illustration of \textsc{K-Clust}. The centroid labeled
-    $3$ is pushed to the front of list because it was the latest match to a
-    sequence. The centroids labeled $4$ and $5$ has a link to the centroids $0$
-    and $1$ respectively because they have been close to matching them.}
-  \label{fig:k-clust}
-\end{figure}
-
 
 \subsubsection{Time complexity analysis}
 
 The \textsc{K-Clust} algorithm iterates over the array of sequences $S$, that
-is $|S|$ iterations, and for each of these iterations, the algorithms iterates
-over the list of centroids.
-
-In the worst case, the $centroids$ list will grow with one element in each
-iteration of the outer loop, because in the worst case, every sequence will
-become a centroid of its own. Thus, the number of iterations in the innner loop
-will be the sequence
+is $|S|$ iterations, and for each of these iterations, the algorithm iterates
+over the list of centroids. In the worst case, the $centroids$ list will grow
+with one element in each iteration of the outer loop, because in the worst
+case, every sequence will become a centroid of its own. Thus, the number of
+iterations in the inner loop will be the sequence
 \[
   1 + 2 + 3 + \ldots + |S| \,,
 \]
@@ -186,7 +201,7 @@ that is, the $|S|$'th triangular number, which can be expresses as
 \end{equation}
 
 The inner loop contains a constant amount of work and at most two calls to
-\textsc{K-Dist}, which will also be treates as contant time in this context,
+\textsc{K-Dist}, which will also be treated as constant time in this context,
 since the running time of the clustering algorithm will be expressed in the
 number of sequences, rather than the lengths of the sequences. The $K(s) \cap
 K(c)$ calculation of the intersection between the two sets of $k$-mers in
@@ -194,7 +209,7 @@ sequences $s$ and $c$, respectively, will also be treated as constant since it
 also depends on the lengths of $s$ and $c$ and not on the number of sequences
 to be clustered.
 
-Thus, the \textsc{K-Clust} algorithm iterates over the contant amount of work
+Thus, the \textsc{K-Clust} algorithm iterates over the constant amount of work
 in the inner loop the number of times expressed in (\ref{eq:triangular_number})
 and so the running time is quadratic in the number of sequences, i.e.:
 \begin{equation}
@@ -202,7 +217,7 @@ and so the running time is quadratic in the number of sequences, i.e.:
 \end{equation}
 
 This is, however, just the worst case running time and on average the running
-time will be much better since every sequence will rarely become a centroid of
-its own.
+time will be much better since the number of centroids will be much lower than
+the total number of sequences.
 
 % TODO: (maybe) analyze space complexity

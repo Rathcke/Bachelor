@@ -6,9 +6,9 @@
 \begingroup
 \setlength{\LTleft}{-20cm plus -1fill}
 \setlength{\LTright}{\LTleft}
-\begin{longtable}{c|S[table-format=1.2]|c|S[table-format=3.2]|S[table-format=6.2]|S[table-format=5]|S[table-format=4]|S[table-format=2.2]|c|c}
-      &        &         &               &                           &            & \multicolumn{3}{c|}{Cluster sizes} &       \\
-  $k$ & {$id$} & Sorting & {Time (sec.)} & {Throughput (seqs./sec.)} & {Clusters} & {Max}                              & Avg    & Min & Max mem \\
+\begin{longtable}{c|S[table-format=1.2]|c|S[table-format=3.2]|S[table-format=5.2]|S[table-format=5]|S[table-format=4]|S[table-format=2.2]|c|c}
+      &        &         & {Time}        & {Throughput}              &            & \multicolumn{3}{c|}{Cluster sizes} &       \\
+  $k$ & {$id$} & Sorting & {(sec.)}      & {seqs./sec.)}             & {Clusters} & {Max}                              & Avg    & Min & Max mem \\
   \hline \hline
   4   & 0.75   & no      & 4.32          & 23143.80                  & 5279       & 6392                               & 18.94  & 1   & 63  MB  \\
   4   & 0.75   & decr.   & 5.52          & 18115.10                  & 6647       & 3301                               & 15.04  & 1   & 64  MB  \\
