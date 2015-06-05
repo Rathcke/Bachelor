@@ -61,6 +61,6 @@ indexing to avoid copying, which are then each clustered in separate threads
 using the implementation of \textsc{K-Clust}.  Each of these clustering
 subtasks yields a list of centroids which are then merged in a similar way to
 how \textsc{K-Clust} searches for a centroid: two centroids representing
-different clusters are compared if they satisfy the intersection criteria.
+different clusters are compared if they satisfy the intersection criterion.
 Additionally, $max\_rejects$ is also used to limit the number of compares that
 can be made for each centroid.

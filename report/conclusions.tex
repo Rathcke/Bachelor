@@ -1,6 +1,4 @@
 \section{Project summary}
-
-\subsection{Conclusions}
 \label{sec:conclusions}
 
 This thesis has presented an efficient, greedy, heuristic clustering algorithm,
@@ -12,13 +10,13 @@ the program \texttt{klust}, which is open-source and freely available, cf.
 section \ref{sec:introduction}.
 
 The program \texttt{klust} has shown to give results of high quality, a low
-number of resulting clusters and performs as well or better than
+number of resulting clusters and can perform as well or better than
 \texttt{USEARCH} in terms of both speed and memory usage. However, the
 clustering algorithm is almost exhaustive in the search for a centroid, since
 the $max\_rejects$ parameter is not effectively used. Although the centroid
-search is exhaustive, actual sequence comparisons are almost only performed
-when they will succeed anyway and there are barely any false negatives, i.e.
-skipped comparisons which would have yielded a match.
+search is almost exhaustive, actual sequence comparisons are almost only
+performed when they will succeed anyway and there are barely any false
+negatives, i.e. skipped comparisons which would have yielded a match.
 
 The implementation of the presented distance metric is very fast and works well
 with mutations such as chunks of changes and occurrences of transposable
@@ -29,29 +27,29 @@ single nucleotide edits.
 \subsection{Future work}
 \label{sec:future_work}
 
-While the implementation has sped up the clustering and makes good clustering
-results, it does lack some key features.
+While the implementation is efficient and gives good clustering
+results, some key features could be improved.
 
-The most important feature is the search for good centroid matches. As of now,
-the implementation does not use the parameter $max\_rejects$, or $m$, in an
-effective manner. It is very rare that a sequence reaches the maximum number
-of rejects, and as such it will go through the entire centroid list if it does
-not have any matches in the centroid list. Instead of sorting by the
-intersection of $k$-mers as \texttt{USEARCH} does, our idea was to expand
-on the implementation of the link a centroid has. Instead of having only one
-link, it could have a $m$ number of links or at least be able to trace through
-the links to $m$ centroids that make good potential matches. The idea is to
-build a graph that connects centroids that are close to each other. While this
-might sound heavy, it should not add a whole lot to memory as each centroid
-only has a couple of links and the graph can be constructed while clustering.
-Each iteration would take a bit longer, but when clustering huge amounts of
-data, the sacrifice would very quickly pay off. This way, the sequences that
-are singletons, are quickly dismissed. As it uses most of the time searching
-for centroids, this is one of the most important things to optimize. However,
-due to time constraints, we have not been able to do much research on this, so
-it is hard to say if it will produce a lot fewer clusters or if it will be
-slower. But it would also improve the very poor scaling that happens when the
-threshold increases.
+The most important improvement is the search for good centroid matches. As of
+now, the implementation does not use the parameter $max\_rejects$, or $m$, in
+an effective manner. It is very rare that a sequence reaches the maximum
+number of rejects, and as such it will go through the entire centroid list if
+it does not have any matches in the centroid list. Instead of just ordering
+the centroids based on the intersection of $k$-mers as \texttt{USEARCH} does,
+an idea is to expand on the implementation of links between centroids. Instead
+of having only one link, it could have $m$ links or at least be able to trace
+through the links to $m$ centroids that make good potential matches. The idea
+is to build a graph that connects centroids that are close to each other.
+While this might sound heavy, it should not add a whole lot to the memory
+usage as each centroid only has a couple of links and the graph can be
+constructed while clustering. Each iteration would take a bit longer, but when
+clustering huge amounts of data, the sacrifice would quickly pay off. This
+way, the sequences that are singletons, are quickly dismissed. As it uses most
+of the time searching for centroids, this is one of the most important things
+to optimize. However, due to time constraints, we have not been able to do
+much research on this, so it is hard to say if it will produce a lot more
+clusters or if it will be slower. It could, however, improve the scaling that
+happens when the threshold increases.
 
 Another improvement is related to the distance metric. As of now it is only
 insensitive to a few types mutations. It still penalizes large chunk edits
@@ -70,4 +68,4 @@ centroids and reused in subsequent similarity computations. Additionally, there
 can be made more checks for the possibility of stopping a comparison early, if
 it is already known that it will fail. Thirdly, the parallelization of the
 clustering could be developed further so that it would yield fewer clusters,
-e.g. a better merge strategy.
+e.g. using a better merge strategy.

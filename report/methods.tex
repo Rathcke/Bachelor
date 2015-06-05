@@ -88,7 +88,7 @@ performance caused by an unlucky ordering of the input sequences. Algorithm
 \ref{alg:k-clust} shows pseudocode for the \textsc{K-Clust} algorithm.
 
 The choice of whether to compare a query sequence with a centroid, referred to
-as the \emph{intersection criteria}, is decided using the formula
+as the \emph{intersection criterion}, is decided using the formula
 \[
   \abs{K(s) \cap K(c)} \geq \abs{K(c)} \cdot id \;
 \]
@@ -105,14 +105,14 @@ singleton clusters, i.e. clusters consisting of just a single sequence.
 To further improve the search for a centroid and add more structure to the
 collection of centroids, the concept of a \emph{link} is introduced. A link is
 a pointer from one centroid to another centroid which passed the intersection
-criteria at an earlier point in clustering process. For each sequence, this is
+criterion at an earlier point in clustering process. For each sequence, this is
 managed by maintaining a link to the most recent centroids that have been
 compared to. If a sequence becomes a centroid, this link will be saved along
 with the sequence. Not every centroid will have a link, since it depends on a
-passed intersection criteria which did not give a match.
+passed intersection criterion which did not give a match.
 
 When searching for a centroid, the link is used only when the intersection
-criteria is passed for some centroid, but the comparison with that centroid was
+criterion is passed for some centroid, but the comparison with that centroid was
 unsuccessful and if that centroid happens to have a link to another centroid.
 Comparisons with linked centroids does not increment the $rejects$ variable.
 The \textsc{Has-Link} function in the pseudocode performs the check for whether

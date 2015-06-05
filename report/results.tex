@@ -280,6 +280,9 @@ $0.92$ on $k=5$, this is not a test of the \textsc{K-Dist} distance metric.
 \subsubsection{Multidimensional scaling of the synthetic dataset}
 \label{sec:mds_synth}
 
+
+%TODO USEARCH fejler \o/
+
 \emph{Multidimensional scaling} (MDS) of the sequences in the synthetic dataset
 was used to visualize and further evaluate the clustering result from the
 previous section (section \ref{sec:synth_dataset}). Multidimensional scaling is
@@ -393,120 +396,118 @@ clustering with \texttt{klust}. Figure \ref{fig:mds_silva} in appendix
 \ref{app:mds_silva} shows the same results, but where sequences were not sorted
 and sorted by decreasing length, respectively.
 
-The figures show a few apparent clusters, but as expected they also
-show a large number of smaller clusters and singleton clusters. In this
-particular example, when running \texttt{klust} with parameters $k=5$,
-$id=0.85$ and $max\_rejects=8$, the number of resulting clusters were $159$ with
-a maximum cluster size of $38$, average size approximately \num{3.145}.
-Furthermore, the result contained $87$ singleton clusters.
+The figures show a few apparent clusters, but as expected they also show a
+large number of smaller clusters and singleton clusters. For the example in
+Figure \ref{fig:mds_silva_sort_incr}, when running \texttt{klust} with
+parameters $k=5$, $id=0.85$, $max\_rejects=8$ and sorting by increasing
+length, the number of resulting clusters were $157$ with a maximum cluster
+size of $43$ and an average size of approximately \num{3.18}. Furthermore, the
+result contained $89$ singleton clusters. 
 
-The large number of singleton clusters and small clusters are especially
-apparent in the center of the figures and in the lower left part of the
-figures. Since the number of clusters is so high, it is likely that the MDS
-causes the sequences to be more crammed togetether and apear more dense than
-if the number of clusters had been lower.
-
-% TODO: more discussion
+As expected, the sequences that were assigned to the same cluster are
+generally close to each other. The large number of singleton clusters and
+small clusters are especially apparent in the center of the figures and in the
+lower left part of the figures. Since the number of clusters is so high, it is
+likely that the MDS causes the sequences to be more crammed together and
+appear more dense than if the number of clusters had been lower.
 
 
 \subsection{Evaluation of centroid search in \texttt{klust}}
 \label{sec:evaluation_centroid_search}
 
-A great part of the clustering lies in task of locating potential matching
-centroids to a sequence. To evaluate this, \texttt{klust} was run on a number
-of sequences from the dataset \texttt{SILVA}. Information about how many times
-an actual comparison was made and scored under the similarity threshold was
-extracted. False negatives were also extracted, i.e. how often a comparison
-was not made, but it would have scored over the similarity threshold. How
-often it performs a comparison against how often it does not and how often it
-reaches the $max\_reject$ parameter was also measured. Table
-\ref{tab:centroid_search_data} show this data represented as ratios. The
-program was run with parameters $k=5$, $id=0.85$, $max\_rejects=8$ and flag
-\texttt{-{}-sort\_incr}.
+A great part of efficient, greedy clustering lies in the task of locating
+potential matching centroids for a sequence. To evaluate this, \texttt{klust}
+was run on a number of sequences from the dataset \texttt{SILVA} and various
+information was extracted: how many times an actual comparison was made and
+did not match; how often a comparison was not made, but it would have matched;
+how often it performed a comparison against how often it did not and how often
+it reached the $max\_rejects$ parameter. Table \ref{tab:centroid_search_data}
+show this data represented as ratios. The program was run with parameters
+$k=5$, $id=0.85$, $max\_rejects=8$ and sequences were sorted by increasing length.
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{c|c|c}
-  Count                & \num{10000} & \num{100000} \\
+  \begin{tabular}{c||l|l}
+  Count                 & \multicolumn{1}{c|}{\num{10000}} & \multicolumn{1}{c}{\num{100000}} \\
   \hline\hline
-  Reject ratio         & 0.00231  & 0.00872 \\
+  Reject ratio          & 0.00231  & 0.00872 \\
   \hline
-  False negative ratio & 0.00048  & 0.00013 \\
+  False negative ratio  & 0.00048  & 0.00013 \\
   \hline
-  Try ratio            & 0.00377  & 0.00112 \\
+  Try ratio             & 0.00377  & 0.00112 \\
   \hline
-  Reached max rejects  & 0           & 4 \\
+  Reached $max\_rejects$ & 0           & 4 \\
   \end{tabular}
   \caption{Data on the first \num{10000} and \num{100000} sequences of
   \texttt{SILVA} showing reject ratio, how many times a query sequence was
-  compared to a target sequence and falled under the similarity threshold, and
+  compared to a target sequence and fell under the similarity threshold, and
   a false negative ratio which is how often a sequence was not compared to a
-  target sequence but would have matched it. It also shows a try ratio, how
-  often a query sequence was tried compared to a target sequence, and how many
+  target sequence but would have matched it. It also shows a try ratio, i.e. how
+  often a query sequence was tried compared to a target sequence, and $max\_rejects$, how many
   times a query sequence was dismissed because it was rejected too many times.}
   \label{tab:centroid_search_data}
 \end{table}
 
-There are very few rejects in both cases, which means the initial check for
-the $k$-mer intersection is actually very accurate representation of sequence
-similarity. There are more rejects as there are more sequences to be
-clustered. This should not be seen as a drawback for the clustering quality.
-On the contrary, it means it performs more compares and as a result, the
-number of false negatives fall. The only loss, besides making a couple of
-additional compares, is that it can reject the same sequence too many times
-($max\_rejects$) and make the sequence a centroid without comparing it too
-anymore centroids. This is likely because the sequence has many distinct
-$k$-mers and thus often match the intersection criteria. These will often not
-match the centroids, and while they might match a centroid, without a
-$max\_reject$ it can essentially compare to all centroid. This is good to
-avoid as it is heavily slows the clustering down.
+There are very few rejects in both cases, which means the intersection
+criterion is actually a very accurate representation of sequence similarity.
+When clustering \num{100000} sequences, the reject ratio increases. This
+should not be seen as a drawback for the clustering quality. On the contrary,
+it means it performs more compares and as a result, the number of false
+negatives fall. The only loss, besides making a couple of additional compares,
+is that it can reject the same sequence too many times ($max\_rejects$) and
+make the sequence a centroid without comparing it to anymore centroids. If
+this situation occurs, it is likely because a sequence has many distinct
+$k$-mers and thus often pass the intersection criterion. Such a sequence will
+often not match a centroid, and while it might match some centroid, without a
+$max\_rejects$ parameter it can essentially compare to all centroids.
 
-The try ratio, how often it succeeds in the initial criteria, is quite low and
-even falls when clustering more sequences. When clustering \num{100000}
-sequences it will only make a comparison every $1$ in $900$ times. This is
-quite low and is the primary slow down in the clustering algorithm. Since it
-already chooses to perform the comparisons with very little error (small
-reject and false negative ratios) the only way to make the clustering faster
-is to find the right ones faster. This is the intended optimization a link can
-introduce (cf. section \ref{sec:k-clust_algorithm}).
+The try ratio, how often it succeeds in the intersection criterion, is quite
+low and even falls when clustering more sequences. When clustering
+\num{100000} sequences it will only make a comparison every $1$ in $900$
+times. Even though it only makes comparisons when appropiate, this is quite
+low and is the primary slow down \textsc{K-Clust}. Since it already chooses to
+perform the comparisons with very little error (small reject and false
+negative ratios) the only way to make the clustering faster is to find the
+right centroids faster. This is the intended optimization a link can introduce
+(cf. section \ref{sec:k-clust_algorithm}).
 
 
 \subsection{Evaluating \texttt{klust} on real data and comparing with
             \texttt{USEARCH}}
 \label{sec:evaluating_klust_real_data}
 
-To test the performance and quality of the program, it was run on different
-parameters and settings. The table in appendix \ref{app:klust_data_parameters}
-shows output data from running the first \num{100000} sequences from
-\texttt{SILVA} with different parameters. Sorting by increasing length is on
-average $21.65\%$ faster and never slower than not sorting. It is also on
-average $42.63\%$ faster and never slower than sorting by decreasing length.
-Furthermore, sorting by increasing length on average has $8.77\%$ fewer
-clusters and never more clusters than not sorting. It has $25.07\%$ fewer
-clusters on average and never more clusters than when sorting by decreasing
-length. Generally higher $k$'s are also expected to produce more clusters,
-since the comparison punishes mismatches more than lower $k$'s as discussed in
-section \ref{sec:altered_sequences}.
+To test the performance of the program and evaluate the clustering results,
+\texttt{klust} was run with different parameters and settings. The table in
+appendix \ref{app:klust_data_parameters} shows output data from running
+\texttt{klust} on the first \num{100000} sequences from \texttt{SILVA} with
+different parameters. Sorting by increasing length is on average $21.65\%$
+faster and never slower than not sorting. It is also on average $42.63\%$
+faster and never slower than sorting by decreasing length. Furthermore,
+sorting by increasing length on average has $8.77\%$ fewer clusters and never
+more clusters than not sorting. It has $25.07\%$ fewer clusters on average and
+never more clusters than when sorting by decreasing length. The data shows
+that sorting by increasing length is always preferrable.
 
-The data shows that sorting by increasing length is always preferrable. The
-higher $k$'s are also generally much slower and the comparisons are very
-strict, i.e. the identity should be lower for the higher $k$. Section
-\ref{sec:synth_dataset} and the multidimensional scaling plots in Figure
-\ref{fig:mds_synth} and Figure \ref{fig:mds_silva_sort_incr} shows that $k=5$
-is a good choice in terms of sensitivity. Another interesting choice is $k=6$,
-since it does almost the same comparisons per second (cf. Figure
-\ref{tab:levenshtein_vs_kdist_performance}). These results gives the incentive
-to study $k=5$ and $k=6$, when sorting by increasing length, further. The
-reason lower values of $k$ are not investigated is because the number of
-distinct $k$-mers is too low, so the interval the similarities will typically
-fall in will lay quite high (see section \ref{sec:kdist_vs_levenshtein}). This
-could make for ``lucky'' coincidences, where $k=5$ is better at preventing
-them. Based on the results in \ref{app:performance_results_full_SILVA},
-lowering $k$ more than $5$ does not seem to reduce the times it take to
-cluster by a lot, so risking that lucky coincedences happen more frequently is
-not worth the minor boost in speed that is gained.
+Generally higher $k$'s are also expected to produce more clusters, since the
+comparison punishes mismatches more than lower $k$'s as discussed in section
+\ref{sec:altered_sequences}. The higher $k$'s also make the program a lot
+slower. Section \ref{sec:synth_dataset} and the multidimensional scaling plots
+in Figure \ref{fig:mds_synth} and Figure \ref{fig:mds_silva_sort_incr} shows
+that $k=5$ is a good choice in terms of sensitivity. Another interesting
+choice is $k=6$, since it does almost the same comparisons per second (cf.
+Table \ref{tab:levenshtein_vs_kdist_performance} in section
+\ref{sec:kdist_vs_levenshtein}). These results gives the incentive to further
+study $k=5$ and $k=6$, when sorting by increasing length. The reason lower
+values of $k$ are not investigated is because the number of distinct $k$-mers
+is too low, so the interval the similarities will typically fall in will lay
+quite high (see section \ref{sec:kdist_vs_levenshtein}). This could make for
+``lucky'' coincidences, where $k=5$ is better at preventing them. Based on the
+results in \ref{app:performance_results_full_SILVA}, lowering $k$ more than
+$5$ does not seem to reduce the times it take to cluster by a lot, so risking
+that lucky coincidences happen more frequently is not worth the minor boost in
+speed that is gained.
 
-In appendix \ref{app:performance_results_full_SILVA} is a table that shows data
+The table in appendix \ref{app:performance_results_full_SILVA} shows data
 from \texttt{klust} using either \textsc{K-Clust} or \textsc{Simple-Clust} and
 \texttt{USEARCH}. The programs have been run with different parameters on the
 entire \texttt{SILVA} dataset. Table \ref{tab:full_silva_main_results} shows
@@ -568,37 +569,37 @@ clarify, the correspondence between the most frequently occurring $k$-mer of
 two sequences and the similarity of the sequences, is evidently not very
 strong.
 
-The benchmarks suggests that increasing $k$ also increases both the number
-of clusters and the running time of the clustering despite making as many
+The benchmarks suggests that increasing $k$ to $6$ increases both the number
+of clusters and the running time of the clustering despite making almost as many
 comparisons per second. As discussed in section \ref{sec:mds_synth} and
 \ref{sec:mds_real_data}, setting $k$ to $5$ provides good results, so there is
-no need to increase $k$ if it is results in a much worse clustering time.
+no need to increase $k$ if it is results in a worse clustering time.
 
 Unfortunately, increasing the $id$ has a huge impact on the running time. This
 is a result of how often a sequence tries to compare to a centroid and how
-often it matches the centroid. Since the number of matches are infrequent, the
+often it matches the centroid. Since matches are infrequent, the
 number of centroids increases which then causes sequences to have to search in
 a larger centroid list. A possible work-around to this is to utilize the $max\_
 rejects$ parameter better without damaging the clustering quality too much.
 This is an important optimization and is discussed in
 \ref{sec:future_work}.
 
-The $id$'s are calculated differently in \texttt{klust} and \texttt{USEARCH},
-meaning they do not represent the same similarity. This makes it difficult to
+The $id$'s are different in \texttt{klust} and \texttt{USEARCH} because they
+are calculated with different similarity metrics. This makes it difficult to
 compare the number of clusters the methods produce. Figure
 \ref{fig:id_comparison} shows the number of clusters produced by
-\texttt{klust} and \texttt{USEARCH} at different $id$'s on the first
-\num{10000} sequences of \texttt{RDP}. It shows that \texttt{RDP} generally
-requires a higher $id$ to produce the same amount of clusters. Of course,
-there is no assurance that the clusters are the same. The rapid reduction in
-clusters for \texttt{USEARCH} indicates that is more forgiving when measuring
-similarity than \texttt{klust} is. This is, among other things, because the
-sequence alignment version that \texttt{USEARCH} uses does not penalize gaps
-as much as \textsc{K-Dist} does. The gaps occur due to the mutations described
-in section \ref{sec:biology} and larger gaps should not be penalized in the
-same magnitude as single errors are. As demostrated in section
-\ref{sec:altered_sequences}, \textsc{K-Dist} is also more forgiving in these
-cases, but it is still more strict than in \texttt{USEARCH}.
+\texttt{klust} and \texttt{USEARCH} for different $id$'s on the first
+\num{10000} sequences of \texttt{RDP}. It shows that \texttt{USEARCH}
+generally requires a higher $id$ to produce the same amount of clusters. Of
+course, there is no assurance that the clusters are the same. The rapid
+reduction in clusters for \texttt{USEARCH} indicates that it is more forgiving
+when measuring similarity than \texttt{klust} is. This is, among other things,
+because the sequence alignment version that \texttt{USEARCH} uses does not
+penalize large gaps as much as \textsc{K-Dist} does. The gaps occur due to the
+mutations described in section \ref{sec:biology} and larger gaps should not be
+penalized in the same proportion as single errors are. As demonstrated in
+section \ref{sec:altered_sequences}, \textsc{K-Dist} is also more forgiving in
+these cases, but it is still more strict than in \texttt{USEARCH}.
 
 \begin{figure}[H]
   \centering
@@ -608,13 +609,14 @@ cases, but it is still more strict than in \texttt{USEARCH}.
   \label{fig:id_comparison}
 \end{figure}
 
-To evaluate the scaling in time and clusters for the methods, benchmark
-tests on the dataset \texttt{RDP} were also conducted. The dataset contains
-almost twice as many sequences. The reason benchmarks are performed on this
-set is to provide an indication of how well the methods perform on very large
-dataset where good running times is a must. Table
-\ref{tab:full_RDP_main_results} provides the output data from \texttt{USEARCH}
-and \texttt{klust} using \textsc{K-Clust} on the entire \texttt{RDP} dataset. The parameter $k=5$ was chosen as this showed the most promising results.
+To evaluate the scaling of time and clusters for the methods, benchmark tests
+on the dataset \texttt{RDP} were also conducted. The dataset contains almost
+twice as many sequences. The reason benchmarks are performed on this set is to
+provide an indication of how well the methods perform on very large dataset
+where good performance is a must. Table \ref{tab:full_RDP_main_results}
+provides the output data from \texttt{USEARCH} and \texttt{klust} using
+\textsc{K-Clust} on the entire \texttt{RDP} dataset. The parameter $k=5$ was
+chosen as this showed the most promising results.
 
 \begin{table}[H]
   \begin{adjustbox}{center}
@@ -649,21 +651,20 @@ and \texttt{klust} using \textsc{K-Clust} on the entire \texttt{RDP} dataset. Th
 \end{table}
 %TODO: Add singletons?
 
-The $id$'s have been chosen based on section
-\ref{fig:k-dist_lev_similarity_k5} Figure \ref{fig:id_comparison} where
-$id=0.85$ in \texttt{klust} produces the same number of clusters as $id=0.95$
-in \texttt{USEARCH} and $id=0.9$ gives the same number of clusters as
-$id=0.97$. Note that this is an approximation and these $id$'s will not always
-be ``equal''.
+The identities have been chosen based on Figure
+\ref{fig:k-dist_lev_similarity_k5} and Figure \ref{fig:id_comparison} where
+$id=0.85$ in \texttt{klust} produces approximately the same number of clusters
+as $id=0.95$ in \texttt{USEARCH} and $id=0.9$ gives the same number of
+clusters as $id=0.97$. Note that this is an approximation and these identities
+will not always be ``equal''.
 
 At identity $0.85$ in \texttt{klust}, the method is faster and produces fewer
-clusters than \texttt{USEARCH} at identity $0.95$. The fewer clusters can be
-that the $id$'s simply does not correspond to eachother, but also because
-\texttt{USEARCH} almost always assigns a sequence to a cluster or makes it a
-centroid for a new one because of the $max\_rejects$ parameter. This means it
-can overlook a centroid that would have been a match. In \texttt{klust} this
-can be an issue as well, but it does look at all centroids to see if they
-could be a potential match. As seen in section
+clusters than \texttt{USEARCH} at identity $0.95$. The fewer clusters could be
+because the identities simply do not correspond to each other, but it could
+also be because \texttt{USEARCH} reaches $max\_rejects$ more often than
+\texttt{klust}. This means it can overlook a centroid that would have been a
+match. This can be an issue in \texttt{klust} as well, but it does traverse
+the entire centroid list for a potential match, and as seen in section
 \ref{sec:evaluation_centroid_search}, the number of false negatives is quite
 low in \texttt{klust}.
 
@@ -671,9 +672,8 @@ The total clustering time does not scale as well for \texttt{klust} when $id$
 (and centroids) is increased as \texttt{USEARCH}. The number of clusters,
 however, are still very low compared to \texttt{USEARCH}.
 
-In \texttt{klust}, memory usage is the same despite the number of centroids
-increases. As centroids does take up some space, it should add to max memory,
-but it is not significant. The reason that it is exactly the same memory usage
-when id is $0.85$ and $0.9$ is due to some redundant allocations. In \texttt{USEARCH}, memory usage increases significantly. It seems like
-the number of clusters has a great impact. This could be a problem if even
-larger dataset are clustered.
+As seen in Table \ref{tab:full_RDP_main_results}, the memory usage of
+\texttt{klust} is the same despite that the number of centroids increases. In
+\texttt{USEARCH}, memory usage increases significantly, seemingly because the
+number of clusters increases. This could be a problem if even larger datasets
+are clustered.
