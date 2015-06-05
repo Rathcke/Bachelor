@@ -13,11 +13,11 @@ distance in the next window from the distance in the current window. This
 concept is described in a variant of the $d2$ algorithm by S.
 Hazelhurst~\cite{hazelhurst}.
 
-\textsc{K-Dist} uses the \emph{Manhattan distance} instead of the Euclidean
-distance used in the \textsc{d2} algorithm for calculating the distance between
-the two $k$-mer frequency vectors. The Manhattan distance is similar to the
-Euclidean distance but with squaring replaced with absolute value and the
-square root omitted, i.e.  for $u, v \in \mathbb{Z}^n$,
+\textsc{K-Dist} uses the \emph{Manhattan distance}~\cite{upton} instead of the
+Euclidean distance used in the \textsc{d2} algorithm for calculating the
+distance between the two $k$-mer frequency vectors. The Manhattan distance is
+similar to the Euclidean distance but with squaring replaced with absolute
+value and the square root omitted, i.e.  for $u, v \in \mathbb{Z}^n$,
 
 \begin{equation*}
   d_{Manhattan} \eqdef \sum_{i=1}^{n} |u_i - v_i| \;.
