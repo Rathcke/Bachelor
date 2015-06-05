@@ -382,13 +382,14 @@ whether they are indeed close to each other in the MDS.
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=1.0\textwidth]{graphics/SILVA_t-SNE_incr_sort_500.png}
-    \caption{MDS using t-SNE of the first 500 sequences from \texttt{SILVA} with
+  \def\svgwidth{\columnwidth}
+  \import{graphics/}{graphics/MDS_Silva_incr.pdf_tex}
+  \caption{MDS using t-SNE of the first 500 sequences from \texttt{SILVA} with
     the clustering result from \texttt{klust}, using parameters $k=5$,
     $id=0.85$ and $max\_rejects=8$, used to color different clusters with
     different colors. Centroids are marked with a circle. Sequences were sorted
     by increasing length before clustering.}
-    \label{fig:mds_silva_sort_incr}
+  \label{fig:mds_silva_sort_incr}
 \end{figure}
 
 Figure \ref{fig:mds_silva_sort_incr} shows MDS of the first 500 sequences from
