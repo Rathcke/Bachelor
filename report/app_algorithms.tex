@@ -11,12 +11,12 @@
     \Statex
     \Function{Levenshtein}{$m, n$}
       \State initialize arrays $p$ and $q$
-      \For{$i \gets 0$ to $length(m)$}
+      \For{$i \gets 0$ to $\abs{m}$}
         \State $p[i] \gets i$
       \EndFor
-      \For{$i \gets 0$ to $length(n)-1$}
+      \For{$i \gets 0$ to $\abs{n}-1$}
         \State $q[0] \gets i+1$
-        \For{$j \gets 0$ to $length(m)-1$}
+        \For{$j \gets 0$ to $\abs{m}-1$}
           \If{$m[j]$ \texttt{==} $n[i]$}
             \State $cost \gets 0$
           \Else
@@ -24,11 +24,11 @@
           \EndIf
           \State $q[j+1] \gets min(q[j] + 1, p[j+1] + 1, p[j] + cost)$
         \EndFor
-        \For{$j \gets 0$ to $length(m)$}
+        \For{$j \gets 0$ to $\abs{m}$}
           \State $p[j] \gets q[j]$
         \EndFor
       \EndFor
-      \State \Return $q[length(m)]$
+      \State \Return $q[\:\abs{m}\:]$
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
