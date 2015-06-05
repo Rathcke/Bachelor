@@ -4,14 +4,13 @@ This section presents the \textsc{K-Dist} algorithm used in \texttt{klust}.
 \textsc{K-Dist} uses a window of length equal to the shortest of the two
 sequences being compared. The distance between the substrings in the initial,
 leftmost position of the window is calculated using a variant of the basic
-\textsc{d2} algorithm (Algorithm \ref{alg:d2_basic}). The window then iterates
-over the longer sequence, one nucleotide at a time, and calculates the new
-distance between the substring of the longer sequence and the shorter
-sequence.  This calculation is done using a kind of forward differences method
-for reducing the calculations to a few fixed operations for calculating the
-distance in the next window from the distance in the current window. This
-concept is described in a variant of the $d2$ algorithm by S.
-Hazelhurst~\cite{hazelhurst}.
+\textsc{d2} algorithm. The window then iterates over the longer sequence, one
+nucleotide at a time, and calculates the new distance between the substring of
+the longer sequence and the shorter sequence.  This calculation is done using
+a kind of forward differences method for reducing the calculations to a few
+fixed operations for calculating the distance in the next window from the
+distance in the current window. This concept is described in a variant of the
+$d2$ algorithm by S. Hazelhurst~\cite{hazelhurst}.
 
 \textsc{K-Dist} uses the \emph{Manhattan distance}~\cite{upton} instead of the
 Euclidean distance used in the \textsc{d2} algorithm for calculating the

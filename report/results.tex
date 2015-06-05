@@ -130,10 +130,10 @@ only affect up to $4+k$ $k$-mers.
 \subsection{Comparing \textsc{K-Dist} with the Levenshtein distance metric}
 \label{sec:kdist_vs_levenshtein}
 
-This section compares the implementation of the \textsc{K-Dist} distance metric
-(Algorithm \ref{alg:K-Dist}) with the implementation of the bottom-up dynamic
-programming algorithm  for the Levenshtein distance metric (Algorithm
-\ref{alg:levenshtein} in appendix \ref{app:levenshtein_algorithm}).
+This section compares the implementation of the \textsc{K-Dist} distance
+metric with the implementation of the bottom-up dynamic programming algorithm
+for the Levenshtein distance metric (Algorithm \ref{alg:levenshtein} in
+appendix \ref{app:levenshtein_algorithm}).
 
 The data in Table \ref{tab:levenshtein_vs_kdist_performance} shows how many
 comparisons per second the implementation of Levenshtein and the implementation
@@ -235,15 +235,15 @@ algorithm's ability to find the right clusters in a dataset with a clearly
 correct, expected clustering result.
 
 A set of $380$ sequences with mutual similarities of at most $0.6$ was
-extracted from \texttt{SILVA}, using the \textsc{K-Dist} distance metric
-(Algorithm \ref{alg:K-Dist}) with parameter $k=5$. For each of these
-sequences, $999$ copies were made and chunks of changes were made to these as
-described in section \ref{sec:altered_sequences}, corresponding to $2$\%
-of the characters of each sequence. This yields a set of \num{380000}
-sequences with $380$ expected clusters, which each should contain sequences
-with similarities of approximately $0.92$ since all sequences are changed and
-a $2$\% change to a sequence gives an average similarity from the original
-sequence of around $0.96$, cf. section \ref{sec:altered_sequences}.
+extracted from \texttt{SILVA}, using the \textsc{K-Dist} distance metric with
+parameter $k=5$. For each of these sequences, $999$ copies were made and
+chunks of changes were made to these as described in section
+\ref{sec:altered_sequences}, corresponding to $2$\% of the characters of each
+sequence. This yields a set of \num{380000} sequences with $380$ expected
+clusters, which each should contain sequences with similarities of
+approximately $0.92$ since all sequences are changed and a $2$\% change to a
+sequence gives an average similarity from the original sequence of around
+$0.96$, cf. section \ref{sec:altered_sequences}.
 
 The sequences expected to be in the same cluster was given the same description
 in the \texttt{FASTA} file, i.e. the same text string after ``>'', to make it
