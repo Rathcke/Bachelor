@@ -21,6 +21,16 @@ section.
     and contains \num{3019928} DNA sequences.
 \end{description}
 
+The datasets are in \texttt{FASTA} format, where each sequence consists of the
+character ``>'' followed by a description and a new line followed by the
+sequence. An example of this would be
+\begin{verbatim}
+    >Description
+    ACGATGCTAGCTAGCTAGCTAGCTGCGCTGA...
+    >Another description
+    TTTTTTAGTCGATGGGTGCATTGATGAGTAG...
+\end{verbatim}
+
 Various statistics about the datasets are shown in Table \ref{tab:data_stats}.
 The error ratio is the ratio between the number of ambiguous bases and the
 number of regular DNA/RNA bases.
@@ -228,7 +238,7 @@ A set of $380$ sequences with mutual similarities of at most $0.6$ was
 extracted from \texttt{SILVA}, using the \textsc{K-Dist} distance metric
 (Algorithm \ref{alg:K-Dist}) with parameter $k=5$. For each of these
 sequences, $999$ copies were made and chunks of changes were made to these as
-described above in section \ref{sec:altered_sequences}, corresponding to $2$\%
+described in section \ref{sec:altered_sequences}, corresponding to $2$\%
 of the characters of each sequence. This yields a set of \num{380000}
 sequences with $380$ expected clusters, which each should contain sequences
 with similarities of approximately $0.92$ since all sequences are changed and
@@ -258,8 +268,8 @@ constructed to be similar and should indeed be in the same cluster. The result
 was equally correct when clustering with a threshold parameter of $0.89$, but
 the results start containing a few errors when clustering with a threshold of
 $0.9$ or above. In the specific test, and the specific, random order of the
-sequences, the clustering result yielded $386$ clusters for $id=0.9$, average
-cluster size of $984.456$ and a minimum cluster size of $33$.
+sequences, the clustering result yielded $386$ clusters for $id=0.9$, an average
+cluster size of $984.46$ and a minimum cluster size of $33$.
 
 This test provides some evidence that \textsc{K-Clust} is able to successfully
 cluster a dataset of a fairly realistic size. Since the similarities are known
@@ -282,7 +292,8 @@ Stochastic Neighbor Embedding} (t-SNE)~\cite{maaten}. This was done using
 \texttt{Python} with \texttt{matplotlib} and \texttt{scikit-learn}. Sequences
 expected to be in the same cluster were given the same color and thus the MDS
 is expected to give a visualization of separate clusters of points of the same
-color. Centroids were given a cirle marker and all other sequences were gives a
+color. Centroids were given a circle marker with the same color as the
+sequences in the cluster they represent, and all other sequences were gives a
 ``+'' marker.
 
 A subset of the synthetic set described in section \ref{sec:synth_dataset} was
@@ -290,9 +301,12 @@ used for the MDS, because the scatter plot easily becomes too densely
 populated and because the computation is too expensive for \num{380000}
 sequences. A set of $400$ sequences, consisting of $40$ expected clusters with
 $10$ sequences in each, was used for the visualization shown in Figure
-\ref{fig:mds_synth}. The clustering indicated by the colors and markers is
-from \textsc{K-Clust} and the distances used for MDS are calculated using
-\textsc{K-Dist}.
+\ref{fig:mds_synth}. MDS is performed based on \textsc{K-Dist} and the
+coloring is based on \textsc{K-Clust}, which is also based on \textsc{K-Dist}.
+However, the MDS is based on the set of all distances while \textsc{K-Clust}
+is heuristic, so the purpose is to test how good \textsc{K-Clust} is at
+identifying the clusters that appear. Note that the MDS is used on the actual
+distances and not the similarities.
 
 \begin{figure}[h!]
   \includegraphics[width=\textwidth]{graphics/MDS_t-SNE_synth_silva_400.png}
@@ -309,8 +323,7 @@ from \textsc{K-Clust} and the distances used for MDS are calculated using
 The results from \texttt{klust} on the synthetic dataset was correct and
 completely as it was constructed to be. Similarly, the MDS in figure
 \ref{fig:mds_synth} shows a very clear set of clusters of points, of distinct
-colors, marked with ``+'' symbols and a single centroid for each cluster, which
-is marked with a circle with the same color in the middle. There are only small
+colors and a single centroid for each cluster. There are only small
 errors such as single sequences lying a bit away from their respective clusters
 and very closely positioned clusters. However, this might easily have to do
 with the actual MDS visualization of the data, since MDS does not provide a
@@ -318,10 +331,10 @@ perfect two-dimensional version of the high-dimensional distances.
 
 Figure \ref{fig:mds_synth_lev} shows the same clustering result as in Figure
 \ref{fig:mds_synth}, i.e. the same coloring and marking, but with the distances
-for the MDS calculated using Levenshtein. This provides even some more insight
+for the MDS calculated using Levenshtein. This provides some more insight
 into the relationship between \textsc{K-Dist} and Levenshtein, and helps to
 verify the suitability of \textsc{K-Dist} as an approximation for sequence
-similarity, given that Levenshtein measure the actual edit distance.
+similarity.
 
 \begin{figure}[h!]
   \centering
@@ -342,8 +355,8 @@ attributed to the imperfection of MDS. In any case, the clusters are also very
 apparent when using the Levenshtein distance measure and this indicates that
 the $k$-mer based \textsc{K-Dist} functions properly as an approximation of
 distance. Specifically, the colors are not mixed up so it is not the case that
-one similarity metric gives a very low similarity while the other gives a very
-high similarity, and vice versa, for some sequences.
+one distance metric gives a very low distance while the other gives a very
+high distance, and vice versa, for some sequences.
 
 
 \subsection{Evaluating \textsc{K-Clust} on real data using MDS}
@@ -354,37 +367,6 @@ first 500 sequences of the \texttt{SILVA} dataset, using MDS to visualize the
 sequence similarities and the clustering result, as described in section
 \ref{sec:mds_synth}.
 
-\begin{figure}[H]
-  \centering
-  \begin{subfigure}[t]{1.0\textwidth}
-    \includegraphics[width=1.0\textwidth]{graphics/SILVA_t-SNE_500.png}
-    \caption{Sequences not sorted.}
-    \label{fig:mds_silva_no_sort}
-  \end{subfigure}
-
-  \hfill\\
-  \hspace{2em}
-  \begin{subfigure}[b]{1.0\textwidth}
-    \includegraphics[width=1.0\textwidth]{graphics/SILVA_t-SNE_incr_sort_500.png}
-    \caption{Sorted by increasing sequence length.}
-    \label{fig:mds_silva_sort_incr}
-  \end{subfigure}
-\end{figure}
-\clearpage
-\begin{figure}[H]
-  \ContinuedFloat
-  \begin{subfigure}[b]{1.0\textwidth}
-    \includegraphics[width=1.0\textwidth]{graphics/SILVA_t-SNE_decr_sort_500.png}
-    \caption{Sorted by decreasing sequence length.}
-    \label{fig:mds_silva_sort_decr}
-  \end{subfigure}
-  \caption{MDS using t-SNE of the first 500 sequences from \texttt{SILVA} with
-    the clustering result from \texttt{klust}, using parameters $k=5$,
-    $id=0.85$ and $max\_rejects=8$, used to color different clusters with
-    different colors. Centroids are marked with a circle. Sequences were sorted
-    by length before clustering as noted under each subfigure.}
-  \label{fig:mds_silva}
-\end{figure}
 
 The clustering result from \texttt{klust} on \texttt{SILVA} consists of
 clusters of very different sizes and a large number of singleton clusters, i.e.
@@ -394,13 +376,24 @@ clearly partitioned into a few clusters of the same size. However, it should at
 least be possible to identify the sequences of large clusters and observe
 whether they are indeed close to each other in the MDS.
 
-Figure \ref{fig:mds_silva} (\subref{fig:mds_silva_no_sort}),
-(\subref{fig:mds_silva_sort_incr}) and (\subref{fig:mds_silva_sort_decr}) shows
-MDS of the first 500 sequences from \texttt{SILVA}, with the sequences not
-sorted, sorted by increasing length and sorted by decreasing length,
-respectively, before clustering with \texttt{klust}.
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=1.0\textwidth]{graphics/SILVA_t-SNE_incr_sort_500.png}
+    \caption{MDS using t-SNE of the first 500 sequences from \texttt{SILVA} with
+    the clustering result from \texttt{klust}, using parameters $k=5$,
+    $id=0.85$ and $max\_rejects=8$, used to color different clusters with
+    different colors. Centroids are marked with a circle. Sequences were sorted
+    by increasing length before clustering.}
+    \label{fig:mds_silva_sort_incr}
+\end{figure}
 
-Both respectively, shows a few apparent clusters, but as expected they also
+Figure \ref{fig:mds_silva_sort_incr} shows MDS of the first 500 sequences from
+\texttt{SILVA}, with the sequences sorted by increasing length before
+clustering with \texttt{klust}. Figure \ref{fig:mds_silva} in appendix
+\ref{app:mds_silva} shows the same results, but where sequences were not sorted
+and sorted by decreasing length, respectively.
+
+The figures show a few apparent clusters, but as expected they also
 show a large number of smaller clusters and singleton clusters. In this
 particular example, when running \texttt{klust} with parameters $k=5$,
 $id=0.85$ and $max\_rejects=8$, the number of resulting clusters were $159$ with

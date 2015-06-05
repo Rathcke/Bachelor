@@ -1,5 +1,33 @@
 \section{Results}
 
+\subsection{Multidimensional scaling on \texttt{SILVA}}
+\label{app:mds_silva}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{1.0\textwidth}
+    \includegraphics[width=1.0\textwidth]{graphics/SILVA_t-SNE_500.png}
+    \caption{Sequences not sorted.}
+    \label{fig:mds_silva_no_sort}
+  \end{subfigure}
+\end{figure}
+\clearpage
+\begin{figure}[H]
+  \ContinuedFloat
+  \begin{subfigure}[b]{1.0\textwidth}
+    \includegraphics[width=1.0\textwidth]{graphics/SILVA_t-SNE_decr_sort_500.png}
+    \caption{Sorted by decreasing sequence length.}
+    \label{fig:mds_silva_sort_decr}
+  \end{subfigure}
+  \caption{MDS using t-SNE of the first 500 sequences from \texttt{SILVA} with
+    the clustering result from \texttt{klust}, using parameters $k=5$,
+    $id=0.85$ and $max\_rejects=8$, used to color different clusters with
+    different colors. Centroids are marked with a circle. Sequences were sorted
+    by length before clustering as noted under each subfigure.}
+  \label{fig:mds_silva}
+\end{figure}
+
+\newpage
 \subsection{Clustering results from \texttt{klust} on \texttt{SILVA}}
 \label{app:klust_data_parameters}
 
