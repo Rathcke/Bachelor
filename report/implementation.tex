@@ -1,5 +1,11 @@
 \section{Implementation} \label{sec:implementation}
 
+This section presents some interesting parts of the implementation of
+\texttt{klust}. The documentation for \texttt{klust} is available at the GitHub
+website, cf.  section \ref{sec:introduction}, and it is printed when running
+the program with no arguments.
+
+
 \subsection{Compressing sequence data}
 
 Since the sequence data to be clustered can be very large, efficient memory
@@ -7,10 +13,13 @@ usage is essential. The implementation of \textsc{K-Clust} reads all the
 sequences into memory, while simultaneously transforming it into a lower memory
 representation which takes up a quarter of the space of a simple 8-bit
 character representation. This is done by representing each nucleotide by just
-2 bits. However, this ought to be improved so that the program would deallocate
-memory used for sequences as soon they become part of an existing cluster,
-since they will not be accessed again until writing the result to a file after
-the clustering is finished.
+2 bits.
+
+Currently all the sequence data is stored in memory until the clustering is
+finished and the results are written to disk, however this ought to be improved
+so that output would be written continuously and sequences deallocated as soon
+as they become part of an existing cluster. However, the existing strategy
+eases memory management.
 
 The \texttt{klust} program has a maximum memory usage of less than 2 GB (cf.
 the table in Figure \ref{tab:full_RDP_main_results}) when clustering the
@@ -23,36 +32,35 @@ a problem for the sizes of the datasets used for testing.
 
 For each sequence, a \verb|bitset<4096>|, i.e. a space efficient \texttt{C++}
 bit vector of statically fixed size, of the $6$-mers occurring in that
-sequences is computed. If that sequence becomes a centroid, the bit vector is
+sequence, is computed. If that sequence becomes a centroid, the bit vector is
 copied and stored in a structure representing the centroid, along with the
-centroid sequence etc., to avoid recomputing it later and if the sequence
-matches an existing cluster, the bit vector is reused for subsequent sequences.
-This yields a memory usage of 4096 bits times the number of centroids, in
-addition to the sequence data.
+centroid sequence etc., to avoid recomputing it later. If the sequence matches
+an existing centroid, the bit vector is reused for subsequent sequences. This
+yields a memory usage of 4096 bits times the number of centroids, in addition
+to the sequence data.
 
-Having bit vectors of the $k$-mers occurring in a sequence and a centroid
+Having bit vectors of the $k$-mers occurring in both a sequence and a centroid
 sequence allows for very efficient computation of a bit vector of the $k$-mers
 occurring in both the sequence and the centroid sequence. This is done using
 the bitwise \verb|AND| operation. Additionally, computing the number of set
 bits in a \verb|bitset| is extremely efficient due to \emph{single instruction,
-multiple data} (SIMD) instructions on newer Intel Core processors (beginning
-with the Nehalem microarchitecture) which are enabled when compiling with the
-\verb|-march=native| compiler flag using the GCC \texttt{C++} compiler.
+multiple data} (SIMD) instructions on newer Intel Core processors~\cite{intel}
+(beginning with the Nehalem microarchitecture) which are enabled when compiling
+with the \verb|-march=native| compiler flag using the GCC \texttt{C++}
+compiler.
 
 
 \subsection{Divide and conquer with parallelization of clustering}
 
 A simple divide and conquer approach was implemented and used with the
-\textsc{K-Clust} algorithm. This is, however, not used in the \texttt{klust}
-program.
+\textsc{K-Clust} algorithm. This is, however, not used by default in the
+\texttt{klust} program, although it can be enabled with a command line flag.
 
 The array of sequences is divided into a given number of subarrays, using
 indexing to avoid copying, which are then each clustered in separate threads
 using the implementation of \textsc{K-Clust}.  Each of these clustering
 subtasks yields a list of centroids which are then merged in a similar way to
 how \textsc{K-Clust} searches for a centroid: two centroids representing
-different clusters are compared if the ratio between the number of $k$-mers
-they have in common and the number of $k$-mers in the target centroid is above
-or equal to the threshold parameter for the clustering. Additionally,
-$max\_rejects$ is also used to limit the number of compares that can be made
-for each centroid.
+different clusters are compared if they satisfy the intersection criteria.
+Additionally, $max\_rejects$ is also used to limit the number of compares that
+can be made for each centroid.
