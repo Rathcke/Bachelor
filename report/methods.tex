@@ -50,13 +50,13 @@ imposing more structure on the collection of centroids and by giving up after
 some fixed number of comparisons of a given query sequence.
 
 \textsc{Simple-Clust} works by iterating sequentially through the sequences to
-be clustered; the $max\_reject$ most frequent $k$-mers for the query sequence
+be clustered; the $max\_rejects$ most frequent $k$-mers for the query sequence
 are calculated and for each of these most frequent $k$-mers, a centroid which
 has that $k$-mer as the most frequently occurring one (if one such centroid
 exists) is compared with the query sequence to check if their similarity is
 above the given threshold. The query sequence is assigned to the cluster for
 the first centroid that matches the query sequence; if no such centroid is
-found, out of the maximum possible $max\_reject$ number of tries, the query
+found, out of the maximum possible $max\_rejects$ number of tries, the query
 sequence becomes a centroid for a new cluster and is added to the collection of
 centroids along with the information about the most frequently occurring
 $k$-mer in the sequence. Pseudocode for \textsc{Simple-Clust} is attached in
