@@ -4,10 +4,8 @@
 \label{app:mds_silva}
 
 \begin{figure}[H]
-  \centering
-  \begin{subfigure}[t]{1.0\textwidth}
-    \def\svgwidth{\columnwidth}
-    \import{graphics/}{MDS_Silva_nosort.pdf_tex}
+  \begin{subfigure}[b]{1.0\textwidth}
+    \includegraphics[width=1.0\textwidth]{graphics/MDS_Silva_nosort.pdf}
     \caption{Sequences not sorted.}
     \label{fig:mds_silva_no_sort}
   \end{subfigure}
@@ -18,7 +16,7 @@
   \begin{subfigure}[b]{1.0\textwidth}
     \def\svgwidth{\columnwidth}
     \import{graphics/}{MDS_Silva_decr.pdf_tex}
-    %\includegraphics[width=1.0\textwidth]{graphics/SILVA_t-SNE_decr_sort_500.png}
+    %\includegraphics{graphics/MDS_Silva_decr.pdf}
     \caption{Sorted by decreasing sequence length.}
     \label{fig:mds_silva_sort_decr}
   \end{subfigure}
@@ -29,6 +27,7 @@
     by length before clustering as noted under each subfigure.}
   \label{fig:mds_silva}
 \end{figure}
+
 
 \newpage
 \subsection{Clustering results from \texttt{klust} on \texttt{SILVA}}
