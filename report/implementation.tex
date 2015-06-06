@@ -16,10 +16,10 @@ character representation. This is done by representing each nucleotide by just
 2 bits.
 
 Currently all the sequence data is stored in memory until the clustering is
-finished and the results are written to disk, however this ought to be improved
-so that output would be written continuously and sequences deallocated as soon
-as they become part of an existing cluster. However, the existing strategy
-eases memory management.
+finished and the results are written to disk. This strategy eases memory
+management, since all sequences can stay in the same place throughout the
+clustering and references can be passed around without risking that some
+sequence is deallocated too early by some other part of the program.
 
 The \texttt{klust} program has a maximum memory usage of less than 2 GB (cf.
 the table in Figure \ref{tab:full_RDP_main_results}) when clustering the

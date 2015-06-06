@@ -6,7 +6,8 @@
 \begin{figure}[H]
   \centering
   \begin{subfigure}[t]{1.0\textwidth}
-    \includegraphics[width=1.0\textwidth]{graphics/SILVA_t-SNE_500.png}
+    \def\svgwidth{\columnwidth}
+    \import{graphics/}{MDS_Silva_nosort.pdf_tex}
     \caption{Sequences not sorted.}
     \label{fig:mds_silva_no_sort}
   \end{subfigure}
@@ -15,7 +16,9 @@
 \begin{figure}[H]
   \ContinuedFloat
   \begin{subfigure}[b]{1.0\textwidth}
-    \includegraphics[width=1.0\textwidth]{graphics/SILVA_t-SNE_decr_sort_500.png}
+    \def\svgwidth{\columnwidth}
+    \import{graphics/}{MDS_Silva_decr.pdf_tex}
+    %\includegraphics[width=1.0\textwidth]{graphics/SILVA_t-SNE_decr_sort_500.png}
     \caption{Sorted by decreasing sequence length.}
     \label{fig:mds_silva_sort_decr}
   \end{subfigure}

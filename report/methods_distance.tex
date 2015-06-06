@@ -47,9 +47,12 @@ against other metrics. The algorithm is attached in appendix
 \ref{app:levenshtein_algorithm} and results from tests are shown in section
 \ref{sec:kdist_vs_levenshtein}.
 
-A. Andoni and R. Krauthgamer ~\cite[pp.~1--2]{andoni} states: ``The worst-case
-running time known for this problem has not improved in three decades (..)''.
-It further supports the conclusion that the running time of the Levenshtein
+A. Andoni and R. Krauthgamer ~\cite[pp.~1--2]{andoni} state:
+\begin{quote}
+  ``The worst-case running time known for this problem has not improved in
+  three decades (..)''.
+\end{quote}
+They further support the conclusion that the running time of the Levenshtein
 algorithm is too poor for the large data sets of the problem domain.
 Specifically the running time of Levenshtein is $\mathcal{O}(nm)$, where $n$
 and $m$ are the lengths of the two sequences and $n\geq m$, and $\mathcal{O}(n
@@ -87,20 +90,23 @@ line indicate matches.
 Indels, gaps and mismatches can be given different weights in the calculation
 of the similarity between the sequences.
 
-Both \texttt{UCLUST} and the very recent project \texttt{VSEARCH} uses some
-kind of sequence alignment for comparing sequences. \texttt{VSEARCH} uses a
-parallelized version of the dynamic programming algorithm Needleman-Wunsch,
-while \texttt{UCLUST} uses a heuristic procedure by default, but can be
-instructed to use full dynamic programming with either the Needleman-Wunsch or
-the Smith-Waterman algorithm. However, this will make \texttt{UCLUST} much
-slower~\cite{vsearch}. The heuristic algorithm used in \texttt{UCLUST} gives an
-approximation of the optimal alignment for the purpose of increased
-performance.
+Both \texttt{UCLUST} and the very recent project
+\texttt{VSEARCH}~\cite{vsearch}, which is unpublished at the time of writing,
+uses some kind of sequence alignment for comparing sequences. \texttt{VSEARCH}
+uses a parallelized version of the dynamic programming algorithm
+Needleman-Wunsch~\cite{needleman}, while \texttt{UCLUST} uses a heuristic
+procedure by default, but can be instructed to use full dynamic programming
+with either the Needleman-Wunsch or the Smith-Waterman~\cite{smith} algorithm.
+However, this will make \texttt{UCLUST} much slower. The heuristic algorithm
+used in \texttt{UCLUST} gives an approximation of the optimal alignment for the
+purpose of increased performance.
 
 As opposed to \texttt{USEARCH}, \texttt{VSEARCH} is free and open-source
 software and is designed for 64-bit processors, so it does not have the
 limitation on usable memory that the free, 32-bit version of \texttt{USEARCH}
 has.
+
+% Martin: Can we say something about VSEARCH performance?
 
 Sequence alignment is still a computationally expensive operation and for
 comparison of sequences with low similarity, the results of sequence alignment

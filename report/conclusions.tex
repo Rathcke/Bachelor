@@ -62,10 +62,13 @@ insertion and deletion mutations could provide a more correct similarity
 measure, in a biological sense, i.e. better identification of actual genomic
 mutations.
 
-With regards to the implementation, there are also some future improvements to
+With regard to the implementation, there are also some future improvements to
 be made: The $k$-mer frequency vectors could be stored together with the
 centroids and reused in subsequent similarity computations. Additionally, there
 can be made more checks for the possibility of stopping a comparison early, if
-it is already known that it will fail. Thirdly, the parallelization of the
-clustering could be developed further so that it would yield fewer clusters,
-e.g. using a better merge strategy.
+it is already known that it will fail. Another interesting part of the
+implementation is the parallelization of the clustering, which could be
+developed further so that it would yield fewer clusters, e.g. using a better
+merge strategy. In addition, the memory management could be improved so that
+output would be written continuously and sequences deallocated as soon as they
+become part of an existing cluster.
