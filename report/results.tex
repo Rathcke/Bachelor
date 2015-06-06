@@ -234,9 +234,8 @@ A synthetic dataset was constructed for evaluating the \textsc{K-Clust}
 algorithm's ability to find the right clusters in a dataset with a clearly
 correct, expected clustering result.
 
-A set of $380$ sequences with mutual similarities of at most $0.6$ was
-extracted from \texttt{SILVA}, using the \textsc{K-Dist} distance metric with
-parameter $k=5$. For each of these sequences, $999$ copies were made and
+A set of $380$ sequences with mutual similarities of at most $0.6$, using the
+\textsc{K-Dist} distance metric with parameter $k=5$, was extracted from \texttt{SILVA}. For each of these sequences, $999$ copies were made and
 chunks of changes were made to these as described in section
 \ref{sec:altered_sequences}, corresponding to $2$\% of the characters of each
 sequence. This yields a set of \num{380000} sequences with $380$ expected
@@ -276,19 +275,18 @@ cluster a dataset of a fairly realistic size. Since the similarities are known
 a priori and the cluster sequences are constructed to be of a similarity around
 $0.92$ on $k=5$, this is not a test of the \textsc{K-Dist} distance metric.
 
+%TODO USEARCH fejler \o/
 
 \subsubsection{Multidimensional scaling of the synthetic dataset}
 \label{sec:mds_synth}
 
 
-%TODO USEARCH fejler \o/
-
-\emph{Multidimensional scaling} (MDS) of the sequences in the synthetic dataset
-was used to visualize and further evaluate the clustering result from the
-previous section (section \ref{sec:synth_dataset}). Multidimensional scaling is
-used to visualize the distances between all the sequences in the synthetic
-dataset in two dimensions, i.e. a scatter plot that tries to maintain the
-relative distances between the sequences as well as possible.
+\emph{Multidimensional scaling} (MDS) of the sequences in the synthetic
+dataset was used to visualize and further evaluate the clustering result from
+the previous section (section \ref{sec:synth_dataset}). Multidimensional
+scaling is used to visualize the distances between objects in a high dimensional space in two dimensions, i.e. it takes all distances between two
+points in a high dimensional space and tries to reflect these pairwise
+distances in two dimensions.
 
 The technique used for dimensionality reduction was \emph{t-distributed
 Stochastic Neighbor Embedding} (t-SNE)~\cite{maaten}. This was done using
@@ -487,8 +485,8 @@ faster and never slower than not sorting. It is also on average $42.63\%$
 faster and never slower than sorting by decreasing length. Furthermore,
 sorting by increasing length on average has $8.77\%$ fewer clusters and never
 more clusters than not sorting. It has $25.07\%$ fewer clusters on average and
-never more clusters than when sorting by decreasing length. The data shows
-that sorting by increasing length is always preferrable.
+never more clusters than when sorting by decreasing length. This observation
+shows that sorting by increasing length is always preferrable.
 
 Generally higher $k$'s are also expected to produce more clusters, since the
 comparison punishes mismatches more than lower $k$'s as discussed in section
@@ -516,6 +514,7 @@ entire \texttt{SILVA} dataset. Table \ref{tab:full_silva_main_results} shows
 the most important results found in the appendix.
 
 \begin{table}[H]
+  \footnotesize
   \begin{adjustbox}{center}
   \begin{tabular}{c|r|r|r|lr|l}
   \multirow{2}{*}{}
@@ -590,7 +589,7 @@ The $id$'s are different in \texttt{klust} and \texttt{USEARCH} because they
 are calculated with different similarity metrics. This makes it difficult to
 compare the number of clusters the methods produce. Figure
 \ref{fig:id_comparison} shows the number of clusters produced by
-\texttt{klust} and \texttt{USEARCH} for different $id$'s on the first
+\texttt{klust} and \texttt{USEARCH} for different identities on the first
 \num{10000} sequences of \texttt{RDP}. It shows that \texttt{USEARCH}
 generally requires a higher $id$ to produce the same amount of clusters. Of
 course, there is no assurance that the clusters are the same. The rapid
@@ -607,7 +606,7 @@ these cases, but it is still more strict than in \texttt{USEARCH}.
   \centering
   \def\svgwidth{\columnwidth}
   \import{graphics/}{Cluster_Count_RDP.pdf_tex}
-  \caption{Comparison of the number of clusters at different $id$'s with a difference of $0.01$ on the first \num{10000} sequences of \texttt{RDP}.}
+  \caption{Comparison of the number of clusters for different thresholds with a difference of $0.01$ on the first \num{10000} sequences of \texttt{RDP}. The program \texttt{klust} was used with parameters $k=5, max\_rejects=8$ and sequences were not sorted. \texttt{USEARCH} was used with \texttt{-cluster\_smallmem} and sorting by decreasing length.}
   \label{fig:id_comparison}
 \end{figure}
 
@@ -621,6 +620,7 @@ provides the output data from \texttt{USEARCH} and \texttt{klust} using
 chosen as this showed the most promising results.
 
 \begin{table}[H]
+  \footnotesize
   \begin{adjustbox}{center}
   \begin{tabular}{c|r|r|r|lr|l}
   \multirow{2}{*}{}

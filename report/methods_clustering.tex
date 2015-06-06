@@ -23,8 +23,9 @@ can be merged. Agglomerative clustering is visualized in Figure
   \def\svgwidth{\columnwidth}
   \import{graphics/}{Hierarchical_Clustering.pdf_tex}
   \caption{Illustration of agglomerative hierarchical clustering. Clusters,
-    with objects represented as letters, are merged with nearby clusters based
-    on lexicographic order until there is only one cluster.}
+  with objects represented as letters, are merged with nearby clusters based
+  on the distance between their positions in the alphabet until there is only
+  one cluster.}
   \label{fig:hierarchical_clustering}
 \end{figure}
 
@@ -63,12 +64,13 @@ matrix and then use row and column operations, but they are optimized to
 running times of $\mathcal{O}\left(n^2\right)$ instead of
 $\mathcal{O}\left(n^3\right)$, where $n$ is the number of sequences.
 
-A running time of $\mathcal{O}\left(n^2\right)$ is too heavy for the scope of
-this project and it builds the entire hierarchy, however, with a greedy
-single-linkage approach and without building the entire hierarchy, the
-complexity could be significantly reduced. The distance matrix itself takes
-$\mathcal{O}\left(n^2\right)$ time to create, which is already too much, so
-this indicates that a heuristic strategy might be needed.
+A running time of $\mathcal{O}\left(n^2\right)$ does not scale well enough for
+problem sizes encountered in sequence clustering and it does not need to build
+the entire hierarchy. However, with a greedy single-linkage approach and
+without building the entire hierarchy, the complexity could be significantly
+reduced. The distance matrix itself takes $\mathcal{O}\left(n^2\right)$ time
+to create, which is already too much, so this indicates that a heuristic
+strategy might be needed.
 
 
 \subsubsection{Graph-based clustering}
@@ -108,15 +110,12 @@ sequences have similarity greater than or equal to the similarity threshold,
 to their centroid.  It works by processing one sequence at a time and
 comparing these to the existing centroids. If a match is found, the sequence
 is assigned to the cluster of the matching centroid, otherwise it becomes a
-centroid of a new cluster.
-
-\texttt{UCLUST} attempts to give a clustering result where each centroid has a
-similarity under the threshold to all other centroids, but this is not
-guaranteed to hold. The reason is that the algorithm only compares a sequence
-to a prespecified number of centroids given by the $max\_rejects$ parameter.
-
-It uses the $k$-mer counts to locate centroid candidates for a match, though
-how it does it is not very well documented.
+centroid of a new cluster. \texttt{UCLUST} attempts to give a clustering
+result where each centroid has a similarity under the threshold to all other
+centroids, but this is not guaranteed to hold. The reason is that the
+algorithm only compares a sequence to a prespecified number of centroids given
+by the $max\_rejects$ parameter. It uses the $k$-mer counts to locate centroid
+candidates for a match, though how it does it is not very well documented.
 
 The similarity calculations are performed with global sequence alignments as R.
 C. Edgar~\cite{usearch_algorithm}  claims that using the word counts to

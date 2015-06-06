@@ -133,9 +133,7 @@ strings are implemented as character arrays, assuming no copying is needed.
 
 In the second loop, \textsc{K-Dist} performs $|t|-|s|$ iterations which each
 contains a constant number of constant time operations. This gives a running
-time of $\Theta(\abs{t}-\abs{s})$.
-
-This yields a total running time of
+time of $\Theta(\abs{t}-\abs{s})$. This yields a total running time of:
 \begin{align*}
   \Theta(\abs{s}-k) + \Theta(\abs{t}-\abs{s})
   &= \Theta(\abs{s} - k + \abs{t} - \abs{s}) \\
@@ -149,5 +147,5 @@ time of $\Theta(\max{\left(\abs{s}, \abs{t}\right)} - k)$.
 The space usage of \textsc{K-Dist} depends on the value of $k$ and the $k$-mers
 occurring in the sequences, since this affects the size of the \texttt{kmers}
 map. The worst case space complexity is $\mathcal{O}\left(4^k\right)$, i.e.
-exponential in the value of $k$, however, since $k$ will generally be assumed
+exponential in the value of $k$, however, since $k$ is generally assumed
 to be less than or equal to 8, the space usage should not become a problem.

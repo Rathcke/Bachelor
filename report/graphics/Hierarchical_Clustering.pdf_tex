@@ -36,7 +36,7 @@
   }%
   \providecommand\rotatebox[2]{#2}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{475.79477539bp}%
+    \setlength{\unitlength}{482.52348633bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,16 +48,16 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.59701571)%
+  \begin{picture}(1,0.58771503)%
     \put(0,0){\includegraphics[width=\unitlength]{Hierarchical_Clustering.pdf}}%
-    \put(-0.00031526,0.01433113){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{A}}}%
-    \put(0.22126054,0.01433113){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{B}}}%
-    \put(0.44039309,0.01433113){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{F}}}%
-    \put(0.65725967,0.01435084){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{G}}}%
-    \put(0.8795251,0.01433113){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{I}}}%
-    \put(0.08729235,0.23924151){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{AB}}}%
-    \put(0.52879149,0.23926121){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{FG}}}%
-    \put(0.68426957,0.40377963){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{FGI}}}%
-    \put(0.32589293,0.56706583){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{ABFGI}}}%
+    \put(0,0.02585473){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\{A\}}}}%
+    \put(0.219541,0.02585473){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\{B\}}}}%
+    \put(0.43915975,0.02585473){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\{F\}}}}%
+    \put(0.65111045,0.02585473){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\{G\}}}}%
+    \put(0.87761998,0.02585473){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\{I\}}}}%
+    \put(0.09130929,0.23255573){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\{A,B\}}}}%
+    \put(0.52330225,0.23255573){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\{F,G\}}}}%
+    \put(0.65986437,0.39312464){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\{F,G,I\}}}}%
+    \put(0.30296733,0.55748334){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\{A,B,F,G,I\}}}}%
   \end{picture}%
 \endgroup%
