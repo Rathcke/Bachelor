@@ -26,17 +26,18 @@ a single cluster.
 
 This project is concerned with the clustering of DNA and RNA sequences. The
 clustering method described in this thesis strives to assign each sequence to
-a cluster based on the similarity between the sequence and the centroid. The
-clustering method does not guarantee a minimal number of clusters, although it
-tries to minimize it, as the search for a centroid is not exhaustive, nor does
-it guarantee to find the most similar centroid for each sequence.
+a cluster based on the similarity between the sequence and the centroid.
+Although the clustering method tries to minimize the number of clusters, it
+does not guarantee a minimal number as the search for a centroid is not
+exhaustive. Nor does it guarantee to find the most similar centroid for each
+sequence.
 
 This project researches the possibilities for creating an open-source tool that
 can match the performance of \texttt{USEARCH}. We present a solution and
 implementation that uses the concept of \emph{k-mer counting}, i.e. essentially
 comparing the distribution of all possible substrings of a fixed length $k$ in
 each sequence, as an approximation for measuring sequence similarity.
-Furthermore, it utilizes the $k$-mers occurring in the centroids for improving
+Furthermore, it utilizes the $k$-mers occurring in the centroids to improve
 the search for a centroid that is likely to be a good representative for a
 given sequence.
 
@@ -55,7 +56,7 @@ science, corresponding to around two or three years of undergraduate studies.
 
 \subsection{Defining the clustering problem}
 
-The clustering problem that this project aims to solve is a partitioning of
+The clustering problem that this project aims to solve is to partition
 the sequences such that the similarities between a given centroid and all
 sequences in the cluster represented by that sequence is greater than or equal
 to the specified threshold similarity. There is, however, no guarantee that
@@ -71,8 +72,8 @@ clustering.
   \caption{Illustration of centroid based clustering. The green sequences
     belong to the cluster represented by the leftmost, black centroid and the
     blue sequences belong to the rightmost cluster. The sequence in the
-    intersection between the circles belong to only the left cluster although
-    it could possibly belong to the right one instead (as indicated by
+    intersection between the circles belong to only the leftmost cluster although
+    it could possibly belong to the rightmost cluster instead (as indicated by
     the dotted arrow).}
   \label{fig:clustering_concept}
 \end{figure}

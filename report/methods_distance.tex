@@ -32,7 +32,7 @@ result in a low distance.
 
 A bottom-up dynamic programming (DP) version of the Levenshtein distance
 metric was implemented and tested on real DNA/RNA data to evaluate its
-performance, and it was clear that this algorithm is not suitable for large
+performance. It was clear that this algorithm is not suitable for large
 data sets, because it would be infeasible to complete even a linear time
 clustering, in the number of sequences to be clustered. The implementation
 could most likely be optimized further, but because of the characteristics of
@@ -171,7 +171,7 @@ The Euclidean distance would then be calculated as
     &= \sqrt{9} = 3
 \end{align*}
 
-The first version of the $d2$ distance metric algorithm described above, is
+The first version of the $d2$ distance metric algorithm described above is
 shown in Algorithm \ref{alg:d2_basic} and has been implemented as well. The
 $substring(i,k)$ method extracts $k$ characters from a string beginning
 at position $i$. This algorithm maintains a single frequency vector, as a map

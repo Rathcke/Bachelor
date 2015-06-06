@@ -5,21 +5,22 @@
   of the algorithm.
 
   The clustering algorithm utilizes $k$-mers to determine if two sequences are
-  likely to belong in the same cluster. To verify two sequences belong to the
+  likely to belong in the same cluster. To verify two sequences belong in the
   same cluster, a $k$-mer based similarity metric is used as an approximation
   for sequence similarity.  This reduces the time complexity of the
-  comparison to linear in the length of the longest of two sequences, instead
+  comparison to linear in the length of the longest of the two sequences, instead
   of the more common quadratic running time for sequence alignment, which is
   among others, used in the proprietary \texttt{USEARCH} program.
 
   The implemented program, \texttt{klust}, has been tested and evaluated on
   both synthetic sequence data based on real data, and on real world data
   consisting of more than 3 million sequences with an average length of over
-  \num{1000} nucleotides each.
+  \num{1000} nucleotides.
 
   The program behaves completely as expected on the synthetic dataset and it
   produces high quality clustering results on real data.
 
-  The program has been shown to run faster, use less memory and produce fewer
-  clusters than \texttt{USEARCH}.
+  The program has been shown to run faster and produce fewer clusters than
+  \texttt{USEARCH} while keeping memory usage low.
+
 \end{abstract}
