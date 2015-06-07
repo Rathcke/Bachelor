@@ -23,24 +23,23 @@ would have a distance of \num{2} (e.g. substituting T for G and inserting a C).
 However, there are some cases where the relevance of the distance is arguable.
 Consider the sequences
 \begin{center}
-  \texttt{AATC\textcolor{blue}{CCGG}ATA} \\
+  \texttt{AATCATA\textcolor{blue}{CCGG}} \\
   \texttt{\textcolor{blue}{CCGG}AATCATA}
 \end{center}
-with a distance of \num{8}. This could be seen as a mutation where the substring
-\texttt{CCGG} is acting as a transposable element, which one might want to
-result in a low distance.
+with a distance of \num{8}. This could be seen as a transposition of the
+substring \texttt{CCGG}, which one might want to result in a low distance.
 
 A bottom-up dynamic programming (DP) version of the Levenshtein distance
 metric was implemented and tested on real DNA/RNA data to evaluate its
-performance. It was clear that this algorithm is not suitable for large
-data sets, because it would be infeasible to complete even a linear time
+performance. It was clear that this algorithm is not suitable for large data
+sets, because it would be infeasible to complete even a linear time
 clustering, in the number of sequences to be clustered. The implementation
 could most likely be optimized further, but because of the characteristics of
 an edit distance algorithm like Levenshtein and because of the performance
 requirements for this project, it was decided to not pursue further
 optimization and instead focus on other types of algorithms. Furthermore, the
-Levenshtein distance penalizes occurrences of transposable elements, i.e. it
-results in an increased distance.
+Levenshtein distance penalizes transpositions, i.e. it results in an increased
+distance.
 
 The Levenshtein distance can still be used for evaluation and benchmarking
 against other metrics. The algorithm is attached in appendix
