@@ -203,9 +203,9 @@ number of different 8-mers is much greater than the number of different 5-mers,
 so it is less likely that two $k$-mers are the same. That will result in a
 greater distance and hence a lower similarity.
 
-Since \textsc{K-Dist} is not very sensitive to transposable elements, but
-Levenshtein is, there will be some measures which are relatively lower for
-Levenshtein than for \textsc{K-Dist}. The ``width'' of the points in Figure
+Since \textsc{K-Dist} is not very sensitive to transpositions, but Levenshtein
+is, there will be some measures which are relatively lower for Levenshtein
+than for \textsc{K-Dist}. The ``width'' of the points in Figure
 \ref{fig:k-dist_lev_similarity_k5} and \ref{fig:k-dist_lev_similarity_k8} can
 partly be attributed to the difference in characteristic between the two
 distance metrics.
@@ -270,12 +270,18 @@ $0.9$ or above. In the specific test, and the specific, random order of the
 sequences, the clustering result yielded $386$ clusters for $id=0.9$, an average
 cluster size of $984.46$ and a minimum cluster size of $33$.
 
+The same test was performed with \texttt{USEARCH}, though it requires the
+input to be sorted. This actually produces $382$ clusters at $id=0.95$ and
+$0.9$ where $0.9$ is quite low in \texttt{USEARCH}. At $id=0.87$ it makes
+$380$ clusters, but with a minimum cluster size of $38$. This means it does
+not find the intended clusters in the synthetic dataset. The reason it does
+not find the intended clusters can most likely be attributed to how it
+searches for potential centroids.
+
 This test provides some evidence that \textsc{K-Clust} is able to successfully
 cluster a dataset of a fairly realistic size. Since the similarities are known
 a priori and the cluster sequences are constructed to be of a similarity around
 $0.92$ on $k=5$, this is not a test of the \textsc{K-Dist} distance metric.
-
-%TODO USEARCH fejler \o/
 
 \subsubsection{Multidimensional scaling of the synthetic dataset}
 \label{sec:mds_synth}
@@ -651,7 +657,6 @@ chosen as this showed the most promising results.
   \caption{Performance and clusterings results of different clustering methods and different parameters on the entire \texttt{RDP} dataset.}
   \label{tab:full_RDP_main_results}
 \end{table}
-%TODO: Add singletons?
 
 The identities have been chosen based on Figure
 \ref{fig:k-dist_lev_similarity_k5} and Figure \ref{fig:id_comparison} where
