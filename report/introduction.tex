@@ -6,18 +6,17 @@ partition contains objects that are similar to each other and objects in
 separate partitions are dissimilar, according to some well-defined notion of
 similarity. These partitions are called \emph{clusters}.
 
-Clustering huge amounts of DNA/RNA sequences (up to \num{500} million strings of
-\num{500}--\num{1500} characters each) is computationally hard, and the cost of sequencing,
-i.e. determining DNA and RNA data, has dropped so low, and consequently the
-amount of data has grown so large, that the available algorithms and hardware
-can no longer keep up~\cite{rothberg}.
+Clustering huge amounts of DNA/RNA sequences (up to \num{500} million strings
+of \num{500}--\num{1500} characters each) is computationally hard, and the cost
+of sequencing, i.e. determining DNA and RNA data, has dropped so low, and
+consequently the amount of data has grown so large, that the available
+algorithms and hardware can no longer keep up~\cite{rothberg}.
 
 There are not many available algorithms and tools for efficient clustering of
 sequencing data. The one tool which is currently doing the job,
-\texttt{USEARCH} \\ 
-\cite{edgar,usearch}, is closed-source and although the \num{32}-bit
-version is available for free, the usable memory is limited to \num{4} GB and the
-\num{64}-bit version is costly.
+\texttt{USEARCH} \\ \cite{edgar,usearch}, is closed-source and although the
+\num{32}-bit version is available for free, the usable memory is limited to
+\num{4} GB and the \num{64}-bit version is costly.
 
 As the amount of sequencing data grows, clustering becomes increasingly more
 relevant as it can be used to reduce a large set of sequences to a much smaller
@@ -72,9 +71,9 @@ clustering.
   \caption{Illustration of centroid based clustering. The green sequences
     belong to the cluster represented by the leftmost, black centroid and the
     blue sequences belong to the rightmost cluster. The sequence in the
-    intersection between the circles belong to only the leftmost cluster although
-    it could possibly belong to the rightmost cluster instead (as indicated by
-    the dotted arrow).}
+    intersection between the circles belong to only the leftmost cluster
+    although it could possibly belong to the rightmost cluster instead (as
+    indicated by the dotted arrow).}
   \label{fig:clustering_concept}
 \end{figure}
 
@@ -82,5 +81,7 @@ Let $C$ be a set of pairs containing a centroid and the set of sequences
 belonging to the cluster represented by that centroid. Let $sim$ denote the
 similarity measure and let $t$ be a given threshold similarity. Then a certain
 partitioning of sequences is a solution to the above clustering problem if it
-satisfies the following property: \[   \forall\, (c,S) \in C:\; \forall\, s
-\in S: sim(s,c) \geq t \]
+satisfies the following property:
+\[
+  \forall\, (c,S) \in C:\; \forall\, s \in S:\; sim(s,c) \geq t
+\]
