@@ -97,6 +97,11 @@ The similarities between the original sequence from \texttt{SILVA} and the 10
 altered sequences, for the four different types of alterations, are shown in
 Table \ref{tab:altered_seqs_similarities}.
 
+As expected, the single edits result in a lower similarity than the
+corresponding chunk edits. This is because five individual changes will affect
+the count of up to $5 \cdot k$ $k$-mers, while five changes in sequence will
+only affect up to $4+k$ $k$-mers.
+
 \begin{table}[H]
   \centering
   \begin{tabular}{c|c||c|c}
@@ -120,11 +125,6 @@ Table \ref{tab:altered_seqs_similarities}.
     single sequence.}
   \label{tab:altered_seqs_similarities}
 \end{table}
-
-As expected, the single edits result in a lower similarity than the
-corresponding chunk edits. This is because five individual changes will affect
-the count of up to $5 \cdot k$ $k$-mers, while five changes in sequence will
-only affect up to $4+k$ $k$-mers.
 
 
 \subsection{Comparing \textsc{K-Dist} with the Levenshtein distance metric}
@@ -181,19 +181,19 @@ similarities for parameters $k=5$ and $k=8$ are shown in Figure
 were obtained by comparing the 500 first sequences from \texttt{SILVA} with
 each other.
 
-\begin{wrapfigure}{l}{0.55\textwidth}
-  \includegraphics[width=0.55\textwidth]{graphics/Levenshtein_K-Dist_k5.png}
-  \caption{Scatter plot comparison of similarity measures for Levenshtein and
-    \textsc{K-Dist} with $k=5$ on the first 500 sequences of \texttt{SILVA}.}
-  \label{fig:k-dist_lev_similarity_k5}
-\end{wrapfigure}
-
 Since the Levenshtein distance does not produce values between 0 and 1, a
 similarity ratio similar to the one used in \textsc{K-Dist} and expressed in
 equation (\ref{eq:Manhattan_similarity}) was used. Specifically, the ratio
 between the Levenshtein distance and the maximum possible distance subtracted
 from one. The maximum possible Levenshtein distance is equal to the length of
 the longer sequence.
+
+\begin{wrapfigure}{l}{0.54\textwidth}
+  \includegraphics[width=0.54\textwidth]{graphics/Levenshtein_K-Dist_k5.png}
+  \caption{Scatter plot comparison of similarity measures for Levenshtein and
+    \textsc{K-Dist} with $k=5$ on the first 500 sequences of \texttt{SILVA}.}
+  \label{fig:k-dist_lev_similarity_k5}
+\end{wrapfigure}
 
 As seen in the figures, there is a monotonically increasing relationship
 between the two similarity metrics. Additionally, the Levenshtein similarities
@@ -306,18 +306,6 @@ color. Centroids were given a circle marker with the same color as the
 sequences in the cluster they represent, and all other sequences were gives a
 ``+'' marker.
 
-A subset of the synthetic set described in section \ref{sec:synth_dataset} was
-used for the MDS, because the scatter plot easily becomes too densely
-populated and because the computation is too expensive for \num{380000}
-sequences. A set of $400$ sequences, consisting of $40$ expected clusters with
-$10$ sequences in each, was used for the visualization shown in Figure
-\ref{fig:mds_synth}. MDS is performed based on \textsc{K-Dist} and the
-coloring is based on \textsc{K-Clust}, which is also based on \textsc{K-Dist}.
-However, the MDS is based on the set of all distances while \textsc{K-Clust}
-is heuristic, so the purpose is to test how good \textsc{K-Clust} is at
-identifying the clusters that appear. Note that the MDS is used on the actual
-distances and not the similarities.
-
 \begin{figure}[h!]
   \def\svgwidth{\columnwidth}
   \import{graphics/}{MDS_Synthetic.pdf_tex}
@@ -330,6 +318,18 @@ distances and not the similarities.
     sequences with a ``+''.}
   \label{fig:mds_synth}
 \end{figure}
+
+A subset of the synthetic set described in section \ref{sec:synth_dataset} was
+used for the MDS, because the scatter plot easily becomes too densely
+populated and because the computation is too expensive for \num{380000}
+sequences. A set of $400$ sequences, consisting of $40$ expected clusters with
+$10$ sequences in each, was used for the visualization shown in Figure
+\ref{fig:mds_synth}. MDS is performed based on \textsc{K-Dist} and the
+coloring is based on \textsc{K-Clust}, which is also based on \textsc{K-Dist}.
+However, the MDS is based on the set of all distances while \textsc{K-Clust}
+is heuristic, so the purpose is to test how good \textsc{K-Clust} is at
+identifying the clusters that appear. Note that the MDS is used on the actual
+distances and not the similarities.
 
 The result from \texttt{klust} on the synthetic dataset was correct and
 completely as it was constructed to be. Similarly, the MDS in figure
@@ -378,6 +378,17 @@ first 500 sequences of the \texttt{SILVA} dataset, using MDS to visualize the
 sequence similarities and the clustering result, as described in section
 \ref{sec:mds_synth}.
 
+\begin{figure}[H]
+  \centering
+  \def\svgwidth{\columnwidth}
+  \import{graphics/}{graphics/MDS_Silva_incr.pdf_tex}
+  \caption{MDS using t-SNE of the first 500 sequences from \texttt{SILVA} with
+    the clustering result from \texttt{klust}, using parameters $k=5$,
+    $id=0.85$ and $max\_rejects=8$, used to color different clusters with
+    different colors. Centroids are marked with a circle. Sequences were sorted
+    by increasing length before clustering.}
+  \label{fig:mds_silva_sort_incr}
+\end{figure}
 
 The clustering result from \texttt{klust} on \texttt{SILVA} consists of
 clusters of very different sizes and a large number of singleton clusters, i.e.
@@ -393,18 +404,6 @@ Figure \ref{fig:mds_silva_sort_incr} shows MDS of the first 500 sequences from
 clustering with \texttt{klust}. Figure \ref{fig:mds_silva} in appendix
 \ref{app:mds_silva} shows the same results, but where sequences were not sorted
 and sorted by decreasing length, respectively.
-
-\begin{figure}[h!]
-  \centering
-  \def\svgwidth{\columnwidth}
-  \import{graphics/}{graphics/MDS_Silva_incr.pdf_tex}
-  \caption{MDS using t-SNE of the first 500 sequences from \texttt{SILVA} with
-    the clustering result from \texttt{klust}, using parameters $k=5$,
-    $id=0.85$ and $max\_rejects=8$, used to color different clusters with
-    different colors. Centroids are marked with a circle. Sequences were sorted
-    by increasing length before clustering.}
-  \label{fig:mds_silva_sort_incr}
-\end{figure}
 
 The figures show a few apparent clusters, but as expected they also show a
 large number of smaller clusters and singleton clusters. For the example in
@@ -435,7 +434,7 @@ reached the $max\_rejects$ parameter. Table \ref{tab:centroid_search_data} show
 this data represented as ratios. The program was run with parameters $k=5$,
 $id=0.85$, $max\_rejects=8$ and sequences were sorted by increasing length.
 
-\begin{table}[H]
+\begin{table}[h!]
   \centering
   \begin{tabular}{c||l|l}
   Count                                                    & \multicolumn{1}{c|}{\num{10000}} & \multicolumn{1}{c}{\num{100000}} \\
@@ -598,6 +597,18 @@ possible work-around to this is to utilize the $max\_rejects$ parameter better
 while still maintaining a high clustering quality. This is an important
 optimization and is discussed in section \ref{sec:future_work}.
 
+\begin{figure}[h!]
+  \centering
+  \def\svgwidth{\columnwidth}
+  \import{graphics/}{Cluster_Count_RDP.pdf_tex}
+  \caption{Comparison of the number of clusters for different thresholds with a
+    step size of $0.01$ on the first \num{10000} sequences of \texttt{RDP}.
+    The program \texttt{klust} was used with parameters $k=5, max\_rejects=8$
+    and sequences were not sorted. \texttt{USEARCH} was used with
+    \texttt{-cluster\_smallmem} and sequences were sorted by decreasing length.}
+  \label{fig:id_comparison}
+\end{figure}
+
 The $id$'s are different in \texttt{klust} and \texttt{USEARCH} because they
 are calculated with different similarity metrics. This makes it difficult to
 compare the number of clusters the methods produce. Figure
@@ -614,18 +625,6 @@ described in section \ref{sec:biology} and larger gaps should not be penalized
 in the same proportion as single errors are. As demonstrated in section
 \ref{sec:altered_sequences}, \textsc{K-Dist} is also more forgiving in these
 cases, but it is still more strict than in \texttt{USEARCH}.
-
-\begin{figure}[H]
-  \centering
-  \def\svgwidth{\columnwidth}
-  \import{graphics/}{Cluster_Count_RDP.pdf_tex}
-  \caption{Comparison of the number of clusters for different thresholds with a
-    step size of $0.01$ on the first \num{10000} sequences of \texttt{RDP}.
-    The program \texttt{klust} was used with parameters $k=5, max\_rejects=8$
-    and sequences were not sorted. \texttt{USEARCH} was used with
-    \texttt{-cluster\_smallmem} and sequences were sorted by decreasing length.}
-  \label{fig:id_comparison}
-\end{figure}
 
 To evaluate the scaling in clustering time and the number of clusters for the
 two programs, benchmark tests on the \texttt{RDP} dataset were also conducted.
