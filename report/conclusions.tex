@@ -1,13 +1,11 @@
 \section{Project summary}
 \label{sec:conclusions}
 
-We have has presented an efficient, greedy, heuristic clustering algorithm,
-along with an efficient algorithm using $k$-mer counting as an approximation
-for calculating sequence similarity.
-
-The presented clustering algorithm and distance metric has been implemented in
-the program \texttt{klust}, which is open-source and freely available, cf.
-section \ref{sec:introduction}.
+We have presented an efficient, greedy, heuristic clustering algorithm, along
+with an efficient algorithm using $k$-mer counting as an approximation for
+calculating sequence similarity. The presented clustering algorithm and
+distance metric have been implemented in the program \texttt{klust}, which is
+open-source and freely available, cf. section \ref{sec:introduction}.
 
 The program \texttt{klust} has shown to give results of high quality, a low
 number of resulting clusters and can perform as well or better than
@@ -27,32 +25,31 @@ edits.
 \subsection{Future work}
 \label{sec:future_work}
 
-While the implementation is efficient and gives good clustering
-results, some key features could be improved.
+While the implementation is efficient and produces good clustering results,
+some key features could be improved.
 
 The most important improvement is the search for good centroid matches. As of
 now, the implementation does not use the parameter $max\_rejects$, or $m$, in
-an effective manner. It is very rare that a sequence reaches the maximum
-number of rejects, and as such it will go through the entire centroid list if
-it does not have any matches in the centroid list. Instead of just ordering
-the centroids based on the intersection of $k$-mers as \texttt{USEARCH} does,
-an idea is to expand on the implementation of links between centroids. Instead
-of having only one link, it could have $m$ links or at least be able to trace
-through the links to $m$ centroids that make good potential matches. The idea
-is to build a graph that connects centroids that are close to each other.
-While this might sound heavy, it should not add a whole lot to the memory
-usage as each centroid only has a couple of links and the graph can be
+an effective manner. It is very rare that a sequence reaches the maximum number
+of rejects, and as such it will go through the entire centroid list if it does
+not have a match in the centroid list. Instead of just ordering the centroids
+based on the intersection of $k$-mers as \texttt{USEARCH} does, an idea is to
+expand on the implementation of links between centroids. Instead of having only
+one link, it could have $m$ links or at least be able to trace through the
+links to $m$ centroids that make good potential matches. The idea is to build a
+graph that connects centroids that are close to each other.  While this might
+sound heavy, it should not add much to the running time as the graph can be
 constructed while clustering. Each iteration would take a bit longer, but when
-clustering huge amounts of data, the sacrifice would quickly pay off. This
-way, the sequences that are singletons, are quickly dismissed. As it uses most
-of the time searching for centroids, this is one of the most important things
-to optimize. However, due to time constraints, we have not been able to do
-much research on this, so it is hard to say if it will produce a lot more
+clustering huge amounts of data, the sacrifice would quickly pay off. This way,
+the sequences that would become singletons, are quickly dismissed. As it uses
+most of the time searching for centroids, this is one of the most important
+things to optimize. However, due to time constraints, we have not been able to
+do much research on this, so it is hard to say if it will produce a lot more
 clusters or if it will be slower. It could, however, improve the scaling that
 happens when the threshold increases.
 
 Another improvement is related to the distance metric. As of now it is only
-insensitive to a few types mutations. It still penalizes large chunk edits
+insensitive to a few types of mutations. It still penalizes large chunk edits
 (insertions or deletions) a lot more than it should. It should be able to
 detect these mutations and not punish them as much as it does. While locating
 these segments can be computationally hard, calculating the distance is very

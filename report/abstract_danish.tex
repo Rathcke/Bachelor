@@ -1,24 +1,25 @@
 \begin{abstract}
   \noindent
   Denne afhandling præsenterer en effektiv, grådig og heuristisk algoritme til
-  at producere clusters af store mængder DNA- og RNA-sekvenser sammen med en
-  open source implementering af algoritmen.
+  at finde clusters i store mængder DNA- og RNA-sekvenser sammen med en open
+  source implementering af algoritmen.
 
   Algoritmen benytter $k$-mers til at vurdere om to sekvenser hører til samme
   cluster. For at bestemme om to sekvenser faktisk hører til samme cluster,
-  bruges en similaritetsmål baseret på $k$-mers som giver en approksimation af
+  bruges et similaritetsmål baseret på $k$-mers som giver en approksimation af
   lighed mellem sekvenser. Dette reducerer tidskompleksiteten til lineær i
-  længden af den længste sekvens istedet for det mere almindeligt brugte
-  similaritetsmål sequence alignment som har en kvadratisk tidskompleksitet.
-  Det er dette mål der blandt andet bliver brugt i proprietære program
+  længden af den længste sekvens i stedet for det mere almindeligt brugte
+  similaritetsmål sequence alignment, som har en kvadratisk tidskompleksitet.
+  Det er dette mål der blandt andet bliver brugt i det proprietære program
   \texttt{USEARCH}.
 
   Det implementerede program, \texttt{klust}, er blevet testet på syntetisk
   sekvens data samt data fra den virkelige verden, som består af mere end $3$
   millioner sekvenser med en gennemsnitslængde på over \num{1000} nukleotider.
 
-  Program opfører sig som forventet på det syntetiske data og producerer
-  cluster resultater af høj kvalitet på ægte data.
+  Programmet opfører sig som forventet på det syntetiske data og producerer
+  cluster-resultater af høj kvalitet på ægte data.
 
-  Programmet har vist sig at være hurtigere og producere færre clusters end \texttt{USEARCH} samtidig med at have et lavt hukommelsesforbrug
+  Programmet har vist sig at være hurtigere og producere færre clusters end
+  \texttt{USEARCH} samtidig med at have et lavt hukommelsesforbrug.
 \end{abstract}

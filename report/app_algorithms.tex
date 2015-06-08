@@ -42,24 +42,24 @@
   \caption{\textsc{Simple-Clust}}
   \label{alg:simple-clust}
   \begin{algorithmic}[1]
-    \Require{$S$ is an array of [DR]NA sequences, $k \in \mathbb{Z}^+$ and
-             $max\_rejects \in \mathbb{Z}^+$, $id \in [0,1]$}
+    \Require{$S$ is an array of [DR]NA sequences, $k \in \mathbb{Z}^+$,
+      $id \in [0,1]$ and $max\_rejects \in \mathbb{Z}^+$}
     \Statex
-    \Function{Simple-Clust}{$S, k, max\_rejects$}
+    \Function{Simple-Clust}{$S, k, id, max\_rejects$}
       \State $cluster\_count \gets 0$
       \State $centroids \gets [~]$ \Comment{map from $k$-mer to sequence}
       \ForAll{$s \in S$}
         \State $mfk \gets$ $max\_rejects$ most frequent $k$-mers in $s$
         \ForAll{$m \in mfk$}
           \If{$centroids[m]$ does not exists} \label{alg:line:simple_clust_lookup}
-            \State continue
+            \State $continue$
           \ElsIf{$distance(s, centroids[m]) \geq id$}
             \State add $s$ to cluster with centroid $centroids[m]$
-            \State break
+            \State $break$
           \EndIf
         \EndFor
         \If{matching centroid was not found}
-          \State centroids.insert(mfk[0], s)
+          \State $centroids.insert(mfk[0], s)$
         \EndIf
       \EndFor
       \State \Return $cluster\_count$

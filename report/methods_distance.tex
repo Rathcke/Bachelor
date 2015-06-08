@@ -11,8 +11,8 @@ distance between two sequences. It is defined to be the minimum number of
 edits to transform the first sequence into the other~\cite[p.~52]{dong}.
 
 The edit operations consists of \emph{insertions}, \emph{deletions} and
-\emph{substitutions}. These operations are, respectively, inserting a character,
-removing a character and changing one character into another.
+\emph{substitutions}. These operations are, respectively, inserting a
+character, removing a character and changing one character into another.
 
 For example, the two sequences
 \begin{center}
@@ -29,17 +29,16 @@ Consider the sequences
 with a distance of \num{8}. This could be seen as a transposition of the
 substring \texttt{CCGG}, which one might want to result in a low distance.
 
-A bottom-up dynamic programming (DP) version of the Levenshtein distance
-metric was implemented and tested on real DNA/RNA data to evaluate its
-performance. It was clear that this algorithm is not suitable for large data
-sets, because it would be infeasible to complete even a linear time
-clustering, in the number of sequences to be clustered. The implementation
-could most likely be optimized further, but because of the characteristics of
-an edit distance algorithm like Levenshtein and because of the performance
-requirements for this project, it was decided to not pursue further
-optimization and instead focus on other types of algorithms. Furthermore, the
-Levenshtein distance penalizes transpositions, i.e. it results in an increased
-distance.
+A bottom-up dynamic programming (DP) version of the Levenshtein distance metric
+was implemented and tested on real DNA/RNA data to evaluate its performance. It
+was clear that this algorithm is not suitable for large datasets, because it
+would be infeasible to complete even a linear time clustering, in the number of
+sequences to be clustered. The implementation could most likely be optimized
+further, but because of the characteristics of an edit distance algorithm like
+Levenshtein and because of the performance requirements for this project, it
+was decided to not pursue further optimization and instead focus on other types
+of algorithms. Furthermore, the Levenshtein distance penalizes transpositions,
+i.e. it results in an increased distance.
 
 The Levenshtein distance can still be used for evaluation and benchmarking
 against other metrics. The algorithm is attached in appendix
@@ -52,11 +51,10 @@ A. Andoni and R. Krauthgamer~\cite[pp.~1--2]{andoni} state:
   three decades (..)''.
 \end{quote}
 They further support the conclusion that the running time of the Levenshtein
-algorithm is too poor for the large data sets of the problem domain.
+algorithm is too poor for the large datasets of the problem domain.
 Specifically the running time of Levenshtein is $\mathcal{O}(nm)$, where $n$
 and $m$ are the lengths of the two sequences and $n\geq m$, and $\mathcal{O}(n
 \cdot \max{(1,m/\log_2(n))})$ for a constant size alphabet~\cite{masek}.
-
 The lack of improvements in performance for edit distance is one motivation
 for the introduction of sequence alignment.
 
@@ -66,7 +64,7 @@ for the introduction of sequence alignment.
 \emph{Sequence alignment} is used in bioinformatics to identify regions of
 similarity by aligning the characters of two or more sequences in a certain
 manner. Besides shifting a sequence to a side, gaps can be inserted between
-characters as well. A gap is represented with '-' and it indicates an insertion
+characters as well. A gap is represented with `-' and it indicates an insertion
 in one sequence or a deletion from another sequence. This is called an
 \emph{indel}, which is a contraction of the first letters from insertion and
 deletion. If it is not an indel and all characters in the column are the same,
@@ -117,14 +115,14 @@ that alignment involves. Alignment-free comparison allows one to look at each
 of the sequences independently, extracting some characteristics, or
 \emph{features}, of each sequence and then comparing these characteristics.
 This can possibly reduce the complexity of the comparison to linear time or
-better. One such alignment-free method, is $k$-mer counting which will be
+better. One such alignment-free method is $k$-mer counting which will be
 presented and analyzed in the following section.
 
 
 \subsubsection{Feature based distance} \label{sec:kmer_distance}
 
-A \emph{$k$-mer}, \emph{$k$-gram} or simply a \emph{word}, is a subsequence
-of length $k>0$ over some alphabet $\mathcal{A}$ of a sequence. An interesting
+A \emph{$k$-mer}, \emph{$k$-gram} or simply a \emph{word}, is a substring of
+length $k>0$ over some alphabet $\mathcal{A}$ of a sequence. An interesting
 feature of a sequence is which $k$-mers occur in that sequence and how many
 times they occur. This is called $k$-mer counting and is a type of
 \emph{feature based distance metric}.
@@ -249,6 +247,6 @@ other, while the $d2$ distance without a window gives a distance of 2.
 \end{tikzpicture}
 \caption{Example of difference in distance with window. The distance with the
   window is 0, since the first sequence is a prefix of the other, while the
-  distance without the window is 2.}
+  distance without the window is 2. This is for $k=2$.}
 \label{fig:d2_window_example}
 \end{figure}

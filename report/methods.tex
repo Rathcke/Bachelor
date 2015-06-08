@@ -9,36 +9,33 @@
 A very simple, naive, greedy clustering algorithm, \textsc{Naive-Clust}, has
 been implemented and will be described briefly in this section.
 
-Given a list of sequences and an initially empty list of centroids, the
+Given an array of sequences and an initially empty list of centroids, the
 algorithm works by iterating through the sequences and for every sequence, it
 iterates through the list of centroids and makes a comparison until a match is
 found or until the end of the list is reached. If a match is found, the
 sequence is added to the cluster represented by the matching centroid, and
-otherwise the sequences becomes a new centroid and is appended to the end of
-the list of centroids.
+otherwise the sequence becomes a new centroid and is appended to the end of the
+list of centroids.
 
 This approach is not very useful in practice since it is very computationally
 expensive in the worst case. The worst case being quadratic in running time
 when all sequences become centroids. The running time of the algorithm is very
 dependent on the ordering of the sequences since the centroids will be in the
-same order as in the list of sequences (i.e. the list of centroids is a
-subsequence of the list of sequences) and if the first number of sequences
-happens to be good centroids, which will match a lot of sequences, the
-algorithm will perform good since the search for a centroid will end very
-early. However, if the first sequences happen to be very dissimilar from the
-rest of the data, then these will become centroids and will be compared
-against on every iteration even though they might potentially never match any
-other sequence.
+same order as in the array of sequences (i.e. the list of centroids is a
+subsequence of the array of sequences) and if the first number of sequences
+happen to be good centroids, which will match a lot of sequences, the algorithm
+will perform well since the search for a centroid will end very early. However,
+if the first sequences happen to be very dissimilar from the rest of the data,
+then these will become centroids and will be compared against on every
+iteration even though they might potentially never match any other sequence.
 
 Thus, there is a motivation to try and create more structure in the collection
 of centroids, improve the search for a centroid or improve the ordering of the
-centroids.
-
-With added structure or better ordering of the centroids, it should ideally not
-be necessary to traverse the whole collection of centroids for every sequence,
-since a match should occur early on if it exists. This motivates the
-introduction of a maximum allowed number of unsuccessful comparisons before
-ending the search early and creating a new centroid.
+centroids. With added structure or better ordering of the centroids, it should
+ideally not be necessary to traverse the whole collection of centroids for
+every sequence, since a match should occur early on if it exists. This
+motivates the introduction of a maximum allowed number of unsuccessful
+comparisons before ending the search early and creating a new centroid.
 
 
 \subsection{\textsc{Simple-Clust} algorithm}
@@ -65,8 +62,9 @@ appendix \ref{app:simple-clust}.
 However, there is a problem with this algorithm: For larger $k$ the number of
 different possible $k$-mers increases exponentially and for e.g. $k = 6$ and a
 four letter alphabet, there are $4^6 = 4096$ different $k$-mers and therefore
-the lookup in line \ref{alg:line:simple_clust_lookup} of the algorithm will
-often be unsuccessful.
+the lookup for a sequence with a specific most frequently occurring $k$-mer (in
+line \ref{alg:line:simple_clust_lookup} of the algorithm) will often be
+unsuccessful.
 
 
 \subsection{\textsc{K-Clust} algorithm}
@@ -79,7 +77,7 @@ comparing or not based on the cardinality of the intersection between the two
 sets. This way, the search for a likely match is not just determined by the
 single most frequently occurring $k$-mer, as with \textsc{Simple-Clust}, but
 rather all the occurring $k$-mers, regardless of their count. Additionally, the
-centroids are stored in a doubly linked list and whenever a centroid matches a
+centroids are stored in a doubly-linked list and whenever a centroid matches a
 sequence, that centroid is moved to the front of the list. This makes the
 algorithm less sensitive to the ordering of the input sequences. The choice of
 the centroids will still be made greedily though, in lack of well-performing
@@ -88,14 +86,14 @@ performance caused by an unlucky ordering of the input sequences. Algorithm
 \ref{alg:k-clust} shows pseudocode for the \textsc{K-Clust} algorithm.
 
 The choice of whether to compare a query sequence with a centroid, referred to
-as the \emph{intersection criterion}, is decided using the formula
+as the \emph{intersection criterion}, is decided using the inequality
 \[
   \abs{K(s) \cap K(c)} \geq \abs{K(c)} \cdot id \;
 \]
 where $s$ is the query sequence, $c$ is the centroid sequence and $id$ is the
 similarity threshold. $K(x)$ denotes the number of $k$-mers in a sequence $x$.
-In the \texttt{klust} program this value is hard coded to $k=6$ for performance
-reasons.
+In the \texttt{klust} program, $k$ is hard coded to $6$ for the intersection
+criterion calculation, for performance reasons.
 
 The idea of moving a matching centroid to the front of the list is, among other
 things, inspired by the observation that the results from \texttt{USEARCH} and
@@ -105,21 +103,19 @@ singleton clusters, i.e. clusters consisting of just a single sequence.
 To further improve the search for a centroid and add more structure to the
 collection of centroids, the concept of a \emph{link} is introduced. A link is
 a pointer from one centroid to another centroid which passed the intersection
-criterion at an earlier point in clustering process. For each sequence, this is
-managed by maintaining a link to the most recent centroids that have been
-compared to. If a sequence becomes a centroid, this link will be saved along
-with the sequence. Not every centroid will have a link, since it depends on a
-passed intersection criterion which did not give a match.
+criterion at an earlier point in the clustering process. For each sequence,
+this is managed by maintaining a link to the most recent centroids that have
+been compared to. If a sequence becomes a centroid, this link will be saved
+along with the sequence. Not every centroid will have a link, since it depends
+on a passed intersection criterion which did not give a match.
 
 When searching for a centroid, the link is used only when the intersection
-criterion is passed for some centroid, but the comparison with that centroid was
-unsuccessful and if that centroid happens to have a link to another centroid.
-Comparisons with linked centroids does not increment the $rejects$ variable.
-The \textsc{Has-Link} function in the pseudocode performs the check for whether
-a centroid has a link or not.
-
-An illustration of the \textsc{K-Clust} algorithm is seen in Figure
-\ref{fig:k-clust}.
+criterion is passed for some centroid, but the comparison with that centroid
+was unsuccessful and if that centroid happens to have a link to another
+centroid. Comparisons with linked centroids do not count towards
+$max\_rejects$. The \textsc{Has-Link} function in the pseudocode performs the
+check for whether a centroid has a link or not. An illustration of the
+\textsc{K-Clust} algorithm is seen in Figure \ref{fig:k-clust}.
 
 \begin{figure}[h!]
   \centering
@@ -127,8 +123,8 @@ An illustration of the \textsc{K-Clust} algorithm is seen in Figure
   \import{graphics/}{K-Clust.pdf_tex}
   \caption{Illustration of \textsc{K-Clust}. The centroid labeled
     $3$ is pushed to the front of the doubly-linked list because it was the
-    latest match to a sequence. The centroids labeled $4$ and $5$ has a link to
-    the centroids $1$ and $0$ respectively because they have been close to
+    latest match to a sequence. The centroids labeled $4$ and $5$ have links to
+    the centroids $1$ and $0$, respectively, because they have been close to
     matching them.}
   \label{fig:k-clust}
 \end{figure}
@@ -164,7 +160,7 @@ An illustration of the \textsc{K-Clust} algorithm is seen in Figure
             \If{\Call{Has-Link}{c} \texttt{AND}
                   \Call{\textsc{K-Dist}}{s, c.link, k} $ \geq id$}
               \State add $s$ to cluster represented by $c.link$
-              \State move $c.link$ to the front of $centroids$
+              %\State move $c.link$ to the front of $centroids$
               \State $match \gets true$
               \State $break$
             \EndIf
@@ -196,7 +192,7 @@ iterations in the inner loop will be the sequence
 \[
   1 + 2 + 3 + \ldots + |S| \,,
 \]
-that is, the $|S|$'th triangular number, which can be expresses as
+that is, the $|S|$'th triangular number, which can be expressed as
 \begin{equation}
   \frac{\abs{S}\left(\abs{S}+1\right)}{2} \,. \label{eq:triangular_number}
 \end{equation}
@@ -212,13 +208,12 @@ to be clustered.
 
 Thus, the \textsc{K-Clust} algorithm iterates over the constant amount of work
 in the inner loop the number of times expressed in (\ref{eq:triangular_number})
-and so the running time is quadratic in the number of sequences, i.e.:
-\begin{equation}
+and so the asymptotic running time is quadratic in the number of sequences,
+i.e.:
+\[
   \mathcal{O}\left(\abs{S}^2\right)
-\end{equation}
+\]
 
 This is, however, just the worst case running time and on average the running
 time will be much better since the number of centroids will be much lower than
 the total number of sequences.
-
-% TODO: (maybe) analyze space complexity

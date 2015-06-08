@@ -33,11 +33,11 @@ a problem for the sizes of the datasets used for testing.
 For each sequence, a \verb|bitset<4096>|, i.e. a space efficient \texttt{C++}
 bit vector of statically fixed size, of the $6$-mers occurring in that
 sequence, is computed. If that sequence becomes a centroid, the bit vector is
-copied and stored in a structure representing the centroid, along with the
-centroid sequence etc., to avoid recomputing it later. If the sequence matches
-an existing centroid, the bit vector is reused for subsequent sequences. This
-yields a memory usage of 4096 bits times the number of centroids, in addition
-to the sequence data.
+copied and stored in a structure representing the centroid, along with a
+reference to the centroid sequence etc., to avoid recomputing it later. If the
+sequence matches an existing centroid, the bit vector is reset and reused for
+subsequent sequences. This yields a memory usage of 4096 bits times the number
+of centroids, in addition to the sequence data.
 
 Having bit vectors of the $k$-mers occurring in both a sequence and a centroid
 sequence allows for very efficient computation of a bit vector of the $k$-mers

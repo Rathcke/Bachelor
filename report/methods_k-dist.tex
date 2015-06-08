@@ -6,11 +6,11 @@ sequences being compared. The distance between the substrings in the initial,
 leftmost position of the window is calculated using a variant of the basic
 \textsc{d2} algorithm. The window then iterates over the longer sequence, one
 nucleotide at a time, and calculates the new distance between the substring of
-the longer sequence and the shorter sequence.  This calculation is done using
-a kind of forward differences method for reducing the calculations to a few
-fixed operations for calculating the distance in the next window from the
-distance in the current window. This concept is described in a variant of the
-$d2$ algorithm by S. Hazelhurst~\cite{hazelhurst}.
+the longer sequence and the shorter sequence.  This calculation is done using a
+kind of forward differences method for reducing the calculations to a few fixed
+operations for calculating the distance in the next window from the distance in
+the current window. S. Hazelhurst~\cite{hazelhurst} describes this concept and
+uses it in a variant of the \textsc{d2} algorithm.
 
 \textsc{K-Dist} uses the \emph{Manhattan distance}~\cite{upton} instead of the
 Euclidean distance used in the \textsc{d2} algorithm for calculating the
@@ -26,7 +26,7 @@ This distance metric was chosen for simplicity, to make the calculation of
 distance in subsequent window positions easier, which also improves
 performance, and since there is evidence in the literature that the Manhattan
 distance generally is preferable to Euclidean distance for high dimensional
-distance calculation~\cite{aggarwal}. 
+distance calculation~\cite{aggarwal}.
 
 To calculate the distance in the next window position from the distance in the
 current window, i.e. advancing the window through the longer of the two
@@ -55,16 +55,14 @@ window and $k$-mers exiting and entering the window:
 \label{fig:d2_forward_differences}
 \end{figure}
 
-A distance measure, i.e. not a relative similarity measure, can be difficult
-to use directly for determining sequence similarity, since the distance metric
-is very dependent on the length of the shortest sequence (the length of the
-window).
-
-For this reason, the ratio between the Manhattan distance and the maximum
-possible distance in the window is used to normalize the distance to a value in
-the interval $[0,1]$. Let $w$ denote the size of the window. The corresponding
-similarity measure for the Manhattan distance in the window is given by the
-following expression:
+A distance measure, i.e. not a relative similarity measure, can be difficult to
+use directly for determining sequence similarity, since the distance metric is
+very dependent on the length of the shortest sequence (the length of the
+window). For this reason, the ratio between the Manhattan distance and the
+maximum possible distance in the window is used to normalize the distance to a
+value in the interval $[0,1]$. Let $w$ denote the size of the window. The
+corresponding similarity measure for the Manhattan distance in the window is
+given by the following expression:
 
 \begin{equation}
   1 - \frac{d_{Manhattan}(s,t)}{2(w - k + 1)} \label{eq:Manhattan_similarity}
@@ -77,11 +75,11 @@ union of the sets.  However, the Jaccard index does not take the multiplicity
 of the elements into account and therefore it might give a lower sensitivity
 than the similarity measure in equation (\ref{eq:Manhattan_similarity}).
 
-The \textsc{K-Dist} algorithm (Algorithm \ref{alg:K-Dist}) has been
-implemented and is used as the distance metric in the \texttt{klust} program.
-The update $cur\_dist$, $\mathtt{kmers}[x]$ and $\mathtt{kmers}[y]$ statements
-look at the values for specific $k$-mers $x$ and $y$ in the $k$-mer vector,
-increments or decrements the value and updates the $cur\_dist$ accordingly.
+The \textsc{K-Dist} algorithm (Algorithm \ref{alg:K-Dist}) has been implemented
+and is used as the distance metric in the \texttt{klust} program.  The update
+$cur\_dist$, $\mathtt{kmers}[x]$ and $\mathtt{kmers}[y]$ statement looks at the
+values for specific $k$-mers $x$ and $y$ in the $k$-mer vector, increments or
+decrements the values and updates the $cur\_dist$ accordingly.
 
 \begin{algorithm}[H]
   \caption{\textsc{K-Dist} algorithm}
